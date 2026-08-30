@@ -167,6 +167,12 @@ This gives algorithms such as JSON/XML post-processing a predictable enter/child
 
 `JsonVisitorBase` exposes `printTokenCodeRange`, `printAstCodeRange`, and `printAstType`. Its `$ast` field is either a type string or an object containing type and range, depending on these switches.
 
+The same `_Json.h/.cpp` pair also emits a sibling `json_reader::{AstGroup}Visitor`. Its public `ReadJson(vl::glr::json::JsonObject*)` function converts compact, range-free writer output back to `Ptr<ParsingAstBase>`. The input must contain a string `$ast` naming a concrete generated class. Generated dispatch constructs that exact class without reflection, fills base fields before derived fields, recursively converts object and array fields, preserves null pointers/items, and requires nested nodes to match their declared AST types.
+
+Missing ordinary fields are accepted: tokens stay empty, objects stay null, arrays stay empty, and enums are initialized to their first declared item (or remain `UNDEFINED_ENUM_ITEM_VALUE` when the enum is empty). Malformed type tags, unknown or duplicate properties, wrong JSON kinds, unknown enum items, and incompatible nested types throw `vl::Exception`. Reader input deliberately excludes range-enabled output and output written with `printAstType = false`; source ranges and token metadata keep their normal constructed defaults.
+
+Only the optional `_Json.h` utility imports the generated JSON DOM declarations needed by the reader. The core AST header remains independent of this dependency, and blocking `Json` removes the writer, reader, and TypeScript schema together.
+
 The matching `.d.ts` generator uses:
 
 - string unions for enums;
@@ -175,7 +181,7 @@ The matching `.d.ts` generator uses:
 - a literal `$ast` discriminant on concrete leaves;
 - nullable object references and nullable array elements.
 
-The TypeScript output describes the compact JSON shape used when range-heavy output is disabled. It provides a cross-language schema without making the C++ parser runtime depend on a JavaScript toolchain.
+The TypeScript output describes the same compact JSON shape accepted by the reader. It provides a cross-language schema without making the C++ parser runtime depend on a JavaScript toolchain.
 
 ## Numeric class and field IDs
 

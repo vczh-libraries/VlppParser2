@@ -4,65 +4,140 @@ From parser definition:TypeOrExpr
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_UNITTEST_PREFIXMERGE8_PMVARIADIC_TYPEOREXPR_AST_JSON_VISITOR
-#define VCZH_PARSER2_UNITTEST_PREFIXMERGE8_PMVARIADIC_TYPEOREXPR_AST_JSON_VISITOR
+#ifndef VCZH_PARSER2_UNITTEST_PREFIXMERGE8_PMVARIADIC_TYPEOREXPR_AST_JSON
+#define VCZH_PARSER2_UNITTEST_PREFIXMERGE8_PMVARIADIC_TYPEOREXPR_AST_JSON
 
 #include "PrefixMerge8_PmVariadicTypeOrExpr.h"
+#include "../../../../Source/Json/Generated/JsonAst.h"
 
-namespace prefixmerge8_pmvariadic::json_visitor
+namespace prefixmerge8_pmvariadic
 {
-	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-	class TypeOrExprVisitor
-		: public vl::glr::JsonVisitorBase
-		, protected virtual TypeOrExprOrOthers::IVisitor
-		, protected virtual TypeOrExpr::IVisitor
-		, protected virtual QualifiedName::IVisitor
-		, protected virtual GenericQualifiedName::IVisitor
+	namespace json_visitor
 	{
-	protected:
-		virtual void PrintFields(CallExpr* node);
-		virtual void PrintFields(ConstType* node);
-		virtual void PrintFields(CtorExpr* node);
-		virtual void PrintFields(FunctionType* node);
-		virtual void PrintFields(GenericMemberName* node);
-		virtual void PrintFields(GenericName* node);
-		virtual void PrintFields(GenericQualifiedName* node);
-		virtual void PrintFields(MemberName* node);
-		virtual void PrintFields(MulExpr* node);
-		virtual void PrintFields(Name* node);
-		virtual void PrintFields(PointerType* node);
-		virtual void PrintFields(QualifiedName* node);
-		virtual void PrintFields(TypeOrExpr* node);
-		virtual void PrintFields(TypeOrExprOrOthers* node);
-		virtual void PrintFields(TypeOrExprOrOthersToResolve* node);
-		virtual void PrintFields(TypeOrExprToResolve* node);
-		virtual void PrintFields(VariadicArgument* node);
+		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+		class TypeOrExprVisitor
+			: public vl::glr::JsonVisitorBase
+			, protected virtual TypeOrExprOrOthers::IVisitor
+			, protected virtual TypeOrExpr::IVisitor
+			, protected virtual QualifiedName::IVisitor
+			, protected virtual GenericQualifiedName::IVisitor
+		{
+		protected:
+			virtual void PrintFields(CallExpr* node);
+			virtual void PrintFields(ConstType* node);
+			virtual void PrintFields(CtorExpr* node);
+			virtual void PrintFields(FunctionType* node);
+			virtual void PrintFields(GenericMemberName* node);
+			virtual void PrintFields(GenericName* node);
+			virtual void PrintFields(GenericQualifiedName* node);
+			virtual void PrintFields(MemberName* node);
+			virtual void PrintFields(MulExpr* node);
+			virtual void PrintFields(Name* node);
+			virtual void PrintFields(PointerType* node);
+			virtual void PrintFields(QualifiedName* node);
+			virtual void PrintFields(TypeOrExpr* node);
+			virtual void PrintFields(TypeOrExprOrOthers* node);
+			virtual void PrintFields(TypeOrExprOrOthersToResolve* node);
+			virtual void PrintFields(TypeOrExprToResolve* node);
+			virtual void PrintFields(VariadicArgument* node);
 
-	protected:
-		void Visit(TypeOrExprOrOthersToResolve* node) override;
-		void Visit(VariadicArgument* node) override;
-		void Visit(TypeOrExpr* node) override;
+		protected:
+			void Visit(TypeOrExprOrOthersToResolve* node) override;
+			void Visit(VariadicArgument* node) override;
+			void Visit(TypeOrExpr* node) override;
 
-		void Visit(TypeOrExprToResolve* node) override;
-		void Visit(QualifiedName* node) override;
-		void Visit(CallExpr* node) override;
-		void Visit(CtorExpr* node) override;
-		void Visit(MulExpr* node) override;
-		void Visit(ConstType* node) override;
-		void Visit(PointerType* node) override;
-		void Visit(FunctionType* node) override;
+			void Visit(TypeOrExprToResolve* node) override;
+			void Visit(QualifiedName* node) override;
+			void Visit(CallExpr* node) override;
+			void Visit(CtorExpr* node) override;
+			void Visit(MulExpr* node) override;
+			void Visit(ConstType* node) override;
+			void Visit(PointerType* node) override;
+			void Visit(FunctionType* node) override;
 
-		void Visit(Name* node) override;
-		void Visit(MemberName* node) override;
-		void Visit(GenericQualifiedName* node) override;
+			void Visit(Name* node) override;
+			void Visit(MemberName* node) override;
+			void Visit(GenericQualifiedName* node) override;
 
-		void Visit(GenericName* node) override;
-		void Visit(GenericMemberName* node) override;
+			void Visit(GenericName* node) override;
+			void Visit(GenericMemberName* node) override;
 
-	public:
-		TypeOrExprVisitor(vl::stream::StreamWriter& _writer);
+		public:
+			TypeOrExprVisitor(vl::stream::StreamWriter& _writer);
 
-		void Print(TypeOrExprOrOthers* node);
-	};
+			void Print(TypeOrExprOrOthers* node);
+		};
+	}
+
+	namespace json_reader
+	{
+		/// <summary>A JSON reader, overriding all abstract methods with JSON to AST deserialization code.</summary>
+		class TypeOrExprVisitor
+			: protected virtual TypeOrExprOrOthers::IVisitor
+			, protected virtual TypeOrExpr::IVisitor
+			, protected virtual QualifiedName::IVisitor
+			, protected virtual GenericQualifiedName::IVisitor
+		{
+		protected:
+			class JsonObjectScope
+			{
+			protected:
+				vl::collections::List<vl::glr::json::JsonObject*>& jsonObjects;
+
+			public:
+				JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json);
+				~JsonObjectScope();
+			};
+
+			vl::collections::List<vl::glr::json::JsonObject*> jsonObjects;
+			vl::glr::json::JsonObject* CurrentObject();
+			vl::glr::json::JsonNode* FindField(const vl::WString& name);
+			bool IsNull(vl::glr::json::JsonNode* value);
+			vl::WString ReadType(vl::glr::json::JsonObject* json);
+			void ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName);
+
+			virtual void FillFields(CallExpr* node);
+			virtual void FillFields(ConstType* node);
+			virtual void FillFields(CtorExpr* node);
+			virtual void FillFields(FunctionType* node);
+			virtual void FillFields(GenericMemberName* node);
+			virtual void FillFields(GenericName* node);
+			virtual void FillFields(GenericQualifiedName* node);
+			virtual void FillFields(MemberName* node);
+			virtual void FillFields(MulExpr* node);
+			virtual void FillFields(Name* node);
+			virtual void FillFields(PointerType* node);
+			virtual void FillFields(QualifiedName* node);
+			virtual void FillFields(TypeOrExpr* node);
+			virtual void FillFields(TypeOrExprOrOthers* node);
+			virtual void FillFields(TypeOrExprOrOthersToResolve* node);
+			virtual void FillFields(TypeOrExprToResolve* node);
+			virtual void FillFields(VariadicArgument* node);
+
+		protected:
+			void Visit(TypeOrExprOrOthersToResolve* node) override;
+			void Visit(VariadicArgument* node) override;
+			void Visit(TypeOrExpr* node) override;
+
+			void Visit(TypeOrExprToResolve* node) override;
+			void Visit(QualifiedName* node) override;
+			void Visit(CallExpr* node) override;
+			void Visit(CtorExpr* node) override;
+			void Visit(MulExpr* node) override;
+			void Visit(ConstType* node) override;
+			void Visit(PointerType* node) override;
+			void Visit(FunctionType* node) override;
+
+			void Visit(Name* node) override;
+			void Visit(MemberName* node) override;
+			void Visit(GenericQualifiedName* node) override;
+
+			void Visit(GenericName* node) override;
+			void Visit(GenericMemberName* node) override;
+
+		public:
+			vl::Ptr<vl::glr::ParsingAstBase> ReadJson(vl::glr::json::JsonObject* json);
+		};
+	}
 }
 #endif

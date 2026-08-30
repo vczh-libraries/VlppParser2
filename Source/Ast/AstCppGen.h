@@ -21,7 +21,9 @@ namespace vl
 			extern void			WriteAstCppFile					(AstDefFileGroup* group, const WString& astHeaderName, stream::StreamWriter& writer);
 
 			extern void			WriteAstUtilityHeaderFile		(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, const WString& extraNss, stream::StreamWriter& writer, Func<void(const WString&)> callback);
+			extern void			WriteAstUtilityHeaderFile		(AstDefFileGroup* group, Ptr<CppAstGenOutput> output, const WString& guardPostfix, const collections::List<WString>& extraIncludes, const collections::List<WString>& extraNss, stream::StreamWriter& writer, Func<void(const WString&)> callback);
 			extern void			WriteAstUtilityCppFile			(AstDefFileGroup* group, const WString& utilityHeaderFile, const WString& extraNss, stream::StreamWriter& writer, Func<void(const WString&)> callback);
+			extern void			WriteAstUtilityCppFile			(AstDefFileGroup* group, const WString& utilityHeaderFile, const collections::List<WString>& extraNss, stream::StreamWriter& writer, Func<void(const WString&)> callback);
 			extern void			WriteParserUtilityHeaderFile	(AstSymbolManager& manager, Ptr<CppParserGenOutput> output, const WString& guardPostfix, stream::StreamWriter& writer, Func<void(const WString&)> callback);
 			extern void			WriteParserUtilityCppFile		(AstSymbolManager& manager, const WString& utilityHeaderFile, stream::StreamWriter& writer, Func<void(const WString&)> callback);
 

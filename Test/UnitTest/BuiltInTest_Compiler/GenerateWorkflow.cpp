@@ -33,6 +33,7 @@ TEST_FILE
 
 	global.name = L"Workflow";
 	Fill(global.astIncludes, L"../../../../Source/AstBase.h");
+	Fill(global.jsonIncludes, L"../../../../Source/Json/Generated/JsonAst.h");
 	Fill(global.syntaxIncludes, L"../../../../Source/SyntaxBase.h");
 	Fill(global.cppNss, L"vl", L"glr", L"workflow");
 	global.headerGuard = L"VCZH_PARSER2_BUILTIN_WORKFLOW";

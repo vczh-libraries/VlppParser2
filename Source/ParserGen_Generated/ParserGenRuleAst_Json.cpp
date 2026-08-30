@@ -6,617 +6,1659 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenRuleAst_Json.h"
 
-namespace vl::glr::parsergen::json_visitor
+namespace vl::glr::parsergen
 {
-	void RuleAstVisitor::PrintFields(GlrAlternativeSyntax* node)
+	namespace json_visitor
 	{
-		BeginField(vl::WString::Unmanaged(L"first"));
-		Print(node->first.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"second"));
-		Print(node->second.Obj());
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrAndCondition* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"first"));
-		Print(node->first.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"second"));
-		Print(node->second.Obj());
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrAssignment* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"field"));
-		WriteToken(node->field);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		switch (node->type)
+		void RuleAstVisitor::PrintFields(GlrAlternativeSyntax* node)
 		{
-		case vl::glr::parsergen::GlrAssignmentType::Strong:
-			WriteString(vl::WString::Unmanaged(L"Strong"));
-			break;
-		case vl::glr::parsergen::GlrAssignmentType::Weak:
-			WriteString(vl::WString::Unmanaged(L"Weak"));
-			break;
-		default:
-			WriteNull();
+			BeginField(vl::WString::Unmanaged(L"first"));
+			Print(node->first.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"second"));
+			Print(node->second.Obj());
+			EndField();
 		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"value"));
-		WriteToken(node->value);
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrClause* node)
-	{
-	}
-	void RuleAstVisitor::PrintFields(GlrCondition* node)
-	{
-	}
-	void RuleAstVisitor::PrintFields(GlrCreateClause* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"assignments"));
-		BeginArray();
-		for (auto&& listItem : node->assignments)
+		void RuleAstVisitor::PrintFields(GlrAndCondition* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"first"));
+			Print(node->first.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"second"));
+			Print(node->second.Obj());
+			EndField();
 		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"syntax"));
-		Print(node->syntax.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		WriteToken(node->type);
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrLoopSyntax* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"delimiter"));
-		Print(node->delimiter.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"syntax"));
-		Print(node->syntax.Obj());
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrNotCondition* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"condition"));
-		Print(node->condition.Obj());
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrOptionalSyntax* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"priority"));
-		switch (node->priority)
+		void RuleAstVisitor::PrintFields(GlrAssignment* node)
 		{
-		case vl::glr::parsergen::GlrOptionalPriority::Equal:
-			WriteString(vl::WString::Unmanaged(L"Equal"));
-			break;
-		case vl::glr::parsergen::GlrOptionalPriority::PreferSkip:
-			WriteString(vl::WString::Unmanaged(L"PreferSkip"));
-			break;
-		case vl::glr::parsergen::GlrOptionalPriority::PreferTake:
-			WriteString(vl::WString::Unmanaged(L"PreferTake"));
-			break;
-		default:
-			WriteNull();
+			BeginField(vl::WString::Unmanaged(L"field"));
+			WriteToken(node->field);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"type"));
+			switch (node->type)
+			{
+			case vl::glr::parsergen::GlrAssignmentType::Strong:
+				WriteString(vl::WString::Unmanaged(L"Strong"));
+				break;
+			case vl::glr::parsergen::GlrAssignmentType::Weak:
+				WriteString(vl::WString::Unmanaged(L"Weak"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"value"));
+			WriteToken(node->value);
+			EndField();
 		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"syntax"));
-		Print(node->syntax.Obj());
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrOrCondition* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"first"));
-		Print(node->first.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"second"));
-		Print(node->second.Obj());
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrPartialClause* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"assignments"));
-		BeginArray();
-		for (auto&& listItem : node->assignments)
+		void RuleAstVisitor::PrintFields(GlrClause* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
 		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"syntax"));
-		Print(node->syntax.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		WriteToken(node->type);
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrPushConditionSyntax* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"switches"));
-		BeginArray();
-		for (auto&& listItem : node->switches)
+		void RuleAstVisitor::PrintFields(GlrCondition* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
 		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"syntax"));
-		Print(node->syntax.Obj());
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrRefCondition* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrRefSyntax* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"field"));
-		WriteToken(node->field);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"literal"));
-		WriteToken(node->literal);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"refType"));
-		switch (node->refType)
+		void RuleAstVisitor::PrintFields(GlrCreateClause* node)
 		{
-		case vl::glr::parsergen::GlrRefType::ConditionalLiteral:
-			WriteString(vl::WString::Unmanaged(L"ConditionalLiteral"));
-			break;
-		case vl::glr::parsergen::GlrRefType::Id:
-			WriteString(vl::WString::Unmanaged(L"Id"));
-			break;
-		case vl::glr::parsergen::GlrRefType::Literal:
-			WriteString(vl::WString::Unmanaged(L"Literal"));
-			break;
-		default:
-			WriteNull();
+			BeginField(vl::WString::Unmanaged(L"assignments"));
+			BeginArray();
+			for (auto&& listItem : node->assignments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"syntax"));
+			Print(node->syntax.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"type"));
+			WriteToken(node->type);
+			EndField();
 		}
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrReuseClause* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"assignments"));
-		BeginArray();
-		for (auto&& listItem : node->assignments)
+		void RuleAstVisitor::PrintFields(GlrLoopSyntax* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"delimiter"));
+			Print(node->delimiter.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"syntax"));
+			Print(node->syntax.Obj());
+			EndField();
 		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"syntax"));
-		Print(node->syntax.Obj());
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrRule* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"attParser"));
-		WriteToken(node->attParser);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"attPublic"));
-		WriteToken(node->attPublic);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"clauses"));
-		BeginArray();
-		for (auto&& listItem : node->clauses)
+		void RuleAstVisitor::PrintFields(GlrNotCondition* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"condition"));
+			Print(node->condition.Obj());
+			EndField();
 		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		WriteToken(node->type);
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrSequenceSyntax* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"first"));
-		Print(node->first.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"second"));
-		Print(node->second.Obj());
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrSwitchItem* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"value"));
-		switch (node->value)
+		void RuleAstVisitor::PrintFields(GlrOptionalSyntax* node)
 		{
-		case vl::glr::parsergen::GlrSwitchValue::False:
-			WriteString(vl::WString::Unmanaged(L"False"));
-			break;
-		case vl::glr::parsergen::GlrSwitchValue::True:
-			WriteString(vl::WString::Unmanaged(L"True"));
-			break;
-		default:
-			WriteNull();
+			BeginField(vl::WString::Unmanaged(L"priority"));
+			switch (node->priority)
+			{
+			case vl::glr::parsergen::GlrOptionalPriority::Equal:
+				WriteString(vl::WString::Unmanaged(L"Equal"));
+				break;
+			case vl::glr::parsergen::GlrOptionalPriority::PreferSkip:
+				WriteString(vl::WString::Unmanaged(L"PreferSkip"));
+				break;
+			case vl::glr::parsergen::GlrOptionalPriority::PreferTake:
+				WriteString(vl::WString::Unmanaged(L"PreferTake"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"syntax"));
+			Print(node->syntax.Obj());
+			EndField();
 		}
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrSyntax* node)
-	{
-	}
-	void RuleAstVisitor::PrintFields(GlrSyntaxFile* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"rules"));
-		BeginArray();
-		for (auto&& listItem : node->rules)
+		void RuleAstVisitor::PrintFields(GlrOrCondition* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"first"));
+			Print(node->first.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"second"));
+			Print(node->second.Obj());
+			EndField();
 		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"switches"));
-		BeginArray();
-		for (auto&& listItem : node->switches)
+		void RuleAstVisitor::PrintFields(GlrPartialClause* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"assignments"));
+			BeginArray();
+			for (auto&& listItem : node->assignments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"syntax"));
+			Print(node->syntax.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"type"));
+			WriteToken(node->type);
+			EndField();
 		}
-		EndArray();
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrTestConditionBranch* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"condition"));
-		Print(node->condition.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"syntax"));
-		Print(node->syntax.Obj());
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrTestConditionSyntax* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"branches"));
-		BeginArray();
-		for (auto&& listItem : node->branches)
+		void RuleAstVisitor::PrintFields(GlrPushConditionSyntax* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"switches"));
+			BeginArray();
+			for (auto&& listItem : node->switches)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"syntax"));
+			Print(node->syntax.Obj());
+			EndField();
 		}
-		EndArray();
-		EndField();
-	}
-	void RuleAstVisitor::PrintFields(GlrUseSyntax* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
+		void RuleAstVisitor::PrintFields(GlrRefCondition* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+		void RuleAstVisitor::PrintFields(GlrRefSyntax* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"field"));
+			WriteToken(node->field);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"literal"));
+			WriteToken(node->literal);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"refType"));
+			switch (node->refType)
+			{
+			case vl::glr::parsergen::GlrRefType::ConditionalLiteral:
+				WriteString(vl::WString::Unmanaged(L"ConditionalLiteral"));
+				break;
+			case vl::glr::parsergen::GlrRefType::Id:
+				WriteString(vl::WString::Unmanaged(L"Id"));
+				break;
+			case vl::glr::parsergen::GlrRefType::Literal:
+				WriteString(vl::WString::Unmanaged(L"Literal"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
+		void RuleAstVisitor::PrintFields(GlrReuseClause* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"assignments"));
+			BeginArray();
+			for (auto&& listItem : node->assignments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"syntax"));
+			Print(node->syntax.Obj());
+			EndField();
+		}
+		void RuleAstVisitor::PrintFields(GlrRule* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"attParser"));
+			WriteToken(node->attParser);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"attPublic"));
+			WriteToken(node->attPublic);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"clauses"));
+			BeginArray();
+			for (auto&& listItem : node->clauses)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"type"));
+			WriteToken(node->type);
+			EndField();
+		}
+		void RuleAstVisitor::PrintFields(GlrSequenceSyntax* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"first"));
+			Print(node->first.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"second"));
+			Print(node->second.Obj());
+			EndField();
+		}
+		void RuleAstVisitor::PrintFields(GlrSwitchItem* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"value"));
+			switch (node->value)
+			{
+			case vl::glr::parsergen::GlrSwitchValue::False:
+				WriteString(vl::WString::Unmanaged(L"False"));
+				break;
+			case vl::glr::parsergen::GlrSwitchValue::True:
+				WriteString(vl::WString::Unmanaged(L"True"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
+		void RuleAstVisitor::PrintFields(GlrSyntax* node)
+		{
+		}
+		void RuleAstVisitor::PrintFields(GlrSyntaxFile* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"rules"));
+			BeginArray();
+			for (auto&& listItem : node->rules)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"switches"));
+			BeginArray();
+			for (auto&& listItem : node->switches)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void RuleAstVisitor::PrintFields(GlrTestConditionBranch* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"condition"));
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"syntax"));
+			Print(node->syntax.Obj());
+			EndField();
+		}
+		void RuleAstVisitor::PrintFields(GlrTestConditionSyntax* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"branches"));
+			BeginArray();
+			for (auto&& listItem : node->branches)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void RuleAstVisitor::PrintFields(GlrUseSyntax* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+
+		void RuleAstVisitor::Visit(GlrRefCondition* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"RefCondition"), node);
+			PrintFields(static_cast<GlrCondition*>(node));
+			PrintFields(static_cast<GlrRefCondition*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrNotCondition* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"NotCondition"), node);
+			PrintFields(static_cast<GlrCondition*>(node));
+			PrintFields(static_cast<GlrNotCondition*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrAndCondition* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"AndCondition"), node);
+			PrintFields(static_cast<GlrCondition*>(node));
+			PrintFields(static_cast<GlrAndCondition*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrOrCondition* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"OrCondition"), node);
+			PrintFields(static_cast<GlrCondition*>(node));
+			PrintFields(static_cast<GlrOrCondition*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrRefSyntax* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"RefSyntax"), node);
+			PrintFields(static_cast<GlrSyntax*>(node));
+			PrintFields(static_cast<GlrRefSyntax*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrUseSyntax* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"UseSyntax"), node);
+			PrintFields(static_cast<GlrSyntax*>(node));
+			PrintFields(static_cast<GlrUseSyntax*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrLoopSyntax* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"LoopSyntax"), node);
+			PrintFields(static_cast<GlrSyntax*>(node));
+			PrintFields(static_cast<GlrLoopSyntax*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrOptionalSyntax* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"OptionalSyntax"), node);
+			PrintFields(static_cast<GlrSyntax*>(node));
+			PrintFields(static_cast<GlrOptionalSyntax*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrSequenceSyntax* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"SequenceSyntax"), node);
+			PrintFields(static_cast<GlrSyntax*>(node));
+			PrintFields(static_cast<GlrSequenceSyntax*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrAlternativeSyntax* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"AlternativeSyntax"), node);
+			PrintFields(static_cast<GlrSyntax*>(node));
+			PrintFields(static_cast<GlrAlternativeSyntax*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrPushConditionSyntax* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"PushConditionSyntax"), node);
+			PrintFields(static_cast<GlrSyntax*>(node));
+			PrintFields(static_cast<GlrPushConditionSyntax*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrTestConditionSyntax* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"TestConditionSyntax"), node);
+			PrintFields(static_cast<GlrSyntax*>(node));
+			PrintFields(static_cast<GlrTestConditionSyntax*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrCreateClause* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"CreateClause"), node);
+			PrintFields(static_cast<GlrClause*>(node));
+			PrintFields(static_cast<GlrCreateClause*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrPartialClause* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"PartialClause"), node);
+			PrintFields(static_cast<GlrClause*>(node));
+			PrintFields(static_cast<GlrPartialClause*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Visit(GlrReuseClause* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ReuseClause"), node);
+			PrintFields(static_cast<GlrClause*>(node));
+			PrintFields(static_cast<GlrReuseClause*>(node));
+			EndObject();
+		}
+
+		RuleAstVisitor::RuleAstVisitor(vl::stream::StreamWriter& _writer)
+			: vl::glr::JsonVisitorBase(_writer)
+		{
+		}
+
+		void RuleAstVisitor::Print(GlrCondition* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<GlrCondition::IVisitor*>(this));
+		}
+
+		void RuleAstVisitor::Print(GlrSyntax* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<GlrSyntax::IVisitor*>(this));
+		}
+
+		void RuleAstVisitor::Print(GlrClause* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<GlrClause::IVisitor*>(this));
+		}
+
+		void RuleAstVisitor::Print(GlrSwitchItem* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"SwitchItem"), node);
+			PrintFields(static_cast<GlrSwitchItem*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Print(GlrTestConditionBranch* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"TestConditionBranch"), node);
+			PrintFields(static_cast<GlrTestConditionBranch*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Print(GlrAssignment* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Assignment"), node);
+			PrintFields(static_cast<GlrAssignment*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Print(GlrRule* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Rule"), node);
+			PrintFields(static_cast<GlrRule*>(node));
+			EndObject();
+		}
+
+		void RuleAstVisitor::Print(GlrSyntaxFile* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"SyntaxFile"), node);
+			PrintFields(static_cast<GlrSyntaxFile*>(node));
+			EndObject();
+		}
+
 	}
 
-	void RuleAstVisitor::Visit(GlrRefCondition* node)
+	namespace json_reader
 	{
-		if (!node)
+		RuleAstVisitor::JsonObjectScope::JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json)
+			: jsonObjects(_jsonObjects)
 		{
-			WriteNull();
-			return;
+			jsonObjects.Add(json);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"RefCondition"), node);
-		PrintFields(static_cast<GlrCondition*>(node));
-		PrintFields(static_cast<GlrRefCondition*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrNotCondition* node)
-	{
-		if (!node)
+		RuleAstVisitor::JsonObjectScope::~JsonObjectScope()
 		{
-			WriteNull();
-			return;
+			jsonObjects.RemoveAt(jsonObjects.Count() - 1);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"NotCondition"), node);
-		PrintFields(static_cast<GlrCondition*>(node));
-		PrintFields(static_cast<GlrNotCondition*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrAndCondition* node)
-	{
-		if (!node)
+		vl::glr::json::JsonObject* RuleAstVisitor::CurrentObject()
 		{
-			WriteNull();
-			return;
+			return jsonObjects[jsonObjects.Count() - 1];
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"AndCondition"), node);
-		PrintFields(static_cast<GlrCondition*>(node));
-		PrintFields(static_cast<GlrAndCondition*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrOrCondition* node)
-	{
-		if (!node)
+		vl::glr::json::JsonNode* RuleAstVisitor::FindField(const vl::WString& name)
 		{
-			WriteNull();
-			return;
+			for (auto field : CurrentObject()->fields)
+			{
+				if (field && field->name.value == name) return field->value.Obj();
+			}
+			return nullptr;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"OrCondition"), node);
-		PrintFields(static_cast<GlrCondition*>(node));
-		PrintFields(static_cast<GlrOrCondition*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrRefSyntax* node)
-	{
-		if (!node)
+		bool RuleAstVisitor::IsNull(vl::glr::json::JsonNode* value)
 		{
-			WriteNull();
-			return;
+			auto literal = dynamic_cast<vl::glr::json::JsonLiteral*>(value);
+			return literal && literal->value == vl::glr::json::JsonLiteralValue::Null;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"RefSyntax"), node);
-		PrintFields(static_cast<GlrSyntax*>(node));
-		PrintFields(static_cast<GlrRefSyntax*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrUseSyntax* node)
-	{
-		if (!node)
+		vl::WString RuleAstVisitor::ReadType(vl::glr::json::JsonObject* json)
 		{
-			WriteNull();
-			return;
+			if (!json) throw vl::Exception(L"AST JSON object cannot be null.");
+			bool typeFound = false;
+			vl::WString typeName;
+			for (auto field : json->fields)
+			{
+				if (field && field->name.value == L"$ast")
+				{
+					if (typeFound) throw vl::Exception(L"AST JSON object contains duplicate \"$ast\" fields.");
+					typeFound = true;
+					auto jsonString = field->value.Cast<vl::glr::json::JsonString>();
+					if (!jsonString) throw vl::Exception(L"AST JSON field \"$ast\" must be a string.");
+					typeName = jsonString->content.value;
+				}
+			}
+			if (!typeFound) throw vl::Exception(L"AST JSON object is missing field \"$ast\".");
+			return typeName;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"UseSyntax"), node);
-		PrintFields(static_cast<GlrSyntax*>(node));
-		PrintFields(static_cast<GlrUseSyntax*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrLoopSyntax* node)
-	{
-		if (!node)
+		void RuleAstVisitor::ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName)
 		{
-			WriteNull();
-			return;
+			vl::collections::List<vl::WString> fieldNames;
+			for (auto field : json->fields)
+			{
+				if (!field || !field->value) throw vl::Exception(L"AST JSON object contains an invalid field.");
+				auto name = field->name.value;
+				if (fieldNames.Contains(name)) throw vl::Exception(L"AST JSON object contains duplicate field \"" + name + L"\".");
+				fieldNames.Add(name);
+				bool fieldFound = name == L"$ast";
+				if (typeName == L"RefCondition")
+				{
+					fieldFound = fieldFound || name == L"name";
+				}
+				else if (typeName == L"NotCondition")
+				{
+					fieldFound = fieldFound || name == L"condition";
+				}
+				else if (typeName == L"AndCondition")
+				{
+					fieldFound = fieldFound || name == L"first";
+					fieldFound = fieldFound || name == L"second";
+				}
+				else if (typeName == L"OrCondition")
+				{
+					fieldFound = fieldFound || name == L"first";
+					fieldFound = fieldFound || name == L"second";
+				}
+				else if (typeName == L"SwitchItem")
+				{
+					fieldFound = fieldFound || name == L"name";
+					fieldFound = fieldFound || name == L"value";
+				}
+				else if (typeName == L"RefSyntax")
+				{
+					fieldFound = fieldFound || name == L"refType";
+					fieldFound = fieldFound || name == L"literal";
+					fieldFound = fieldFound || name == L"field";
+				}
+				else if (typeName == L"UseSyntax")
+				{
+					fieldFound = fieldFound || name == L"name";
+				}
+				else if (typeName == L"LoopSyntax")
+				{
+					fieldFound = fieldFound || name == L"syntax";
+					fieldFound = fieldFound || name == L"delimiter";
+				}
+				else if (typeName == L"OptionalSyntax")
+				{
+					fieldFound = fieldFound || name == L"priority";
+					fieldFound = fieldFound || name == L"syntax";
+				}
+				else if (typeName == L"SequenceSyntax")
+				{
+					fieldFound = fieldFound || name == L"first";
+					fieldFound = fieldFound || name == L"second";
+				}
+				else if (typeName == L"AlternativeSyntax")
+				{
+					fieldFound = fieldFound || name == L"first";
+					fieldFound = fieldFound || name == L"second";
+				}
+				else if (typeName == L"PushConditionSyntax")
+				{
+					fieldFound = fieldFound || name == L"switches";
+					fieldFound = fieldFound || name == L"syntax";
+				}
+				else if (typeName == L"TestConditionBranch")
+				{
+					fieldFound = fieldFound || name == L"condition";
+					fieldFound = fieldFound || name == L"syntax";
+				}
+				else if (typeName == L"TestConditionSyntax")
+				{
+					fieldFound = fieldFound || name == L"branches";
+				}
+				else if (typeName == L"Assignment")
+				{
+					fieldFound = fieldFound || name == L"type";
+					fieldFound = fieldFound || name == L"field";
+					fieldFound = fieldFound || name == L"value";
+				}
+				else if (typeName == L"CreateClause")
+				{
+					fieldFound = fieldFound || name == L"type";
+					fieldFound = fieldFound || name == L"syntax";
+					fieldFound = fieldFound || name == L"assignments";
+				}
+				else if (typeName == L"PartialClause")
+				{
+					fieldFound = fieldFound || name == L"type";
+					fieldFound = fieldFound || name == L"syntax";
+					fieldFound = fieldFound || name == L"assignments";
+				}
+				else if (typeName == L"ReuseClause")
+				{
+					fieldFound = fieldFound || name == L"syntax";
+					fieldFound = fieldFound || name == L"assignments";
+				}
+				else if (typeName == L"Rule")
+				{
+					fieldFound = fieldFound || name == L"attPublic";
+					fieldFound = fieldFound || name == L"attParser";
+					fieldFound = fieldFound || name == L"name";
+					fieldFound = fieldFound || name == L"type";
+					fieldFound = fieldFound || name == L"clauses";
+				}
+				else if (typeName == L"SyntaxFile")
+				{
+					fieldFound = fieldFound || name == L"switches";
+					fieldFound = fieldFound || name == L"rules";
+				}
+				if (!fieldFound) throw vl::Exception(L"AST JSON object contains unknown field \"" + name + L"\" for type \"" + typeName + L"\".");
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"LoopSyntax"), node);
-		PrintFields(static_cast<GlrSyntax*>(node));
-		PrintFields(static_cast<GlrLoopSyntax*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrOptionalSyntax* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrAlternativeSyntax* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<GlrSyntax*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"first")))
+			{
+				if (IsNull(value))
+				{
+					node->first = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrSyntax>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"first\" contains an incompatible AST type.");
+					node->first = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"first\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"second")))
+			{
+				if (IsNull(value))
+				{
+					node->second = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrSyntax>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"second\" contains an incompatible AST type.");
+					node->second = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"second\" must be an object or null.");
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"OptionalSyntax"), node);
-		PrintFields(static_cast<GlrSyntax*>(node));
-		PrintFields(static_cast<GlrOptionalSyntax*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrSequenceSyntax* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrAndCondition* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<GlrCondition*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"first")))
+			{
+				if (IsNull(value))
+				{
+					node->first = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrCondition>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"first\" contains an incompatible AST type.");
+					node->first = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"first\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"second")))
+			{
+				if (IsNull(value))
+				{
+					node->second = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrCondition>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"second\" contains an incompatible AST type.");
+					node->second = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"second\" must be an object or null.");
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"SequenceSyntax"), node);
-		PrintFields(static_cast<GlrSyntax*>(node));
-		PrintFields(static_cast<GlrSequenceSyntax*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrAlternativeSyntax* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrAssignment* node)
 		{
-			WriteNull();
-			return;
+			node->type = GlrAssignmentType::Strong;
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"type\" must be a string.");
+				if (jsonString->content.value == L"Strong") node->type = GlrAssignmentType::Strong;
+				else if (jsonString->content.value == L"Weak") node->type = GlrAssignmentType::Weak;
+				else throw vl::Exception(L"AST JSON field \"type\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"field")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"field\" must be a string.");
+				node->field.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"value")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"value\" must be a string.");
+				node->value.value = jsonString->content.value;
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"AlternativeSyntax"), node);
-		PrintFields(static_cast<GlrSyntax*>(node));
-		PrintFields(static_cast<GlrAlternativeSyntax*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrPushConditionSyntax* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrClause* node)
 		{
-			WriteNull();
-			return;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"PushConditionSyntax"), node);
-		PrintFields(static_cast<GlrSyntax*>(node));
-		PrintFields(static_cast<GlrPushConditionSyntax*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrTestConditionSyntax* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrCondition* node)
 		{
-			WriteNull();
-			return;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"TestConditionSyntax"), node);
-		PrintFields(static_cast<GlrSyntax*>(node));
-		PrintFields(static_cast<GlrTestConditionSyntax*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrCreateClause* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrCreateClause* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<GlrClause*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"type\" must be a string.");
+				node->type.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"syntax")))
+			{
+				if (IsNull(value))
+				{
+					node->syntax = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrSyntax>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"syntax\" contains an incompatible AST type.");
+					node->syntax = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"syntax\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"assignments")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"assignments\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->assignments.Add(vl::Ptr<GlrAssignment>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<GlrAssignment>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"assignments\" contains an incompatible AST type.");
+						node->assignments.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"assignments\" contains a non-object, non-null item.");
+				}
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"CreateClause"), node);
-		PrintFields(static_cast<GlrClause*>(node));
-		PrintFields(static_cast<GlrCreateClause*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrPartialClause* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrLoopSyntax* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<GlrSyntax*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"syntax")))
+			{
+				if (IsNull(value))
+				{
+					node->syntax = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrSyntax>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"syntax\" contains an incompatible AST type.");
+					node->syntax = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"syntax\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"delimiter")))
+			{
+				if (IsNull(value))
+				{
+					node->delimiter = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrSyntax>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"delimiter\" contains an incompatible AST type.");
+					node->delimiter = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"delimiter\" must be an object or null.");
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"PartialClause"), node);
-		PrintFields(static_cast<GlrClause*>(node));
-		PrintFields(static_cast<GlrPartialClause*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Visit(GlrReuseClause* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrNotCondition* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<GlrCondition*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"condition")))
+			{
+				if (IsNull(value))
+				{
+					node->condition = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrCondition>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"condition\" contains an incompatible AST type.");
+					node->condition = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"condition\" must be an object or null.");
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ReuseClause"), node);
-		PrintFields(static_cast<GlrClause*>(node));
-		PrintFields(static_cast<GlrReuseClause*>(node));
-		EndObject();
-	}
 
-	RuleAstVisitor::RuleAstVisitor(vl::stream::StreamWriter& _writer)
-		: vl::glr::JsonVisitorBase(_writer)
-	{
-	}
-
-	void RuleAstVisitor::Print(GlrCondition* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrOptionalSyntax* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<GlrSyntax*>(node));
+			node->priority = GlrOptionalPriority::Equal;
+			if (auto value = FindField(vl::WString::Unmanaged(L"priority")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"priority\" must be a string.");
+				if (jsonString->content.value == L"Equal") node->priority = GlrOptionalPriority::Equal;
+				else if (jsonString->content.value == L"PreferTake") node->priority = GlrOptionalPriority::PreferTake;
+				else if (jsonString->content.value == L"PreferSkip") node->priority = GlrOptionalPriority::PreferSkip;
+				else throw vl::Exception(L"AST JSON field \"priority\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"syntax")))
+			{
+				if (IsNull(value))
+				{
+					node->syntax = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrSyntax>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"syntax\" contains an incompatible AST type.");
+					node->syntax = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"syntax\" must be an object or null.");
+			}
 		}
-		node->Accept(static_cast<GlrCondition::IVisitor*>(this));
-	}
 
-	void RuleAstVisitor::Print(GlrSyntax* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrOrCondition* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<GlrCondition*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"first")))
+			{
+				if (IsNull(value))
+				{
+					node->first = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrCondition>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"first\" contains an incompatible AST type.");
+					node->first = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"first\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"second")))
+			{
+				if (IsNull(value))
+				{
+					node->second = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrCondition>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"second\" contains an incompatible AST type.");
+					node->second = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"second\" must be an object or null.");
+			}
 		}
-		node->Accept(static_cast<GlrSyntax::IVisitor*>(this));
-	}
 
-	void RuleAstVisitor::Print(GlrClause* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrPartialClause* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<GlrClause*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"type\" must be a string.");
+				node->type.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"syntax")))
+			{
+				if (IsNull(value))
+				{
+					node->syntax = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrSyntax>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"syntax\" contains an incompatible AST type.");
+					node->syntax = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"syntax\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"assignments")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"assignments\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->assignments.Add(vl::Ptr<GlrAssignment>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<GlrAssignment>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"assignments\" contains an incompatible AST type.");
+						node->assignments.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"assignments\" contains a non-object, non-null item.");
+				}
+			}
 		}
-		node->Accept(static_cast<GlrClause::IVisitor*>(this));
-	}
 
-	void RuleAstVisitor::Print(GlrSwitchItem* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrPushConditionSyntax* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<GlrSyntax*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"switches")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"switches\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->switches.Add(vl::Ptr<GlrSwitchItem>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<GlrSwitchItem>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"switches\" contains an incompatible AST type.");
+						node->switches.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"switches\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"syntax")))
+			{
+				if (IsNull(value))
+				{
+					node->syntax = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrSyntax>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"syntax\" contains an incompatible AST type.");
+					node->syntax = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"syntax\" must be an object or null.");
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"SwitchItem"), node);
-		PrintFields(static_cast<GlrSwitchItem*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Print(GlrTestConditionBranch* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrRefCondition* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<GlrCondition*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"TestConditionBranch"), node);
-		PrintFields(static_cast<GlrTestConditionBranch*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Print(GlrAssignment* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrRefSyntax* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<GlrSyntax*>(node));
+			node->refType = GlrRefType::Id;
+			if (auto value = FindField(vl::WString::Unmanaged(L"refType")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"refType\" must be a string.");
+				if (jsonString->content.value == L"Id") node->refType = GlrRefType::Id;
+				else if (jsonString->content.value == L"Literal") node->refType = GlrRefType::Literal;
+				else if (jsonString->content.value == L"ConditionalLiteral") node->refType = GlrRefType::ConditionalLiteral;
+				else throw vl::Exception(L"AST JSON field \"refType\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"literal")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"literal\" must be a string.");
+				node->literal.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"field")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"field\" must be a string.");
+				node->field.value = jsonString->content.value;
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Assignment"), node);
-		PrintFields(static_cast<GlrAssignment*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Print(GlrRule* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrReuseClause* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<GlrClause*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"syntax")))
+			{
+				if (IsNull(value))
+				{
+					node->syntax = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrSyntax>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"syntax\" contains an incompatible AST type.");
+					node->syntax = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"syntax\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"assignments")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"assignments\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->assignments.Add(vl::Ptr<GlrAssignment>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<GlrAssignment>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"assignments\" contains an incompatible AST type.");
+						node->assignments.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"assignments\" contains a non-object, non-null item.");
+				}
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Rule"), node);
-		PrintFields(static_cast<GlrRule*>(node));
-		EndObject();
-	}
 
-	void RuleAstVisitor::Print(GlrSyntaxFile* node)
-	{
-		if (!node)
+		void RuleAstVisitor::FillFields(GlrRule* node)
 		{
-			WriteNull();
-			return;
+			if (auto value = FindField(vl::WString::Unmanaged(L"attPublic")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"attPublic\" must be a string.");
+				node->attPublic.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"attParser")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"attParser\" must be a string.");
+				node->attParser.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"type\" must be a string.");
+				node->type.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"clauses")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"clauses\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->clauses.Add(vl::Ptr<GlrClause>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<GlrClause>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"clauses\" contains an incompatible AST type.");
+						node->clauses.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"clauses\" contains a non-object, non-null item.");
+				}
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"SyntaxFile"), node);
-		PrintFields(static_cast<GlrSyntaxFile*>(node));
-		EndObject();
-	}
 
+		void RuleAstVisitor::FillFields(GlrSequenceSyntax* node)
+		{
+			FillFields(static_cast<GlrSyntax*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"first")))
+			{
+				if (IsNull(value))
+				{
+					node->first = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrSyntax>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"first\" contains an incompatible AST type.");
+					node->first = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"first\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"second")))
+			{
+				if (IsNull(value))
+				{
+					node->second = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrSyntax>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"second\" contains an incompatible AST type.");
+					node->second = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"second\" must be an object or null.");
+			}
+		}
+
+		void RuleAstVisitor::FillFields(GlrSwitchItem* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+			node->value = GlrSwitchValue::False;
+			if (auto value = FindField(vl::WString::Unmanaged(L"value")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"value\" must be a string.");
+				if (jsonString->content.value == L"False") node->value = GlrSwitchValue::False;
+				else if (jsonString->content.value == L"True") node->value = GlrSwitchValue::True;
+				else throw vl::Exception(L"AST JSON field \"value\" contains an unknown enum item.");
+			}
+		}
+
+		void RuleAstVisitor::FillFields(GlrSyntax* node)
+		{
+		}
+
+		void RuleAstVisitor::FillFields(GlrSyntaxFile* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"switches")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"switches\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->switches.Add(vl::Ptr<GlrSwitchItem>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<GlrSwitchItem>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"switches\" contains an incompatible AST type.");
+						node->switches.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"switches\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"rules")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"rules\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->rules.Add(vl::Ptr<GlrRule>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<GlrRule>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"rules\" contains an incompatible AST type.");
+						node->rules.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"rules\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void RuleAstVisitor::FillFields(GlrTestConditionBranch* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"condition")))
+			{
+				if (IsNull(value))
+				{
+					node->condition = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrCondition>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"condition\" contains an incompatible AST type.");
+					node->condition = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"condition\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"syntax")))
+			{
+				if (IsNull(value))
+				{
+					node->syntax = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<GlrSyntax>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"syntax\" contains an incompatible AST type.");
+					node->syntax = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"syntax\" must be an object or null.");
+			}
+		}
+
+		void RuleAstVisitor::FillFields(GlrTestConditionSyntax* node)
+		{
+			FillFields(static_cast<GlrSyntax*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"branches")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"branches\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->branches.Add(vl::Ptr<GlrTestConditionBranch>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<GlrTestConditionBranch>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"branches\" contains an incompatible AST type.");
+						node->branches.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"branches\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void RuleAstVisitor::FillFields(GlrUseSyntax* node)
+		{
+			FillFields(static_cast<GlrSyntax*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+		}
+
+		void RuleAstVisitor::Visit(GlrRefCondition* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrNotCondition* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrAndCondition* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrOrCondition* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrRefSyntax* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrUseSyntax* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrLoopSyntax* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrOptionalSyntax* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrSequenceSyntax* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrAlternativeSyntax* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrPushConditionSyntax* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrTestConditionSyntax* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrCreateClause* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrPartialClause* node)
+		{
+			FillFields(node);
+		}
+
+		void RuleAstVisitor::Visit(GlrReuseClause* node)
+		{
+			FillFields(node);
+		}
+
+		vl::Ptr<vl::glr::ParsingAstBase> RuleAstVisitor::ReadJson(vl::glr::json::JsonObject* json)
+		{
+			auto typeName = ReadType(json);
+			if (typeName == L"RefCondition")
+			{
+				auto node = vl::Ptr(new GlrRefCondition);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrCondition*>(node.Obj())->Accept(static_cast<GlrCondition::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"NotCondition")
+			{
+				auto node = vl::Ptr(new GlrNotCondition);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrCondition*>(node.Obj())->Accept(static_cast<GlrCondition::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"AndCondition")
+			{
+				auto node = vl::Ptr(new GlrAndCondition);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrCondition*>(node.Obj())->Accept(static_cast<GlrCondition::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"OrCondition")
+			{
+				auto node = vl::Ptr(new GlrOrCondition);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrCondition*>(node.Obj())->Accept(static_cast<GlrCondition::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"SwitchItem")
+			{
+				auto node = vl::Ptr(new GlrSwitchItem);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"RefSyntax")
+			{
+				auto node = vl::Ptr(new GlrRefSyntax);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrSyntax*>(node.Obj())->Accept(static_cast<GlrSyntax::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"UseSyntax")
+			{
+				auto node = vl::Ptr(new GlrUseSyntax);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrSyntax*>(node.Obj())->Accept(static_cast<GlrSyntax::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"LoopSyntax")
+			{
+				auto node = vl::Ptr(new GlrLoopSyntax);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrSyntax*>(node.Obj())->Accept(static_cast<GlrSyntax::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"OptionalSyntax")
+			{
+				auto node = vl::Ptr(new GlrOptionalSyntax);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrSyntax*>(node.Obj())->Accept(static_cast<GlrSyntax::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"SequenceSyntax")
+			{
+				auto node = vl::Ptr(new GlrSequenceSyntax);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrSyntax*>(node.Obj())->Accept(static_cast<GlrSyntax::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"AlternativeSyntax")
+			{
+				auto node = vl::Ptr(new GlrAlternativeSyntax);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrSyntax*>(node.Obj())->Accept(static_cast<GlrSyntax::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"PushConditionSyntax")
+			{
+				auto node = vl::Ptr(new GlrPushConditionSyntax);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrSyntax*>(node.Obj())->Accept(static_cast<GlrSyntax::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"TestConditionBranch")
+			{
+				auto node = vl::Ptr(new GlrTestConditionBranch);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"TestConditionSyntax")
+			{
+				auto node = vl::Ptr(new GlrTestConditionSyntax);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrSyntax*>(node.Obj())->Accept(static_cast<GlrSyntax::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Assignment")
+			{
+				auto node = vl::Ptr(new GlrAssignment);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"CreateClause")
+			{
+				auto node = vl::Ptr(new GlrCreateClause);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrClause*>(node.Obj())->Accept(static_cast<GlrClause::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"PartialClause")
+			{
+				auto node = vl::Ptr(new GlrPartialClause);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrClause*>(node.Obj())->Accept(static_cast<GlrClause::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ReuseClause")
+			{
+				auto node = vl::Ptr(new GlrReuseClause);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrClause*>(node.Obj())->Accept(static_cast<GlrClause::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Rule")
+			{
+				auto node = vl::Ptr(new GlrRule);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"SyntaxFile")
+			{
+				auto node = vl::Ptr(new GlrSyntaxFile);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			throw vl::Exception(L"AST JSON field \"$ast\" contains an unknown or abstract type \"" + typeName + L"\".");
+		}
+	}
 }

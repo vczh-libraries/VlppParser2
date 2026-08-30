@@ -6,3462 +6,8354 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CppAst_Json.h"
 
-namespace cpp_parser::json_visitor
+namespace cpp_parser
 {
-	void AstVisitor::PrintFields(CppAdvancedType* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"argument"));
-		Print(node->argument.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"kind"));
-		switch (node->kind)
-		{
-		case cpp_parser::CppAdvancedTypeKinds::AlignAs:
-			WriteString(vl::WString::Unmanaged(L"AlignAs"));
-			break;
-		case cpp_parser::CppAdvancedTypeKinds::Const:
-			WriteString(vl::WString::Unmanaged(L"Const"));
-			break;
-		case cpp_parser::CppAdvancedTypeKinds::LRef:
-			WriteString(vl::WString::Unmanaged(L"LRef"));
-			break;
-		case cpp_parser::CppAdvancedTypeKinds::Member:
-			WriteString(vl::WString::Unmanaged(L"Member"));
-			break;
-		case cpp_parser::CppAdvancedTypeKinds::Pointer:
-			WriteString(vl::WString::Unmanaged(L"Pointer"));
-			break;
-		case cpp_parser::CppAdvancedTypeKinds::Pointer32:
-			WriteString(vl::WString::Unmanaged(L"Pointer32"));
-			break;
-		case cpp_parser::CppAdvancedTypeKinds::Pointer64:
-			WriteString(vl::WString::Unmanaged(L"Pointer64"));
-			break;
-		case cpp_parser::CppAdvancedTypeKinds::RRef:
-			WriteString(vl::WString::Unmanaged(L"RRef"));
-			break;
-		case cpp_parser::CppAdvancedTypeKinds::Volatile:
-			WriteString(vl::WString::Unmanaged(L"Volatile"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppBinaryExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"left"));
-		Print(node->left.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"op"));
-		switch (node->op)
-		{
-		case cpp_parser::CppOperators::And:
-			WriteString(vl::WString::Unmanaged(L"And"));
-			break;
-		case cpp_parser::CppOperators::AndAssign:
-			WriteString(vl::WString::Unmanaged(L"AndAssign"));
-			break;
-		case cpp_parser::CppOperators::Assign:
-			WriteString(vl::WString::Unmanaged(L"Assign"));
-			break;
-		case cpp_parser::CppOperators::BitwiseAnd:
-			WriteString(vl::WString::Unmanaged(L"BitwiseAnd"));
-			break;
-		case cpp_parser::CppOperators::BitwiseOr:
-			WriteString(vl::WString::Unmanaged(L"BitwiseOr"));
-			break;
-		case cpp_parser::CppOperators::Bracket:
-			WriteString(vl::WString::Unmanaged(L"Bracket"));
-			break;
-		case cpp_parser::CppOperators::Comma:
-			WriteString(vl::WString::Unmanaged(L"Comma"));
-			break;
-		case cpp_parser::CppOperators::Compare:
-			WriteString(vl::WString::Unmanaged(L"Compare"));
-			break;
-		case cpp_parser::CppOperators::Decrease:
-			WriteString(vl::WString::Unmanaged(L"Decrease"));
-			break;
-		case cpp_parser::CppOperators::Delete:
-			WriteString(vl::WString::Unmanaged(L"Delete"));
-			break;
-		case cpp_parser::CppOperators::DeleteArray:
-			WriteString(vl::WString::Unmanaged(L"DeleteArray"));
-			break;
-		case cpp_parser::CppOperators::Div:
-			WriteString(vl::WString::Unmanaged(L"Div"));
-			break;
-		case cpp_parser::CppOperators::DivAssign:
-			WriteString(vl::WString::Unmanaged(L"DivAssign"));
-			break;
-		case cpp_parser::CppOperators::EQ:
-			WriteString(vl::WString::Unmanaged(L"EQ"));
-			break;
-		case cpp_parser::CppOperators::GE:
-			WriteString(vl::WString::Unmanaged(L"GE"));
-			break;
-		case cpp_parser::CppOperators::GT:
-			WriteString(vl::WString::Unmanaged(L"GT"));
-			break;
-		case cpp_parser::CppOperators::Increase:
-			WriteString(vl::WString::Unmanaged(L"Increase"));
-			break;
-		case cpp_parser::CppOperators::LE:
-			WriteString(vl::WString::Unmanaged(L"LE"));
-			break;
-		case cpp_parser::CppOperators::LT:
-			WriteString(vl::WString::Unmanaged(L"LT"));
-			break;
-		case cpp_parser::CppOperators::LeftShift:
-			WriteString(vl::WString::Unmanaged(L"LeftShift"));
-			break;
-		case cpp_parser::CppOperators::LeftShiftAssign:
-			WriteString(vl::WString::Unmanaged(L"LeftShiftAssign"));
-			break;
-		case cpp_parser::CppOperators::Member:
-			WriteString(vl::WString::Unmanaged(L"Member"));
-			break;
-		case cpp_parser::CppOperators::MemberDeref:
-			WriteString(vl::WString::Unmanaged(L"MemberDeref"));
-			break;
-		case cpp_parser::CppOperators::Minus:
-			WriteString(vl::WString::Unmanaged(L"Minus"));
-			break;
-		case cpp_parser::CppOperators::MinusAssign:
-			WriteString(vl::WString::Unmanaged(L"MinusAssign"));
-			break;
-		case cpp_parser::CppOperators::Mod:
-			WriteString(vl::WString::Unmanaged(L"Mod"));
-			break;
-		case cpp_parser::CppOperators::ModAssign:
-			WriteString(vl::WString::Unmanaged(L"ModAssign"));
-			break;
-		case cpp_parser::CppOperators::Mul:
-			WriteString(vl::WString::Unmanaged(L"Mul"));
-			break;
-		case cpp_parser::CppOperators::MulAssign:
-			WriteString(vl::WString::Unmanaged(L"MulAssign"));
-			break;
-		case cpp_parser::CppOperators::NE:
-			WriteString(vl::WString::Unmanaged(L"NE"));
-			break;
-		case cpp_parser::CppOperators::New:
-			WriteString(vl::WString::Unmanaged(L"New"));
-			break;
-		case cpp_parser::CppOperators::NewArray:
-			WriteString(vl::WString::Unmanaged(L"NewArray"));
-			break;
-		case cpp_parser::CppOperators::Not:
-			WriteString(vl::WString::Unmanaged(L"Not"));
-			break;
-		case cpp_parser::CppOperators::Or:
-			WriteString(vl::WString::Unmanaged(L"Or"));
-			break;
-		case cpp_parser::CppOperators::OrAssign:
-			WriteString(vl::WString::Unmanaged(L"OrAssign"));
-			break;
-		case cpp_parser::CppOperators::Parantheses:
-			WriteString(vl::WString::Unmanaged(L"Parantheses"));
-			break;
-		case cpp_parser::CppOperators::Plus:
-			WriteString(vl::WString::Unmanaged(L"Plus"));
-			break;
-		case cpp_parser::CppOperators::PlusAssign:
-			WriteString(vl::WString::Unmanaged(L"PlusAssign"));
-			break;
-		case cpp_parser::CppOperators::Pointer:
-			WriteString(vl::WString::Unmanaged(L"Pointer"));
-			break;
-		case cpp_parser::CppOperators::PointerDeref:
-			WriteString(vl::WString::Unmanaged(L"PointerDeref"));
-			break;
-		case cpp_parser::CppOperators::Revert:
-			WriteString(vl::WString::Unmanaged(L"Revert"));
-			break;
-		case cpp_parser::CppOperators::RevertAssign:
-			WriteString(vl::WString::Unmanaged(L"RevertAssign"));
-			break;
-		case cpp_parser::CppOperators::RightShift:
-			WriteString(vl::WString::Unmanaged(L"RightShift"));
-			break;
-		case cpp_parser::CppOperators::RightShiftAssign:
-			WriteString(vl::WString::Unmanaged(L"RightShiftAssign"));
-			break;
-		case cpp_parser::CppOperators::RoundBracket:
-			WriteString(vl::WString::Unmanaged(L"RoundBracket"));
-			break;
-		case cpp_parser::CppOperators::Xor:
-			WriteString(vl::WString::Unmanaged(L"Xor"));
-			break;
-		case cpp_parser::CppOperators::XorAssign:
-			WriteString(vl::WString::Unmanaged(L"XorAssign"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"right"));
-		Print(node->right.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppBlockStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"statements"));
-		BeginArray();
-		for (auto&& listItem : node->statements)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppBraceExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"arguments"));
-		BeginArray();
-		for (auto&& listItem : node->arguments)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppBreakStat* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppCallExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"arguments"));
-		BeginArray();
-		for (auto&& listItem : node->arguments)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"kind"));
-		switch (node->kind)
-		{
-		case cpp_parser::CppCallKinds::Brace:
-			WriteString(vl::WString::Unmanaged(L"Brace"));
-			break;
-		case cpp_parser::CppCallKinds::Parenthesis:
-			WriteString(vl::WString::Unmanaged(L"Parenthesis"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"operand"));
-		Print(node->operand.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppCaseStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"expr"));
-		Print(node->expr.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"stat"));
-		Print(node->stat.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppCastExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"expr"));
-		Print(node->expr.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"keyword"));
-		WriteToken(node->keyword);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		Print(node->type.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppClassBody* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"firstVarPart"));
-		Print(node->firstVarPart.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"inheritances"));
-		BeginArray();
-		for (auto&& listItem : node->inheritances)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"memberParts"));
-		BeginArray();
-		for (auto&& listItem : node->memberParts)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppClassDeclaration* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"arguments"));
-		Print(node->arguments.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"body"));
-		Print(node->body.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"kind"));
-		switch (node->kind)
-		{
-		case cpp_parser::CppClassKind::Class:
-			WriteString(vl::WString::Unmanaged(L"Class"));
-			break;
-		case cpp_parser::CppClassKind::Struct:
-			WriteString(vl::WString::Unmanaged(L"Struct"));
-			break;
-		case cpp_parser::CppClassKind::Union:
-			WriteString(vl::WString::Unmanaged(L"Union"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppClassInheritance* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"accessor"));
-		switch (node->accessor)
-		{
-		case cpp_parser::CppClassAccessor::Default:
-			WriteString(vl::WString::Unmanaged(L"Default"));
-			break;
-		case cpp_parser::CppClassAccessor::Private:
-			WriteString(vl::WString::Unmanaged(L"Private"));
-			break;
-		case cpp_parser::CppClassAccessor::Protected:
-			WriteString(vl::WString::Unmanaged(L"Protected"));
-			break;
-		case cpp_parser::CppClassAccessor::Public:
-			WriteString(vl::WString::Unmanaged(L"Public"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		Print(node->type.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"variadic"));
-		WriteToken(node->variadic);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppClassMemberPart* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"accessor"));
-		switch (node->accessor)
-		{
-		case cpp_parser::CppClassAccessor::Default:
-			WriteString(vl::WString::Unmanaged(L"Default"));
-			break;
-		case cpp_parser::CppClassAccessor::Private:
-			WriteString(vl::WString::Unmanaged(L"Private"));
-			break;
-		case cpp_parser::CppClassAccessor::Protected:
-			WriteString(vl::WString::Unmanaged(L"Protected"));
-			break;
-		case cpp_parser::CppClassAccessor::Public:
-			WriteString(vl::WString::Unmanaged(L"Public"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"decls"));
-		BeginArray();
-		for (auto&& listItem : node->decls)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppConstType* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"type"));
-		Print(node->type.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppContinueStat* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppDeclStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"decl"));
-		Print(node->decl.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeclaration* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppDeclarationCommon* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"keywords"));
-		BeginArray();
-		for (auto&& listItem : node->keywords)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeclarationToResolve* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"candidates"));
-		BeginArray();
-		for (auto&& listItem : node->candidates)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeclarator* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppDeclaratorArrayPart* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"argument"));
-		Print(node->argument.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeclaratorCommon* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"advancedTypes"));
-		BeginArray();
-		for (auto&& listItem : node->advancedTypes)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"arguments"));
-		Print(node->arguments.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"arrayParts"));
-		BeginArray();
-		for (auto&& listItem : node->arrayParts)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"bitfield"));
-		Print(node->bitfield.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"funcPart"));
-		Print(node->funcPart.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"id"));
-		Print(node->id.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"innerDeclarator"));
-		Print(node->innerDeclarator.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"keywords"));
-		BeginArray();
-		for (auto&& listItem : node->keywords)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"variadic"));
-		WriteToken(node->variadic);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeclaratorFunctionPart* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppDeclaratorFunctionPartCommon* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"deferredType"));
-		Print(node->deferredType.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"keywords"));
-		BeginArray();
-		for (auto&& listItem : node->keywords)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"parameters"));
-		BeginArray();
-		for (auto&& listItem : node->parameters)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"variadic"));
-		WriteToken(node->variadic);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeclaratorFunctionPartToResolve* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"candidates"));
-		BeginArray();
-		for (auto&& listItem : node->candidates)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeclaratorKeyword* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"keyword"));
-		WriteToken(node->keyword);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeclaratorToResolve* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"candidates"));
-		BeginArray();
-		for (auto&& listItem : node->candidates)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeclaratorType* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"declarator"));
-		Print(node->declarator.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"keywords"));
-		BeginArray();
-		for (auto&& listItem : node->keywords)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		Print(node->type.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeclaratorVariablePart* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppDeclaratorVariablePartCommon* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"declarator"));
-		Print(node->declarator.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"init"));
-		Print(node->init.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"nextVarPart"));
-		Print(node->nextVarPart.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeclaratorVariablePartToResolve* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"candidates"));
-		BeginArray();
-		for (auto&& listItem : node->candidates)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDefaultStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"stat"));
-		Print(node->stat.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDeleteExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"argument"));
-		Print(node->argument.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"array"));
-		switch (node->array)
-		{
-		case cpp_parser::CppOperatorArray::Array:
-			WriteString(vl::WString::Unmanaged(L"Array"));
-			break;
-		case cpp_parser::CppOperatorArray::NotArray:
-			WriteString(vl::WString::Unmanaged(L"NotArray"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"scope"));
-		switch (node->scope)
-		{
-		case cpp_parser::CppOperatorScope::Context:
-			WriteString(vl::WString::Unmanaged(L"Context"));
-			break;
-		case cpp_parser::CppOperatorScope::Root:
-			WriteString(vl::WString::Unmanaged(L"Root"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppDoWhileStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"condition"));
-		Print(node->condition.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"stat"));
-		Print(node->stat.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppEmptyStat* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppEnumBody* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"firstVarPart"));
-		Print(node->firstVarPart.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"items"));
-		BeginArray();
-		for (auto&& listItem : node->items)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppEnumDeclaration* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"body"));
-		Print(node->body.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"kind"));
-		switch (node->kind)
-		{
-		case cpp_parser::CppEnumKind::Enum:
-			WriteString(vl::WString::Unmanaged(L"Enum"));
-			break;
-		case cpp_parser::CppEnumKind::EnumClass:
-			WriteString(vl::WString::Unmanaged(L"EnumClass"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		Print(node->type.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppEnumItem* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"expr"));
-		Print(node->expr.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppExprOnly* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppExprStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"expr"));
-		Print(node->expr.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppExternDeclaration* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"decls"));
-		BeginArray();
-		for (auto&& listItem : node->decls)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppFile* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"decls"));
-		BeginArray();
-		for (auto&& listItem : node->decls)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppForStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"conditionPart"));
-		Print(node->conditionPart.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"stat"));
-		Print(node->stat.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppForStatConditionPart* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppForStatIterateCondition* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"collection"));
-		Print(node->collection.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"decl"));
-		Print(node->decl.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppForStatLoopCondition* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"condition"));
-		Print(node->condition.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"sideEffect"));
-		Print(node->sideEffect.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"varsDecl"));
-		Print(node->varsDecl.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppFriendTypeDeclaration* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"type"));
-		Print(node->type.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppFunctionKeyword* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"arguments"));
-		BeginArray();
-		for (auto&& listItem : node->arguments)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"keyword"));
-		WriteToken(node->keyword);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppGenericArgument* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"argument"));
-		Print(node->argument.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"variadic"));
-		WriteToken(node->variadic);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppGenericArguments* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"arguments"));
-		BeginArray();
-		for (auto&& listItem : node->arguments)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppGenericHeader* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"parameters"));
-		BeginArray();
-		for (auto&& listItem : node->parameters)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppGotoStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"label"));
-		WriteToken(node->label);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppIdentifier* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppIfElseStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"condition"));
-		Print(node->condition.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"falseStat"));
-		Print(node->falseStat.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"trueStat"));
-		Print(node->trueStat.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"varsDecl"));
-		Print(node->varsDecl.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppIfExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"condition"));
-		Print(node->condition.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"falseBranch"));
-		Print(node->falseBranch.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"trueBranch"));
-		Print(node->trueBranch.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppIndexExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"index"));
-		Print(node->index.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"operand"));
-		Print(node->operand.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppLabelStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"label"));
-		WriteToken(node->label);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"stat"));
-		Print(node->stat.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppLambdaCapture* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"id"));
-		Print(node->id.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"init"));
-		Print(node->init.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"objKind"));
-		switch (node->objKind)
-		{
-		case cpp_parser::CppLambdaCaptureObjectKinds::Default:
-			WriteString(vl::WString::Unmanaged(L"Default"));
-			break;
-		case cpp_parser::CppLambdaCaptureObjectKinds::Id:
-			WriteString(vl::WString::Unmanaged(L"Id"));
-			break;
-		case cpp_parser::CppLambdaCaptureObjectKinds::PackId:
-			WriteString(vl::WString::Unmanaged(L"PackId"));
-			break;
-		case cpp_parser::CppLambdaCaptureObjectKinds::PackInit:
-			WriteString(vl::WString::Unmanaged(L"PackInit"));
-			break;
-		case cpp_parser::CppLambdaCaptureObjectKinds::This:
-			WriteString(vl::WString::Unmanaged(L"This"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"refKind"));
-		switch (node->refKind)
-		{
-		case cpp_parser::CppLambdaCaptureRefeferenceKinds::Copy:
-			WriteString(vl::WString::Unmanaged(L"Copy"));
-			break;
-		case cpp_parser::CppLambdaCaptureRefeferenceKinds::Ref:
-			WriteString(vl::WString::Unmanaged(L"Ref"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppLambdaExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"captures"));
-		BeginArray();
-		for (auto&& listItem : node->captures)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"functionHeader"));
-		Print(node->functionHeader.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"genericHeader"));
-		Print(node->genericHeader.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"stat"));
-		Print(node->stat.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppNameIdentifier* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"kind"));
-		switch (node->kind)
-		{
-		case cpp_parser::CppNameKinds::Class:
-			WriteString(vl::WString::Unmanaged(L"Class"));
-			break;
-		case cpp_parser::CppNameKinds::Dtor:
-			WriteString(vl::WString::Unmanaged(L"Dtor"));
-			break;
-		case cpp_parser::CppNameKinds::Enum:
-			WriteString(vl::WString::Unmanaged(L"Enum"));
-			break;
-		case cpp_parser::CppNameKinds::EnumClass:
-			WriteString(vl::WString::Unmanaged(L"EnumClass"));
-			break;
-		case cpp_parser::CppNameKinds::Normal:
-			WriteString(vl::WString::Unmanaged(L"Normal"));
-			break;
-		case cpp_parser::CppNameKinds::Struct:
-			WriteString(vl::WString::Unmanaged(L"Struct"));
-			break;
-		case cpp_parser::CppNameKinds::Union:
-			WriteString(vl::WString::Unmanaged(L"Union"));
-			break;
-		case cpp_parser::CppNameKinds::UserDefinedLiteral:
-			WriteString(vl::WString::Unmanaged(L"UserDefinedLiteral"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppNamespaceDeclaration* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"decls"));
-		BeginArray();
-		for (auto&& listItem : node->decls)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"names"));
-		BeginArray();
-		for (auto&& listItem : node->names)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppNamespaceName* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppNewExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"arrayArguments"));
-		BeginArray();
-		for (auto&& listItem : node->arrayArguments)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"init"));
-		Print(node->init.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"placementArguments"));
-		BeginArray();
-		for (auto&& listItem : node->placementArguments)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"scope"));
-		switch (node->scope)
-		{
-		case cpp_parser::CppOperatorScope::Context:
-			WriteString(vl::WString::Unmanaged(L"Context"));
-			break;
-		case cpp_parser::CppOperatorScope::Root:
-			WriteString(vl::WString::Unmanaged(L"Root"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		BeginArray();
-		for (auto&& listItem : node->type)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppNumericExprLiteral* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"kind"));
-		switch (node->kind)
-		{
-		case cpp_parser::CppNumericExprLiteralKinds::Binary:
-			WriteString(vl::WString::Unmanaged(L"Binary"));
-			break;
-		case cpp_parser::CppNumericExprLiteralKinds::Char:
-			WriteString(vl::WString::Unmanaged(L"Char"));
-			break;
-		case cpp_parser::CppNumericExprLiteralKinds::Float:
-			WriteString(vl::WString::Unmanaged(L"Float"));
-			break;
-		case cpp_parser::CppNumericExprLiteralKinds::FloatHex:
-			WriteString(vl::WString::Unmanaged(L"FloatHex"));
-			break;
-		case cpp_parser::CppNumericExprLiteralKinds::Hex:
-			WriteString(vl::WString::Unmanaged(L"Hex"));
-			break;
-		case cpp_parser::CppNumericExprLiteralKinds::Integer:
-			WriteString(vl::WString::Unmanaged(L"Integer"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"literal"));
-		WriteToken(node->literal);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppOperatorIdentifier* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"op"));
-		switch (node->op)
-		{
-		case cpp_parser::CppOperators::And:
-			WriteString(vl::WString::Unmanaged(L"And"));
-			break;
-		case cpp_parser::CppOperators::AndAssign:
-			WriteString(vl::WString::Unmanaged(L"AndAssign"));
-			break;
-		case cpp_parser::CppOperators::Assign:
-			WriteString(vl::WString::Unmanaged(L"Assign"));
-			break;
-		case cpp_parser::CppOperators::BitwiseAnd:
-			WriteString(vl::WString::Unmanaged(L"BitwiseAnd"));
-			break;
-		case cpp_parser::CppOperators::BitwiseOr:
-			WriteString(vl::WString::Unmanaged(L"BitwiseOr"));
-			break;
-		case cpp_parser::CppOperators::Bracket:
-			WriteString(vl::WString::Unmanaged(L"Bracket"));
-			break;
-		case cpp_parser::CppOperators::Comma:
-			WriteString(vl::WString::Unmanaged(L"Comma"));
-			break;
-		case cpp_parser::CppOperators::Compare:
-			WriteString(vl::WString::Unmanaged(L"Compare"));
-			break;
-		case cpp_parser::CppOperators::Decrease:
-			WriteString(vl::WString::Unmanaged(L"Decrease"));
-			break;
-		case cpp_parser::CppOperators::Delete:
-			WriteString(vl::WString::Unmanaged(L"Delete"));
-			break;
-		case cpp_parser::CppOperators::DeleteArray:
-			WriteString(vl::WString::Unmanaged(L"DeleteArray"));
-			break;
-		case cpp_parser::CppOperators::Div:
-			WriteString(vl::WString::Unmanaged(L"Div"));
-			break;
-		case cpp_parser::CppOperators::DivAssign:
-			WriteString(vl::WString::Unmanaged(L"DivAssign"));
-			break;
-		case cpp_parser::CppOperators::EQ:
-			WriteString(vl::WString::Unmanaged(L"EQ"));
-			break;
-		case cpp_parser::CppOperators::GE:
-			WriteString(vl::WString::Unmanaged(L"GE"));
-			break;
-		case cpp_parser::CppOperators::GT:
-			WriteString(vl::WString::Unmanaged(L"GT"));
-			break;
-		case cpp_parser::CppOperators::Increase:
-			WriteString(vl::WString::Unmanaged(L"Increase"));
-			break;
-		case cpp_parser::CppOperators::LE:
-			WriteString(vl::WString::Unmanaged(L"LE"));
-			break;
-		case cpp_parser::CppOperators::LT:
-			WriteString(vl::WString::Unmanaged(L"LT"));
-			break;
-		case cpp_parser::CppOperators::LeftShift:
-			WriteString(vl::WString::Unmanaged(L"LeftShift"));
-			break;
-		case cpp_parser::CppOperators::LeftShiftAssign:
-			WriteString(vl::WString::Unmanaged(L"LeftShiftAssign"));
-			break;
-		case cpp_parser::CppOperators::Member:
-			WriteString(vl::WString::Unmanaged(L"Member"));
-			break;
-		case cpp_parser::CppOperators::MemberDeref:
-			WriteString(vl::WString::Unmanaged(L"MemberDeref"));
-			break;
-		case cpp_parser::CppOperators::Minus:
-			WriteString(vl::WString::Unmanaged(L"Minus"));
-			break;
-		case cpp_parser::CppOperators::MinusAssign:
-			WriteString(vl::WString::Unmanaged(L"MinusAssign"));
-			break;
-		case cpp_parser::CppOperators::Mod:
-			WriteString(vl::WString::Unmanaged(L"Mod"));
-			break;
-		case cpp_parser::CppOperators::ModAssign:
-			WriteString(vl::WString::Unmanaged(L"ModAssign"));
-			break;
-		case cpp_parser::CppOperators::Mul:
-			WriteString(vl::WString::Unmanaged(L"Mul"));
-			break;
-		case cpp_parser::CppOperators::MulAssign:
-			WriteString(vl::WString::Unmanaged(L"MulAssign"));
-			break;
-		case cpp_parser::CppOperators::NE:
-			WriteString(vl::WString::Unmanaged(L"NE"));
-			break;
-		case cpp_parser::CppOperators::New:
-			WriteString(vl::WString::Unmanaged(L"New"));
-			break;
-		case cpp_parser::CppOperators::NewArray:
-			WriteString(vl::WString::Unmanaged(L"NewArray"));
-			break;
-		case cpp_parser::CppOperators::Not:
-			WriteString(vl::WString::Unmanaged(L"Not"));
-			break;
-		case cpp_parser::CppOperators::Or:
-			WriteString(vl::WString::Unmanaged(L"Or"));
-			break;
-		case cpp_parser::CppOperators::OrAssign:
-			WriteString(vl::WString::Unmanaged(L"OrAssign"));
-			break;
-		case cpp_parser::CppOperators::Parantheses:
-			WriteString(vl::WString::Unmanaged(L"Parantheses"));
-			break;
-		case cpp_parser::CppOperators::Plus:
-			WriteString(vl::WString::Unmanaged(L"Plus"));
-			break;
-		case cpp_parser::CppOperators::PlusAssign:
-			WriteString(vl::WString::Unmanaged(L"PlusAssign"));
-			break;
-		case cpp_parser::CppOperators::Pointer:
-			WriteString(vl::WString::Unmanaged(L"Pointer"));
-			break;
-		case cpp_parser::CppOperators::PointerDeref:
-			WriteString(vl::WString::Unmanaged(L"PointerDeref"));
-			break;
-		case cpp_parser::CppOperators::Revert:
-			WriteString(vl::WString::Unmanaged(L"Revert"));
-			break;
-		case cpp_parser::CppOperators::RevertAssign:
-			WriteString(vl::WString::Unmanaged(L"RevertAssign"));
-			break;
-		case cpp_parser::CppOperators::RightShift:
-			WriteString(vl::WString::Unmanaged(L"RightShift"));
-			break;
-		case cpp_parser::CppOperators::RightShiftAssign:
-			WriteString(vl::WString::Unmanaged(L"RightShiftAssign"));
-			break;
-		case cpp_parser::CppOperators::RoundBracket:
-			WriteString(vl::WString::Unmanaged(L"RoundBracket"));
-			break;
-		case cpp_parser::CppOperators::Xor:
-			WriteString(vl::WString::Unmanaged(L"Xor"));
-			break;
-		case cpp_parser::CppOperators::XorAssign:
-			WriteString(vl::WString::Unmanaged(L"XorAssign"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppOperatorTypeIdentifier* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"type"));
-		Print(node->type.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppOrdinaryGenericParameter* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"genericHeader"));
-		Print(node->genericHeader.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"id"));
-		Print(node->id.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"init"));
-		Print(node->init.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"typenameToken"));
-		WriteToken(node->typenameToken);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"variadic"));
-		WriteToken(node->variadic);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppParenthesisExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"expr"));
-		Print(node->expr.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppPostfixUnaryExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"op"));
-		switch (node->op)
-		{
-		case cpp_parser::CppOperators::And:
-			WriteString(vl::WString::Unmanaged(L"And"));
-			break;
-		case cpp_parser::CppOperators::AndAssign:
-			WriteString(vl::WString::Unmanaged(L"AndAssign"));
-			break;
-		case cpp_parser::CppOperators::Assign:
-			WriteString(vl::WString::Unmanaged(L"Assign"));
-			break;
-		case cpp_parser::CppOperators::BitwiseAnd:
-			WriteString(vl::WString::Unmanaged(L"BitwiseAnd"));
-			break;
-		case cpp_parser::CppOperators::BitwiseOr:
-			WriteString(vl::WString::Unmanaged(L"BitwiseOr"));
-			break;
-		case cpp_parser::CppOperators::Bracket:
-			WriteString(vl::WString::Unmanaged(L"Bracket"));
-			break;
-		case cpp_parser::CppOperators::Comma:
-			WriteString(vl::WString::Unmanaged(L"Comma"));
-			break;
-		case cpp_parser::CppOperators::Compare:
-			WriteString(vl::WString::Unmanaged(L"Compare"));
-			break;
-		case cpp_parser::CppOperators::Decrease:
-			WriteString(vl::WString::Unmanaged(L"Decrease"));
-			break;
-		case cpp_parser::CppOperators::Delete:
-			WriteString(vl::WString::Unmanaged(L"Delete"));
-			break;
-		case cpp_parser::CppOperators::DeleteArray:
-			WriteString(vl::WString::Unmanaged(L"DeleteArray"));
-			break;
-		case cpp_parser::CppOperators::Div:
-			WriteString(vl::WString::Unmanaged(L"Div"));
-			break;
-		case cpp_parser::CppOperators::DivAssign:
-			WriteString(vl::WString::Unmanaged(L"DivAssign"));
-			break;
-		case cpp_parser::CppOperators::EQ:
-			WriteString(vl::WString::Unmanaged(L"EQ"));
-			break;
-		case cpp_parser::CppOperators::GE:
-			WriteString(vl::WString::Unmanaged(L"GE"));
-			break;
-		case cpp_parser::CppOperators::GT:
-			WriteString(vl::WString::Unmanaged(L"GT"));
-			break;
-		case cpp_parser::CppOperators::Increase:
-			WriteString(vl::WString::Unmanaged(L"Increase"));
-			break;
-		case cpp_parser::CppOperators::LE:
-			WriteString(vl::WString::Unmanaged(L"LE"));
-			break;
-		case cpp_parser::CppOperators::LT:
-			WriteString(vl::WString::Unmanaged(L"LT"));
-			break;
-		case cpp_parser::CppOperators::LeftShift:
-			WriteString(vl::WString::Unmanaged(L"LeftShift"));
-			break;
-		case cpp_parser::CppOperators::LeftShiftAssign:
-			WriteString(vl::WString::Unmanaged(L"LeftShiftAssign"));
-			break;
-		case cpp_parser::CppOperators::Member:
-			WriteString(vl::WString::Unmanaged(L"Member"));
-			break;
-		case cpp_parser::CppOperators::MemberDeref:
-			WriteString(vl::WString::Unmanaged(L"MemberDeref"));
-			break;
-		case cpp_parser::CppOperators::Minus:
-			WriteString(vl::WString::Unmanaged(L"Minus"));
-			break;
-		case cpp_parser::CppOperators::MinusAssign:
-			WriteString(vl::WString::Unmanaged(L"MinusAssign"));
-			break;
-		case cpp_parser::CppOperators::Mod:
-			WriteString(vl::WString::Unmanaged(L"Mod"));
-			break;
-		case cpp_parser::CppOperators::ModAssign:
-			WriteString(vl::WString::Unmanaged(L"ModAssign"));
-			break;
-		case cpp_parser::CppOperators::Mul:
-			WriteString(vl::WString::Unmanaged(L"Mul"));
-			break;
-		case cpp_parser::CppOperators::MulAssign:
-			WriteString(vl::WString::Unmanaged(L"MulAssign"));
-			break;
-		case cpp_parser::CppOperators::NE:
-			WriteString(vl::WString::Unmanaged(L"NE"));
-			break;
-		case cpp_parser::CppOperators::New:
-			WriteString(vl::WString::Unmanaged(L"New"));
-			break;
-		case cpp_parser::CppOperators::NewArray:
-			WriteString(vl::WString::Unmanaged(L"NewArray"));
-			break;
-		case cpp_parser::CppOperators::Not:
-			WriteString(vl::WString::Unmanaged(L"Not"));
-			break;
-		case cpp_parser::CppOperators::Or:
-			WriteString(vl::WString::Unmanaged(L"Or"));
-			break;
-		case cpp_parser::CppOperators::OrAssign:
-			WriteString(vl::WString::Unmanaged(L"OrAssign"));
-			break;
-		case cpp_parser::CppOperators::Parantheses:
-			WriteString(vl::WString::Unmanaged(L"Parantheses"));
-			break;
-		case cpp_parser::CppOperators::Plus:
-			WriteString(vl::WString::Unmanaged(L"Plus"));
-			break;
-		case cpp_parser::CppOperators::PlusAssign:
-			WriteString(vl::WString::Unmanaged(L"PlusAssign"));
-			break;
-		case cpp_parser::CppOperators::Pointer:
-			WriteString(vl::WString::Unmanaged(L"Pointer"));
-			break;
-		case cpp_parser::CppOperators::PointerDeref:
-			WriteString(vl::WString::Unmanaged(L"PointerDeref"));
-			break;
-		case cpp_parser::CppOperators::Revert:
-			WriteString(vl::WString::Unmanaged(L"Revert"));
-			break;
-		case cpp_parser::CppOperators::RevertAssign:
-			WriteString(vl::WString::Unmanaged(L"RevertAssign"));
-			break;
-		case cpp_parser::CppOperators::RightShift:
-			WriteString(vl::WString::Unmanaged(L"RightShift"));
-			break;
-		case cpp_parser::CppOperators::RightShiftAssign:
-			WriteString(vl::WString::Unmanaged(L"RightShiftAssign"));
-			break;
-		case cpp_parser::CppOperators::RoundBracket:
-			WriteString(vl::WString::Unmanaged(L"RoundBracket"));
-			break;
-		case cpp_parser::CppOperators::Xor:
-			WriteString(vl::WString::Unmanaged(L"Xor"));
-			break;
-		case cpp_parser::CppOperators::XorAssign:
-			WriteString(vl::WString::Unmanaged(L"XorAssign"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"operand"));
-		Print(node->operand.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppPrefixUnaryExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"op"));
-		switch (node->op)
-		{
-		case cpp_parser::CppOperators::And:
-			WriteString(vl::WString::Unmanaged(L"And"));
-			break;
-		case cpp_parser::CppOperators::AndAssign:
-			WriteString(vl::WString::Unmanaged(L"AndAssign"));
-			break;
-		case cpp_parser::CppOperators::Assign:
-			WriteString(vl::WString::Unmanaged(L"Assign"));
-			break;
-		case cpp_parser::CppOperators::BitwiseAnd:
-			WriteString(vl::WString::Unmanaged(L"BitwiseAnd"));
-			break;
-		case cpp_parser::CppOperators::BitwiseOr:
-			WriteString(vl::WString::Unmanaged(L"BitwiseOr"));
-			break;
-		case cpp_parser::CppOperators::Bracket:
-			WriteString(vl::WString::Unmanaged(L"Bracket"));
-			break;
-		case cpp_parser::CppOperators::Comma:
-			WriteString(vl::WString::Unmanaged(L"Comma"));
-			break;
-		case cpp_parser::CppOperators::Compare:
-			WriteString(vl::WString::Unmanaged(L"Compare"));
-			break;
-		case cpp_parser::CppOperators::Decrease:
-			WriteString(vl::WString::Unmanaged(L"Decrease"));
-			break;
-		case cpp_parser::CppOperators::Delete:
-			WriteString(vl::WString::Unmanaged(L"Delete"));
-			break;
-		case cpp_parser::CppOperators::DeleteArray:
-			WriteString(vl::WString::Unmanaged(L"DeleteArray"));
-			break;
-		case cpp_parser::CppOperators::Div:
-			WriteString(vl::WString::Unmanaged(L"Div"));
-			break;
-		case cpp_parser::CppOperators::DivAssign:
-			WriteString(vl::WString::Unmanaged(L"DivAssign"));
-			break;
-		case cpp_parser::CppOperators::EQ:
-			WriteString(vl::WString::Unmanaged(L"EQ"));
-			break;
-		case cpp_parser::CppOperators::GE:
-			WriteString(vl::WString::Unmanaged(L"GE"));
-			break;
-		case cpp_parser::CppOperators::GT:
-			WriteString(vl::WString::Unmanaged(L"GT"));
-			break;
-		case cpp_parser::CppOperators::Increase:
-			WriteString(vl::WString::Unmanaged(L"Increase"));
-			break;
-		case cpp_parser::CppOperators::LE:
-			WriteString(vl::WString::Unmanaged(L"LE"));
-			break;
-		case cpp_parser::CppOperators::LT:
-			WriteString(vl::WString::Unmanaged(L"LT"));
-			break;
-		case cpp_parser::CppOperators::LeftShift:
-			WriteString(vl::WString::Unmanaged(L"LeftShift"));
-			break;
-		case cpp_parser::CppOperators::LeftShiftAssign:
-			WriteString(vl::WString::Unmanaged(L"LeftShiftAssign"));
-			break;
-		case cpp_parser::CppOperators::Member:
-			WriteString(vl::WString::Unmanaged(L"Member"));
-			break;
-		case cpp_parser::CppOperators::MemberDeref:
-			WriteString(vl::WString::Unmanaged(L"MemberDeref"));
-			break;
-		case cpp_parser::CppOperators::Minus:
-			WriteString(vl::WString::Unmanaged(L"Minus"));
-			break;
-		case cpp_parser::CppOperators::MinusAssign:
-			WriteString(vl::WString::Unmanaged(L"MinusAssign"));
-			break;
-		case cpp_parser::CppOperators::Mod:
-			WriteString(vl::WString::Unmanaged(L"Mod"));
-			break;
-		case cpp_parser::CppOperators::ModAssign:
-			WriteString(vl::WString::Unmanaged(L"ModAssign"));
-			break;
-		case cpp_parser::CppOperators::Mul:
-			WriteString(vl::WString::Unmanaged(L"Mul"));
-			break;
-		case cpp_parser::CppOperators::MulAssign:
-			WriteString(vl::WString::Unmanaged(L"MulAssign"));
-			break;
-		case cpp_parser::CppOperators::NE:
-			WriteString(vl::WString::Unmanaged(L"NE"));
-			break;
-		case cpp_parser::CppOperators::New:
-			WriteString(vl::WString::Unmanaged(L"New"));
-			break;
-		case cpp_parser::CppOperators::NewArray:
-			WriteString(vl::WString::Unmanaged(L"NewArray"));
-			break;
-		case cpp_parser::CppOperators::Not:
-			WriteString(vl::WString::Unmanaged(L"Not"));
-			break;
-		case cpp_parser::CppOperators::Or:
-			WriteString(vl::WString::Unmanaged(L"Or"));
-			break;
-		case cpp_parser::CppOperators::OrAssign:
-			WriteString(vl::WString::Unmanaged(L"OrAssign"));
-			break;
-		case cpp_parser::CppOperators::Parantheses:
-			WriteString(vl::WString::Unmanaged(L"Parantheses"));
-			break;
-		case cpp_parser::CppOperators::Plus:
-			WriteString(vl::WString::Unmanaged(L"Plus"));
-			break;
-		case cpp_parser::CppOperators::PlusAssign:
-			WriteString(vl::WString::Unmanaged(L"PlusAssign"));
-			break;
-		case cpp_parser::CppOperators::Pointer:
-			WriteString(vl::WString::Unmanaged(L"Pointer"));
-			break;
-		case cpp_parser::CppOperators::PointerDeref:
-			WriteString(vl::WString::Unmanaged(L"PointerDeref"));
-			break;
-		case cpp_parser::CppOperators::Revert:
-			WriteString(vl::WString::Unmanaged(L"Revert"));
-			break;
-		case cpp_parser::CppOperators::RevertAssign:
-			WriteString(vl::WString::Unmanaged(L"RevertAssign"));
-			break;
-		case cpp_parser::CppOperators::RightShift:
-			WriteString(vl::WString::Unmanaged(L"RightShift"));
-			break;
-		case cpp_parser::CppOperators::RightShiftAssign:
-			WriteString(vl::WString::Unmanaged(L"RightShiftAssign"));
-			break;
-		case cpp_parser::CppOperators::RoundBracket:
-			WriteString(vl::WString::Unmanaged(L"RoundBracket"));
-			break;
-		case cpp_parser::CppOperators::Xor:
-			WriteString(vl::WString::Unmanaged(L"Xor"));
-			break;
-		case cpp_parser::CppOperators::XorAssign:
-			WriteString(vl::WString::Unmanaged(L"XorAssign"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"operand"));
-		Print(node->operand.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppPrimitiveExprLiteral* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"kind"));
-		switch (node->kind)
-		{
-		case cpp_parser::CppPrimitiveExprLiteralKinds::False:
-			WriteString(vl::WString::Unmanaged(L"False"));
-			break;
-		case cpp_parser::CppPrimitiveExprLiteralKinds::Nullptr:
-			WriteString(vl::WString::Unmanaged(L"Nullptr"));
-			break;
-		case cpp_parser::CppPrimitiveExprLiteralKinds::This:
-			WriteString(vl::WString::Unmanaged(L"This"));
-			break;
-		case cpp_parser::CppPrimitiveExprLiteralKinds::True:
-			WriteString(vl::WString::Unmanaged(L"True"));
-			break;
-		case cpp_parser::CppPrimitiveExprLiteralKinds::__Nullptr:
-			WriteString(vl::WString::Unmanaged(L"__Nullptr"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppPrimitiveType* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"kind"));
-		switch (node->kind)
-		{
-		case cpp_parser::CppPrimitiveTypeKinds::Neutral:
-			WriteString(vl::WString::Unmanaged(L"Neutral"));
-			break;
-		case cpp_parser::CppPrimitiveTypeKinds::Signed:
-			WriteString(vl::WString::Unmanaged(L"Signed"));
-			break;
-		case cpp_parser::CppPrimitiveTypeKinds::Unsigned:
-			WriteString(vl::WString::Unmanaged(L"Unsigned"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"literal1"));
-		WriteToken(node->literal1);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"literal2"));
-		WriteToken(node->literal2);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppQualifiedName* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"arguments"));
-		Print(node->arguments.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"expr"));
-		Print(node->expr.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"id"));
-		Print(node->id.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"kind"));
-		switch (node->kind)
-		{
-		case cpp_parser::CppQualifiedNameKinds::Auto:
-			WriteString(vl::WString::Unmanaged(L"Auto"));
-			break;
-		case cpp_parser::CppQualifiedNameKinds::Context:
-			WriteString(vl::WString::Unmanaged(L"Context"));
-			break;
-		case cpp_parser::CppQualifiedNameKinds::Decltype:
-			WriteString(vl::WString::Unmanaged(L"Decltype"));
-			break;
-		case cpp_parser::CppQualifiedNameKinds::Member:
-			WriteString(vl::WString::Unmanaged(L"Member"));
-			break;
-		case cpp_parser::CppQualifiedNameKinds::Root:
-			WriteString(vl::WString::Unmanaged(L"Root"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"parent"));
-		Print(node->parent.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppReturnStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"expr"));
-		Print(node->expr.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppSizeofExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"argument"));
-		Print(node->argument.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"variadic"));
-		WriteToken(node->variadic);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppStatement* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppStatementToResolve* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"candidates"));
-		BeginArray();
-		for (auto&& listItem : node->candidates)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppStaticAssertDeclaration* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"expr"));
-		Print(node->expr.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"message"));
-		Print(node->message.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppStringLiteral* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"fragments"));
-		BeginArray();
-		for (auto&& listItem : node->fragments)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppStringLiteralFragment* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"kind"));
-		switch (node->kind)
-		{
-		case cpp_parser::CppStringLiteralKinds::Macro_LPREFIX:
-			WriteString(vl::WString::Unmanaged(L"Macro_LPREFIX"));
-			break;
-		case cpp_parser::CppStringLiteralKinds::String:
-			WriteString(vl::WString::Unmanaged(L"String"));
-			break;
-		default:
-			WriteNull();
-		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"literal"));
-		WriteToken(node->literal);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppSwitchStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"condition"));
-		Print(node->condition.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"stat"));
-		Print(node->stat.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppSysFuncExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"argument"));
-		Print(node->argument.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"keyword"));
-		WriteToken(node->keyword);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"variadic"));
-		WriteToken(node->variadic);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppTemplateDeclaration* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"decl"));
-		Print(node->decl.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"genericHeader"));
-		Print(node->genericHeader.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppThrowExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"argument"));
-		Print(node->argument.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppTryStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"catchParts"));
-		BeginArray();
-		for (auto&& listItem : node->catchParts)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"tryStat"));
-		Print(node->tryStat.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppTryStatCatchPart* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"decl"));
-		Print(node->decl.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"stat"));
-		Print(node->stat.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppTypeOnly* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppTypeOrExpr* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppTypeOrExprOrOthers* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppTypeOrExprOrOthersToResolve* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"candidates"));
-		BeginArray();
-		for (auto&& listItem : node->candidates)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppTypeOrExprToResolve* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"candidates"));
-		BeginArray();
-		for (auto&& listItem : node->candidates)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppTypedefDeclaration* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"decl"));
-		Print(node->decl.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppUsingNamespaceDeclaration* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"names"));
-		BeginArray();
-		for (auto&& listItem : node->names)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppUsingTypeDeclaration* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		Print(node->type.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppUsingValueDeclaration* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		Print(node->name.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"typenameKeyword"));
-		WriteToken(node->typenameKeyword);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppVarBraceInit* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"arguments"));
-		BeginArray();
-		for (auto&& listItem : node->arguments)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppVarInit* node)
-	{
-	}
-	void AstVisitor::PrintFields(CppVarParanthesisInit* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"arguments"));
-		BeginArray();
-		for (auto&& listItem : node->arguments)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppVarStatInit* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"initItems"));
-		BeginArray();
-		for (auto&& listItem : node->initItems)
-		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
-		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"stat"));
-		Print(node->stat.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppVarStatInitItem* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"init"));
-		Print(node->init.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppVarValueInit* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"expr"));
-		Print(node->expr.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppVariablesDeclaration* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"firstVarPart"));
-		Print(node->firstVarPart.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		Print(node->type.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppVariadicExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"operand"));
-		Print(node->operand.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"variadic"));
-		WriteToken(node->variadic);
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppVolatileType* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"type"));
-		Print(node->type.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(CppWhileStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"condition"));
-		Print(node->condition.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"stat"));
-		Print(node->stat.Obj());
-		EndField();
-	}
-	void AstVisitor::PrintFields(Cpp__LeaveStat* node)
-	{
+	namespace json_visitor
+	{
+		void AstVisitor::PrintFields(CppAdvancedType* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"argument"));
+			Print(node->argument.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"kind"));
+			switch (node->kind)
+			{
+			case cpp_parser::CppAdvancedTypeKinds::AlignAs:
+				WriteString(vl::WString::Unmanaged(L"AlignAs"));
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::Const:
+				WriteString(vl::WString::Unmanaged(L"Const"));
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::LRef:
+				WriteString(vl::WString::Unmanaged(L"LRef"));
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::Member:
+				WriteString(vl::WString::Unmanaged(L"Member"));
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::Pointer:
+				WriteString(vl::WString::Unmanaged(L"Pointer"));
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::Pointer32:
+				WriteString(vl::WString::Unmanaged(L"Pointer32"));
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::Pointer64:
+				WriteString(vl::WString::Unmanaged(L"Pointer64"));
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::RRef:
+				WriteString(vl::WString::Unmanaged(L"RRef"));
+				break;
+			case cpp_parser::CppAdvancedTypeKinds::Volatile:
+				WriteString(vl::WString::Unmanaged(L"Volatile"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppBinaryExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"left"));
+			Print(node->left.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"op"));
+			switch (node->op)
+			{
+			case cpp_parser::CppOperators::And:
+				WriteString(vl::WString::Unmanaged(L"And"));
+				break;
+			case cpp_parser::CppOperators::AndAssign:
+				WriteString(vl::WString::Unmanaged(L"AndAssign"));
+				break;
+			case cpp_parser::CppOperators::Assign:
+				WriteString(vl::WString::Unmanaged(L"Assign"));
+				break;
+			case cpp_parser::CppOperators::BitwiseAnd:
+				WriteString(vl::WString::Unmanaged(L"BitwiseAnd"));
+				break;
+			case cpp_parser::CppOperators::BitwiseOr:
+				WriteString(vl::WString::Unmanaged(L"BitwiseOr"));
+				break;
+			case cpp_parser::CppOperators::Bracket:
+				WriteString(vl::WString::Unmanaged(L"Bracket"));
+				break;
+			case cpp_parser::CppOperators::Comma:
+				WriteString(vl::WString::Unmanaged(L"Comma"));
+				break;
+			case cpp_parser::CppOperators::Compare:
+				WriteString(vl::WString::Unmanaged(L"Compare"));
+				break;
+			case cpp_parser::CppOperators::Decrease:
+				WriteString(vl::WString::Unmanaged(L"Decrease"));
+				break;
+			case cpp_parser::CppOperators::Delete:
+				WriteString(vl::WString::Unmanaged(L"Delete"));
+				break;
+			case cpp_parser::CppOperators::DeleteArray:
+				WriteString(vl::WString::Unmanaged(L"DeleteArray"));
+				break;
+			case cpp_parser::CppOperators::Div:
+				WriteString(vl::WString::Unmanaged(L"Div"));
+				break;
+			case cpp_parser::CppOperators::DivAssign:
+				WriteString(vl::WString::Unmanaged(L"DivAssign"));
+				break;
+			case cpp_parser::CppOperators::EQ:
+				WriteString(vl::WString::Unmanaged(L"EQ"));
+				break;
+			case cpp_parser::CppOperators::GE:
+				WriteString(vl::WString::Unmanaged(L"GE"));
+				break;
+			case cpp_parser::CppOperators::GT:
+				WriteString(vl::WString::Unmanaged(L"GT"));
+				break;
+			case cpp_parser::CppOperators::Increase:
+				WriteString(vl::WString::Unmanaged(L"Increase"));
+				break;
+			case cpp_parser::CppOperators::LE:
+				WriteString(vl::WString::Unmanaged(L"LE"));
+				break;
+			case cpp_parser::CppOperators::LT:
+				WriteString(vl::WString::Unmanaged(L"LT"));
+				break;
+			case cpp_parser::CppOperators::LeftShift:
+				WriteString(vl::WString::Unmanaged(L"LeftShift"));
+				break;
+			case cpp_parser::CppOperators::LeftShiftAssign:
+				WriteString(vl::WString::Unmanaged(L"LeftShiftAssign"));
+				break;
+			case cpp_parser::CppOperators::Member:
+				WriteString(vl::WString::Unmanaged(L"Member"));
+				break;
+			case cpp_parser::CppOperators::MemberDeref:
+				WriteString(vl::WString::Unmanaged(L"MemberDeref"));
+				break;
+			case cpp_parser::CppOperators::Minus:
+				WriteString(vl::WString::Unmanaged(L"Minus"));
+				break;
+			case cpp_parser::CppOperators::MinusAssign:
+				WriteString(vl::WString::Unmanaged(L"MinusAssign"));
+				break;
+			case cpp_parser::CppOperators::Mod:
+				WriteString(vl::WString::Unmanaged(L"Mod"));
+				break;
+			case cpp_parser::CppOperators::ModAssign:
+				WriteString(vl::WString::Unmanaged(L"ModAssign"));
+				break;
+			case cpp_parser::CppOperators::Mul:
+				WriteString(vl::WString::Unmanaged(L"Mul"));
+				break;
+			case cpp_parser::CppOperators::MulAssign:
+				WriteString(vl::WString::Unmanaged(L"MulAssign"));
+				break;
+			case cpp_parser::CppOperators::NE:
+				WriteString(vl::WString::Unmanaged(L"NE"));
+				break;
+			case cpp_parser::CppOperators::New:
+				WriteString(vl::WString::Unmanaged(L"New"));
+				break;
+			case cpp_parser::CppOperators::NewArray:
+				WriteString(vl::WString::Unmanaged(L"NewArray"));
+				break;
+			case cpp_parser::CppOperators::Not:
+				WriteString(vl::WString::Unmanaged(L"Not"));
+				break;
+			case cpp_parser::CppOperators::Or:
+				WriteString(vl::WString::Unmanaged(L"Or"));
+				break;
+			case cpp_parser::CppOperators::OrAssign:
+				WriteString(vl::WString::Unmanaged(L"OrAssign"));
+				break;
+			case cpp_parser::CppOperators::Parantheses:
+				WriteString(vl::WString::Unmanaged(L"Parantheses"));
+				break;
+			case cpp_parser::CppOperators::Plus:
+				WriteString(vl::WString::Unmanaged(L"Plus"));
+				break;
+			case cpp_parser::CppOperators::PlusAssign:
+				WriteString(vl::WString::Unmanaged(L"PlusAssign"));
+				break;
+			case cpp_parser::CppOperators::Pointer:
+				WriteString(vl::WString::Unmanaged(L"Pointer"));
+				break;
+			case cpp_parser::CppOperators::PointerDeref:
+				WriteString(vl::WString::Unmanaged(L"PointerDeref"));
+				break;
+			case cpp_parser::CppOperators::Revert:
+				WriteString(vl::WString::Unmanaged(L"Revert"));
+				break;
+			case cpp_parser::CppOperators::RevertAssign:
+				WriteString(vl::WString::Unmanaged(L"RevertAssign"));
+				break;
+			case cpp_parser::CppOperators::RightShift:
+				WriteString(vl::WString::Unmanaged(L"RightShift"));
+				break;
+			case cpp_parser::CppOperators::RightShiftAssign:
+				WriteString(vl::WString::Unmanaged(L"RightShiftAssign"));
+				break;
+			case cpp_parser::CppOperators::RoundBracket:
+				WriteString(vl::WString::Unmanaged(L"RoundBracket"));
+				break;
+			case cpp_parser::CppOperators::Xor:
+				WriteString(vl::WString::Unmanaged(L"Xor"));
+				break;
+			case cpp_parser::CppOperators::XorAssign:
+				WriteString(vl::WString::Unmanaged(L"XorAssign"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"right"));
+			Print(node->right.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppBlockStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"statements"));
+			BeginArray();
+			for (auto&& listItem : node->statements)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppBraceExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"arguments"));
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppBreakStat* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppCallExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"arguments"));
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"kind"));
+			switch (node->kind)
+			{
+			case cpp_parser::CppCallKinds::Brace:
+				WriteString(vl::WString::Unmanaged(L"Brace"));
+				break;
+			case cpp_parser::CppCallKinds::Parenthesis:
+				WriteString(vl::WString::Unmanaged(L"Parenthesis"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"operand"));
+			Print(node->operand.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppCaseStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"expr"));
+			Print(node->expr.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"stat"));
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppCastExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"expr"));
+			Print(node->expr.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"keyword"));
+			WriteToken(node->keyword);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"type"));
+			Print(node->type.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppClassBody* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"firstVarPart"));
+			Print(node->firstVarPart.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"inheritances"));
+			BeginArray();
+			for (auto&& listItem : node->inheritances)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"memberParts"));
+			BeginArray();
+			for (auto&& listItem : node->memberParts)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppClassDeclaration* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"arguments"));
+			Print(node->arguments.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"body"));
+			Print(node->body.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"kind"));
+			switch (node->kind)
+			{
+			case cpp_parser::CppClassKind::Class:
+				WriteString(vl::WString::Unmanaged(L"Class"));
+				break;
+			case cpp_parser::CppClassKind::Struct:
+				WriteString(vl::WString::Unmanaged(L"Struct"));
+				break;
+			case cpp_parser::CppClassKind::Union:
+				WriteString(vl::WString::Unmanaged(L"Union"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppClassInheritance* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"accessor"));
+			switch (node->accessor)
+			{
+			case cpp_parser::CppClassAccessor::Default:
+				WriteString(vl::WString::Unmanaged(L"Default"));
+				break;
+			case cpp_parser::CppClassAccessor::Private:
+				WriteString(vl::WString::Unmanaged(L"Private"));
+				break;
+			case cpp_parser::CppClassAccessor::Protected:
+				WriteString(vl::WString::Unmanaged(L"Protected"));
+				break;
+			case cpp_parser::CppClassAccessor::Public:
+				WriteString(vl::WString::Unmanaged(L"Public"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"type"));
+			Print(node->type.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"variadic"));
+			WriteToken(node->variadic);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppClassMemberPart* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"accessor"));
+			switch (node->accessor)
+			{
+			case cpp_parser::CppClassAccessor::Default:
+				WriteString(vl::WString::Unmanaged(L"Default"));
+				break;
+			case cpp_parser::CppClassAccessor::Private:
+				WriteString(vl::WString::Unmanaged(L"Private"));
+				break;
+			case cpp_parser::CppClassAccessor::Protected:
+				WriteString(vl::WString::Unmanaged(L"Protected"));
+				break;
+			case cpp_parser::CppClassAccessor::Public:
+				WriteString(vl::WString::Unmanaged(L"Public"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"decls"));
+			BeginArray();
+			for (auto&& listItem : node->decls)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppConstType* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"type"));
+			Print(node->type.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppContinueStat* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppDeclStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"decl"));
+			Print(node->decl.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclaration* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppDeclarationCommon* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"keywords"));
+			BeginArray();
+			for (auto&& listItem : node->keywords)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclarationToResolve* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"candidates"));
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclarator* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppDeclaratorArrayPart* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"argument"));
+			Print(node->argument.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclaratorCommon* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"advancedTypes"));
+			BeginArray();
+			for (auto&& listItem : node->advancedTypes)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"arguments"));
+			Print(node->arguments.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"arrayParts"));
+			BeginArray();
+			for (auto&& listItem : node->arrayParts)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"bitfield"));
+			Print(node->bitfield.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"funcPart"));
+			Print(node->funcPart.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"id"));
+			Print(node->id.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"innerDeclarator"));
+			Print(node->innerDeclarator.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"keywords"));
+			BeginArray();
+			for (auto&& listItem : node->keywords)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"variadic"));
+			WriteToken(node->variadic);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclaratorFunctionPart* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppDeclaratorFunctionPartCommon* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"deferredType"));
+			Print(node->deferredType.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"keywords"));
+			BeginArray();
+			for (auto&& listItem : node->keywords)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"parameters"));
+			BeginArray();
+			for (auto&& listItem : node->parameters)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"variadic"));
+			WriteToken(node->variadic);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclaratorFunctionPartToResolve* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"candidates"));
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclaratorKeyword* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"keyword"));
+			WriteToken(node->keyword);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclaratorToResolve* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"candidates"));
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclaratorType* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"declarator"));
+			Print(node->declarator.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"keywords"));
+			BeginArray();
+			for (auto&& listItem : node->keywords)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"type"));
+			Print(node->type.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclaratorVariablePart* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppDeclaratorVariablePartCommon* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"declarator"));
+			Print(node->declarator.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"init"));
+			Print(node->init.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"nextVarPart"));
+			Print(node->nextVarPart.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeclaratorVariablePartToResolve* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"candidates"));
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDefaultStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"stat"));
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDeleteExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"argument"));
+			Print(node->argument.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"array"));
+			switch (node->array)
+			{
+			case cpp_parser::CppOperatorArray::Array:
+				WriteString(vl::WString::Unmanaged(L"Array"));
+				break;
+			case cpp_parser::CppOperatorArray::NotArray:
+				WriteString(vl::WString::Unmanaged(L"NotArray"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"scope"));
+			switch (node->scope)
+			{
+			case cpp_parser::CppOperatorScope::Context:
+				WriteString(vl::WString::Unmanaged(L"Context"));
+				break;
+			case cpp_parser::CppOperatorScope::Root:
+				WriteString(vl::WString::Unmanaged(L"Root"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppDoWhileStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"condition"));
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"stat"));
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppEmptyStat* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppEnumBody* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"firstVarPart"));
+			Print(node->firstVarPart.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"items"));
+			BeginArray();
+			for (auto&& listItem : node->items)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppEnumDeclaration* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"body"));
+			Print(node->body.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"kind"));
+			switch (node->kind)
+			{
+			case cpp_parser::CppEnumKind::Enum:
+				WriteString(vl::WString::Unmanaged(L"Enum"));
+				break;
+			case cpp_parser::CppEnumKind::EnumClass:
+				WriteString(vl::WString::Unmanaged(L"EnumClass"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"type"));
+			Print(node->type.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppEnumItem* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"expr"));
+			Print(node->expr.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppExprOnly* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppExprStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"expr"));
+			Print(node->expr.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppExternDeclaration* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"decls"));
+			BeginArray();
+			for (auto&& listItem : node->decls)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppFile* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"decls"));
+			BeginArray();
+			for (auto&& listItem : node->decls)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppForStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"conditionPart"));
+			Print(node->conditionPart.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"stat"));
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppForStatConditionPart* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppForStatIterateCondition* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"collection"));
+			Print(node->collection.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"decl"));
+			Print(node->decl.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppForStatLoopCondition* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"condition"));
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"sideEffect"));
+			Print(node->sideEffect.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"varsDecl"));
+			Print(node->varsDecl.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppFriendTypeDeclaration* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"type"));
+			Print(node->type.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppFunctionKeyword* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"arguments"));
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"keyword"));
+			WriteToken(node->keyword);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppGenericArgument* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"argument"));
+			Print(node->argument.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"variadic"));
+			WriteToken(node->variadic);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppGenericArguments* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"arguments"));
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppGenericHeader* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"parameters"));
+			BeginArray();
+			for (auto&& listItem : node->parameters)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppGotoStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"label"));
+			WriteToken(node->label);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppIdentifier* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppIfElseStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"condition"));
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"falseStat"));
+			Print(node->falseStat.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"trueStat"));
+			Print(node->trueStat.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"varsDecl"));
+			Print(node->varsDecl.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppIfExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"condition"));
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"falseBranch"));
+			Print(node->falseBranch.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"trueBranch"));
+			Print(node->trueBranch.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppIndexExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"index"));
+			Print(node->index.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"operand"));
+			Print(node->operand.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppLabelStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"label"));
+			WriteToken(node->label);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"stat"));
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppLambdaCapture* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"id"));
+			Print(node->id.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"init"));
+			Print(node->init.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"objKind"));
+			switch (node->objKind)
+			{
+			case cpp_parser::CppLambdaCaptureObjectKinds::Default:
+				WriteString(vl::WString::Unmanaged(L"Default"));
+				break;
+			case cpp_parser::CppLambdaCaptureObjectKinds::Id:
+				WriteString(vl::WString::Unmanaged(L"Id"));
+				break;
+			case cpp_parser::CppLambdaCaptureObjectKinds::PackId:
+				WriteString(vl::WString::Unmanaged(L"PackId"));
+				break;
+			case cpp_parser::CppLambdaCaptureObjectKinds::PackInit:
+				WriteString(vl::WString::Unmanaged(L"PackInit"));
+				break;
+			case cpp_parser::CppLambdaCaptureObjectKinds::This:
+				WriteString(vl::WString::Unmanaged(L"This"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"refKind"));
+			switch (node->refKind)
+			{
+			case cpp_parser::CppLambdaCaptureRefeferenceKinds::Copy:
+				WriteString(vl::WString::Unmanaged(L"Copy"));
+				break;
+			case cpp_parser::CppLambdaCaptureRefeferenceKinds::Ref:
+				WriteString(vl::WString::Unmanaged(L"Ref"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppLambdaExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"captures"));
+			BeginArray();
+			for (auto&& listItem : node->captures)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"functionHeader"));
+			Print(node->functionHeader.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"genericHeader"));
+			Print(node->genericHeader.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"stat"));
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppNameIdentifier* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"kind"));
+			switch (node->kind)
+			{
+			case cpp_parser::CppNameKinds::Class:
+				WriteString(vl::WString::Unmanaged(L"Class"));
+				break;
+			case cpp_parser::CppNameKinds::Dtor:
+				WriteString(vl::WString::Unmanaged(L"Dtor"));
+				break;
+			case cpp_parser::CppNameKinds::Enum:
+				WriteString(vl::WString::Unmanaged(L"Enum"));
+				break;
+			case cpp_parser::CppNameKinds::EnumClass:
+				WriteString(vl::WString::Unmanaged(L"EnumClass"));
+				break;
+			case cpp_parser::CppNameKinds::Normal:
+				WriteString(vl::WString::Unmanaged(L"Normal"));
+				break;
+			case cpp_parser::CppNameKinds::Struct:
+				WriteString(vl::WString::Unmanaged(L"Struct"));
+				break;
+			case cpp_parser::CppNameKinds::Union:
+				WriteString(vl::WString::Unmanaged(L"Union"));
+				break;
+			case cpp_parser::CppNameKinds::UserDefinedLiteral:
+				WriteString(vl::WString::Unmanaged(L"UserDefinedLiteral"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppNamespaceDeclaration* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"decls"));
+			BeginArray();
+			for (auto&& listItem : node->decls)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"names"));
+			BeginArray();
+			for (auto&& listItem : node->names)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppNamespaceName* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppNewExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"arrayArguments"));
+			BeginArray();
+			for (auto&& listItem : node->arrayArguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"init"));
+			Print(node->init.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"placementArguments"));
+			BeginArray();
+			for (auto&& listItem : node->placementArguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"scope"));
+			switch (node->scope)
+			{
+			case cpp_parser::CppOperatorScope::Context:
+				WriteString(vl::WString::Unmanaged(L"Context"));
+				break;
+			case cpp_parser::CppOperatorScope::Root:
+				WriteString(vl::WString::Unmanaged(L"Root"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"type"));
+			BeginArray();
+			for (auto&& listItem : node->type)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppNumericExprLiteral* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"kind"));
+			switch (node->kind)
+			{
+			case cpp_parser::CppNumericExprLiteralKinds::Binary:
+				WriteString(vl::WString::Unmanaged(L"Binary"));
+				break;
+			case cpp_parser::CppNumericExprLiteralKinds::Char:
+				WriteString(vl::WString::Unmanaged(L"Char"));
+				break;
+			case cpp_parser::CppNumericExprLiteralKinds::Float:
+				WriteString(vl::WString::Unmanaged(L"Float"));
+				break;
+			case cpp_parser::CppNumericExprLiteralKinds::FloatHex:
+				WriteString(vl::WString::Unmanaged(L"FloatHex"));
+				break;
+			case cpp_parser::CppNumericExprLiteralKinds::Hex:
+				WriteString(vl::WString::Unmanaged(L"Hex"));
+				break;
+			case cpp_parser::CppNumericExprLiteralKinds::Integer:
+				WriteString(vl::WString::Unmanaged(L"Integer"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"literal"));
+			WriteToken(node->literal);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppOperatorIdentifier* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"op"));
+			switch (node->op)
+			{
+			case cpp_parser::CppOperators::And:
+				WriteString(vl::WString::Unmanaged(L"And"));
+				break;
+			case cpp_parser::CppOperators::AndAssign:
+				WriteString(vl::WString::Unmanaged(L"AndAssign"));
+				break;
+			case cpp_parser::CppOperators::Assign:
+				WriteString(vl::WString::Unmanaged(L"Assign"));
+				break;
+			case cpp_parser::CppOperators::BitwiseAnd:
+				WriteString(vl::WString::Unmanaged(L"BitwiseAnd"));
+				break;
+			case cpp_parser::CppOperators::BitwiseOr:
+				WriteString(vl::WString::Unmanaged(L"BitwiseOr"));
+				break;
+			case cpp_parser::CppOperators::Bracket:
+				WriteString(vl::WString::Unmanaged(L"Bracket"));
+				break;
+			case cpp_parser::CppOperators::Comma:
+				WriteString(vl::WString::Unmanaged(L"Comma"));
+				break;
+			case cpp_parser::CppOperators::Compare:
+				WriteString(vl::WString::Unmanaged(L"Compare"));
+				break;
+			case cpp_parser::CppOperators::Decrease:
+				WriteString(vl::WString::Unmanaged(L"Decrease"));
+				break;
+			case cpp_parser::CppOperators::Delete:
+				WriteString(vl::WString::Unmanaged(L"Delete"));
+				break;
+			case cpp_parser::CppOperators::DeleteArray:
+				WriteString(vl::WString::Unmanaged(L"DeleteArray"));
+				break;
+			case cpp_parser::CppOperators::Div:
+				WriteString(vl::WString::Unmanaged(L"Div"));
+				break;
+			case cpp_parser::CppOperators::DivAssign:
+				WriteString(vl::WString::Unmanaged(L"DivAssign"));
+				break;
+			case cpp_parser::CppOperators::EQ:
+				WriteString(vl::WString::Unmanaged(L"EQ"));
+				break;
+			case cpp_parser::CppOperators::GE:
+				WriteString(vl::WString::Unmanaged(L"GE"));
+				break;
+			case cpp_parser::CppOperators::GT:
+				WriteString(vl::WString::Unmanaged(L"GT"));
+				break;
+			case cpp_parser::CppOperators::Increase:
+				WriteString(vl::WString::Unmanaged(L"Increase"));
+				break;
+			case cpp_parser::CppOperators::LE:
+				WriteString(vl::WString::Unmanaged(L"LE"));
+				break;
+			case cpp_parser::CppOperators::LT:
+				WriteString(vl::WString::Unmanaged(L"LT"));
+				break;
+			case cpp_parser::CppOperators::LeftShift:
+				WriteString(vl::WString::Unmanaged(L"LeftShift"));
+				break;
+			case cpp_parser::CppOperators::LeftShiftAssign:
+				WriteString(vl::WString::Unmanaged(L"LeftShiftAssign"));
+				break;
+			case cpp_parser::CppOperators::Member:
+				WriteString(vl::WString::Unmanaged(L"Member"));
+				break;
+			case cpp_parser::CppOperators::MemberDeref:
+				WriteString(vl::WString::Unmanaged(L"MemberDeref"));
+				break;
+			case cpp_parser::CppOperators::Minus:
+				WriteString(vl::WString::Unmanaged(L"Minus"));
+				break;
+			case cpp_parser::CppOperators::MinusAssign:
+				WriteString(vl::WString::Unmanaged(L"MinusAssign"));
+				break;
+			case cpp_parser::CppOperators::Mod:
+				WriteString(vl::WString::Unmanaged(L"Mod"));
+				break;
+			case cpp_parser::CppOperators::ModAssign:
+				WriteString(vl::WString::Unmanaged(L"ModAssign"));
+				break;
+			case cpp_parser::CppOperators::Mul:
+				WriteString(vl::WString::Unmanaged(L"Mul"));
+				break;
+			case cpp_parser::CppOperators::MulAssign:
+				WriteString(vl::WString::Unmanaged(L"MulAssign"));
+				break;
+			case cpp_parser::CppOperators::NE:
+				WriteString(vl::WString::Unmanaged(L"NE"));
+				break;
+			case cpp_parser::CppOperators::New:
+				WriteString(vl::WString::Unmanaged(L"New"));
+				break;
+			case cpp_parser::CppOperators::NewArray:
+				WriteString(vl::WString::Unmanaged(L"NewArray"));
+				break;
+			case cpp_parser::CppOperators::Not:
+				WriteString(vl::WString::Unmanaged(L"Not"));
+				break;
+			case cpp_parser::CppOperators::Or:
+				WriteString(vl::WString::Unmanaged(L"Or"));
+				break;
+			case cpp_parser::CppOperators::OrAssign:
+				WriteString(vl::WString::Unmanaged(L"OrAssign"));
+				break;
+			case cpp_parser::CppOperators::Parantheses:
+				WriteString(vl::WString::Unmanaged(L"Parantheses"));
+				break;
+			case cpp_parser::CppOperators::Plus:
+				WriteString(vl::WString::Unmanaged(L"Plus"));
+				break;
+			case cpp_parser::CppOperators::PlusAssign:
+				WriteString(vl::WString::Unmanaged(L"PlusAssign"));
+				break;
+			case cpp_parser::CppOperators::Pointer:
+				WriteString(vl::WString::Unmanaged(L"Pointer"));
+				break;
+			case cpp_parser::CppOperators::PointerDeref:
+				WriteString(vl::WString::Unmanaged(L"PointerDeref"));
+				break;
+			case cpp_parser::CppOperators::Revert:
+				WriteString(vl::WString::Unmanaged(L"Revert"));
+				break;
+			case cpp_parser::CppOperators::RevertAssign:
+				WriteString(vl::WString::Unmanaged(L"RevertAssign"));
+				break;
+			case cpp_parser::CppOperators::RightShift:
+				WriteString(vl::WString::Unmanaged(L"RightShift"));
+				break;
+			case cpp_parser::CppOperators::RightShiftAssign:
+				WriteString(vl::WString::Unmanaged(L"RightShiftAssign"));
+				break;
+			case cpp_parser::CppOperators::RoundBracket:
+				WriteString(vl::WString::Unmanaged(L"RoundBracket"));
+				break;
+			case cpp_parser::CppOperators::Xor:
+				WriteString(vl::WString::Unmanaged(L"Xor"));
+				break;
+			case cpp_parser::CppOperators::XorAssign:
+				WriteString(vl::WString::Unmanaged(L"XorAssign"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppOperatorTypeIdentifier* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"type"));
+			Print(node->type.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppOrdinaryGenericParameter* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"genericHeader"));
+			Print(node->genericHeader.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"id"));
+			Print(node->id.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"init"));
+			Print(node->init.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"typenameToken"));
+			WriteToken(node->typenameToken);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"variadic"));
+			WriteToken(node->variadic);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppParenthesisExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"expr"));
+			Print(node->expr.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppPostfixUnaryExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"op"));
+			switch (node->op)
+			{
+			case cpp_parser::CppOperators::And:
+				WriteString(vl::WString::Unmanaged(L"And"));
+				break;
+			case cpp_parser::CppOperators::AndAssign:
+				WriteString(vl::WString::Unmanaged(L"AndAssign"));
+				break;
+			case cpp_parser::CppOperators::Assign:
+				WriteString(vl::WString::Unmanaged(L"Assign"));
+				break;
+			case cpp_parser::CppOperators::BitwiseAnd:
+				WriteString(vl::WString::Unmanaged(L"BitwiseAnd"));
+				break;
+			case cpp_parser::CppOperators::BitwiseOr:
+				WriteString(vl::WString::Unmanaged(L"BitwiseOr"));
+				break;
+			case cpp_parser::CppOperators::Bracket:
+				WriteString(vl::WString::Unmanaged(L"Bracket"));
+				break;
+			case cpp_parser::CppOperators::Comma:
+				WriteString(vl::WString::Unmanaged(L"Comma"));
+				break;
+			case cpp_parser::CppOperators::Compare:
+				WriteString(vl::WString::Unmanaged(L"Compare"));
+				break;
+			case cpp_parser::CppOperators::Decrease:
+				WriteString(vl::WString::Unmanaged(L"Decrease"));
+				break;
+			case cpp_parser::CppOperators::Delete:
+				WriteString(vl::WString::Unmanaged(L"Delete"));
+				break;
+			case cpp_parser::CppOperators::DeleteArray:
+				WriteString(vl::WString::Unmanaged(L"DeleteArray"));
+				break;
+			case cpp_parser::CppOperators::Div:
+				WriteString(vl::WString::Unmanaged(L"Div"));
+				break;
+			case cpp_parser::CppOperators::DivAssign:
+				WriteString(vl::WString::Unmanaged(L"DivAssign"));
+				break;
+			case cpp_parser::CppOperators::EQ:
+				WriteString(vl::WString::Unmanaged(L"EQ"));
+				break;
+			case cpp_parser::CppOperators::GE:
+				WriteString(vl::WString::Unmanaged(L"GE"));
+				break;
+			case cpp_parser::CppOperators::GT:
+				WriteString(vl::WString::Unmanaged(L"GT"));
+				break;
+			case cpp_parser::CppOperators::Increase:
+				WriteString(vl::WString::Unmanaged(L"Increase"));
+				break;
+			case cpp_parser::CppOperators::LE:
+				WriteString(vl::WString::Unmanaged(L"LE"));
+				break;
+			case cpp_parser::CppOperators::LT:
+				WriteString(vl::WString::Unmanaged(L"LT"));
+				break;
+			case cpp_parser::CppOperators::LeftShift:
+				WriteString(vl::WString::Unmanaged(L"LeftShift"));
+				break;
+			case cpp_parser::CppOperators::LeftShiftAssign:
+				WriteString(vl::WString::Unmanaged(L"LeftShiftAssign"));
+				break;
+			case cpp_parser::CppOperators::Member:
+				WriteString(vl::WString::Unmanaged(L"Member"));
+				break;
+			case cpp_parser::CppOperators::MemberDeref:
+				WriteString(vl::WString::Unmanaged(L"MemberDeref"));
+				break;
+			case cpp_parser::CppOperators::Minus:
+				WriteString(vl::WString::Unmanaged(L"Minus"));
+				break;
+			case cpp_parser::CppOperators::MinusAssign:
+				WriteString(vl::WString::Unmanaged(L"MinusAssign"));
+				break;
+			case cpp_parser::CppOperators::Mod:
+				WriteString(vl::WString::Unmanaged(L"Mod"));
+				break;
+			case cpp_parser::CppOperators::ModAssign:
+				WriteString(vl::WString::Unmanaged(L"ModAssign"));
+				break;
+			case cpp_parser::CppOperators::Mul:
+				WriteString(vl::WString::Unmanaged(L"Mul"));
+				break;
+			case cpp_parser::CppOperators::MulAssign:
+				WriteString(vl::WString::Unmanaged(L"MulAssign"));
+				break;
+			case cpp_parser::CppOperators::NE:
+				WriteString(vl::WString::Unmanaged(L"NE"));
+				break;
+			case cpp_parser::CppOperators::New:
+				WriteString(vl::WString::Unmanaged(L"New"));
+				break;
+			case cpp_parser::CppOperators::NewArray:
+				WriteString(vl::WString::Unmanaged(L"NewArray"));
+				break;
+			case cpp_parser::CppOperators::Not:
+				WriteString(vl::WString::Unmanaged(L"Not"));
+				break;
+			case cpp_parser::CppOperators::Or:
+				WriteString(vl::WString::Unmanaged(L"Or"));
+				break;
+			case cpp_parser::CppOperators::OrAssign:
+				WriteString(vl::WString::Unmanaged(L"OrAssign"));
+				break;
+			case cpp_parser::CppOperators::Parantheses:
+				WriteString(vl::WString::Unmanaged(L"Parantheses"));
+				break;
+			case cpp_parser::CppOperators::Plus:
+				WriteString(vl::WString::Unmanaged(L"Plus"));
+				break;
+			case cpp_parser::CppOperators::PlusAssign:
+				WriteString(vl::WString::Unmanaged(L"PlusAssign"));
+				break;
+			case cpp_parser::CppOperators::Pointer:
+				WriteString(vl::WString::Unmanaged(L"Pointer"));
+				break;
+			case cpp_parser::CppOperators::PointerDeref:
+				WriteString(vl::WString::Unmanaged(L"PointerDeref"));
+				break;
+			case cpp_parser::CppOperators::Revert:
+				WriteString(vl::WString::Unmanaged(L"Revert"));
+				break;
+			case cpp_parser::CppOperators::RevertAssign:
+				WriteString(vl::WString::Unmanaged(L"RevertAssign"));
+				break;
+			case cpp_parser::CppOperators::RightShift:
+				WriteString(vl::WString::Unmanaged(L"RightShift"));
+				break;
+			case cpp_parser::CppOperators::RightShiftAssign:
+				WriteString(vl::WString::Unmanaged(L"RightShiftAssign"));
+				break;
+			case cpp_parser::CppOperators::RoundBracket:
+				WriteString(vl::WString::Unmanaged(L"RoundBracket"));
+				break;
+			case cpp_parser::CppOperators::Xor:
+				WriteString(vl::WString::Unmanaged(L"Xor"));
+				break;
+			case cpp_parser::CppOperators::XorAssign:
+				WriteString(vl::WString::Unmanaged(L"XorAssign"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"operand"));
+			Print(node->operand.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppPrefixUnaryExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"op"));
+			switch (node->op)
+			{
+			case cpp_parser::CppOperators::And:
+				WriteString(vl::WString::Unmanaged(L"And"));
+				break;
+			case cpp_parser::CppOperators::AndAssign:
+				WriteString(vl::WString::Unmanaged(L"AndAssign"));
+				break;
+			case cpp_parser::CppOperators::Assign:
+				WriteString(vl::WString::Unmanaged(L"Assign"));
+				break;
+			case cpp_parser::CppOperators::BitwiseAnd:
+				WriteString(vl::WString::Unmanaged(L"BitwiseAnd"));
+				break;
+			case cpp_parser::CppOperators::BitwiseOr:
+				WriteString(vl::WString::Unmanaged(L"BitwiseOr"));
+				break;
+			case cpp_parser::CppOperators::Bracket:
+				WriteString(vl::WString::Unmanaged(L"Bracket"));
+				break;
+			case cpp_parser::CppOperators::Comma:
+				WriteString(vl::WString::Unmanaged(L"Comma"));
+				break;
+			case cpp_parser::CppOperators::Compare:
+				WriteString(vl::WString::Unmanaged(L"Compare"));
+				break;
+			case cpp_parser::CppOperators::Decrease:
+				WriteString(vl::WString::Unmanaged(L"Decrease"));
+				break;
+			case cpp_parser::CppOperators::Delete:
+				WriteString(vl::WString::Unmanaged(L"Delete"));
+				break;
+			case cpp_parser::CppOperators::DeleteArray:
+				WriteString(vl::WString::Unmanaged(L"DeleteArray"));
+				break;
+			case cpp_parser::CppOperators::Div:
+				WriteString(vl::WString::Unmanaged(L"Div"));
+				break;
+			case cpp_parser::CppOperators::DivAssign:
+				WriteString(vl::WString::Unmanaged(L"DivAssign"));
+				break;
+			case cpp_parser::CppOperators::EQ:
+				WriteString(vl::WString::Unmanaged(L"EQ"));
+				break;
+			case cpp_parser::CppOperators::GE:
+				WriteString(vl::WString::Unmanaged(L"GE"));
+				break;
+			case cpp_parser::CppOperators::GT:
+				WriteString(vl::WString::Unmanaged(L"GT"));
+				break;
+			case cpp_parser::CppOperators::Increase:
+				WriteString(vl::WString::Unmanaged(L"Increase"));
+				break;
+			case cpp_parser::CppOperators::LE:
+				WriteString(vl::WString::Unmanaged(L"LE"));
+				break;
+			case cpp_parser::CppOperators::LT:
+				WriteString(vl::WString::Unmanaged(L"LT"));
+				break;
+			case cpp_parser::CppOperators::LeftShift:
+				WriteString(vl::WString::Unmanaged(L"LeftShift"));
+				break;
+			case cpp_parser::CppOperators::LeftShiftAssign:
+				WriteString(vl::WString::Unmanaged(L"LeftShiftAssign"));
+				break;
+			case cpp_parser::CppOperators::Member:
+				WriteString(vl::WString::Unmanaged(L"Member"));
+				break;
+			case cpp_parser::CppOperators::MemberDeref:
+				WriteString(vl::WString::Unmanaged(L"MemberDeref"));
+				break;
+			case cpp_parser::CppOperators::Minus:
+				WriteString(vl::WString::Unmanaged(L"Minus"));
+				break;
+			case cpp_parser::CppOperators::MinusAssign:
+				WriteString(vl::WString::Unmanaged(L"MinusAssign"));
+				break;
+			case cpp_parser::CppOperators::Mod:
+				WriteString(vl::WString::Unmanaged(L"Mod"));
+				break;
+			case cpp_parser::CppOperators::ModAssign:
+				WriteString(vl::WString::Unmanaged(L"ModAssign"));
+				break;
+			case cpp_parser::CppOperators::Mul:
+				WriteString(vl::WString::Unmanaged(L"Mul"));
+				break;
+			case cpp_parser::CppOperators::MulAssign:
+				WriteString(vl::WString::Unmanaged(L"MulAssign"));
+				break;
+			case cpp_parser::CppOperators::NE:
+				WriteString(vl::WString::Unmanaged(L"NE"));
+				break;
+			case cpp_parser::CppOperators::New:
+				WriteString(vl::WString::Unmanaged(L"New"));
+				break;
+			case cpp_parser::CppOperators::NewArray:
+				WriteString(vl::WString::Unmanaged(L"NewArray"));
+				break;
+			case cpp_parser::CppOperators::Not:
+				WriteString(vl::WString::Unmanaged(L"Not"));
+				break;
+			case cpp_parser::CppOperators::Or:
+				WriteString(vl::WString::Unmanaged(L"Or"));
+				break;
+			case cpp_parser::CppOperators::OrAssign:
+				WriteString(vl::WString::Unmanaged(L"OrAssign"));
+				break;
+			case cpp_parser::CppOperators::Parantheses:
+				WriteString(vl::WString::Unmanaged(L"Parantheses"));
+				break;
+			case cpp_parser::CppOperators::Plus:
+				WriteString(vl::WString::Unmanaged(L"Plus"));
+				break;
+			case cpp_parser::CppOperators::PlusAssign:
+				WriteString(vl::WString::Unmanaged(L"PlusAssign"));
+				break;
+			case cpp_parser::CppOperators::Pointer:
+				WriteString(vl::WString::Unmanaged(L"Pointer"));
+				break;
+			case cpp_parser::CppOperators::PointerDeref:
+				WriteString(vl::WString::Unmanaged(L"PointerDeref"));
+				break;
+			case cpp_parser::CppOperators::Revert:
+				WriteString(vl::WString::Unmanaged(L"Revert"));
+				break;
+			case cpp_parser::CppOperators::RevertAssign:
+				WriteString(vl::WString::Unmanaged(L"RevertAssign"));
+				break;
+			case cpp_parser::CppOperators::RightShift:
+				WriteString(vl::WString::Unmanaged(L"RightShift"));
+				break;
+			case cpp_parser::CppOperators::RightShiftAssign:
+				WriteString(vl::WString::Unmanaged(L"RightShiftAssign"));
+				break;
+			case cpp_parser::CppOperators::RoundBracket:
+				WriteString(vl::WString::Unmanaged(L"RoundBracket"));
+				break;
+			case cpp_parser::CppOperators::Xor:
+				WriteString(vl::WString::Unmanaged(L"Xor"));
+				break;
+			case cpp_parser::CppOperators::XorAssign:
+				WriteString(vl::WString::Unmanaged(L"XorAssign"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"operand"));
+			Print(node->operand.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppPrimitiveExprLiteral* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"kind"));
+			switch (node->kind)
+			{
+			case cpp_parser::CppPrimitiveExprLiteralKinds::False:
+				WriteString(vl::WString::Unmanaged(L"False"));
+				break;
+			case cpp_parser::CppPrimitiveExprLiteralKinds::Nullptr:
+				WriteString(vl::WString::Unmanaged(L"Nullptr"));
+				break;
+			case cpp_parser::CppPrimitiveExprLiteralKinds::This:
+				WriteString(vl::WString::Unmanaged(L"This"));
+				break;
+			case cpp_parser::CppPrimitiveExprLiteralKinds::True:
+				WriteString(vl::WString::Unmanaged(L"True"));
+				break;
+			case cpp_parser::CppPrimitiveExprLiteralKinds::__Nullptr:
+				WriteString(vl::WString::Unmanaged(L"__Nullptr"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppPrimitiveType* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"kind"));
+			switch (node->kind)
+			{
+			case cpp_parser::CppPrimitiveTypeKinds::Neutral:
+				WriteString(vl::WString::Unmanaged(L"Neutral"));
+				break;
+			case cpp_parser::CppPrimitiveTypeKinds::Signed:
+				WriteString(vl::WString::Unmanaged(L"Signed"));
+				break;
+			case cpp_parser::CppPrimitiveTypeKinds::Unsigned:
+				WriteString(vl::WString::Unmanaged(L"Unsigned"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"literal1"));
+			WriteToken(node->literal1);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"literal2"));
+			WriteToken(node->literal2);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppQualifiedName* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"arguments"));
+			Print(node->arguments.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"expr"));
+			Print(node->expr.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"id"));
+			Print(node->id.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"kind"));
+			switch (node->kind)
+			{
+			case cpp_parser::CppQualifiedNameKinds::Auto:
+				WriteString(vl::WString::Unmanaged(L"Auto"));
+				break;
+			case cpp_parser::CppQualifiedNameKinds::Context:
+				WriteString(vl::WString::Unmanaged(L"Context"));
+				break;
+			case cpp_parser::CppQualifiedNameKinds::Decltype:
+				WriteString(vl::WString::Unmanaged(L"Decltype"));
+				break;
+			case cpp_parser::CppQualifiedNameKinds::Member:
+				WriteString(vl::WString::Unmanaged(L"Member"));
+				break;
+			case cpp_parser::CppQualifiedNameKinds::Root:
+				WriteString(vl::WString::Unmanaged(L"Root"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"parent"));
+			Print(node->parent.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppReturnStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"expr"));
+			Print(node->expr.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppSizeofExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"argument"));
+			Print(node->argument.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"variadic"));
+			WriteToken(node->variadic);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppStatement* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppStatementToResolve* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"candidates"));
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppStaticAssertDeclaration* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"expr"));
+			Print(node->expr.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"message"));
+			Print(node->message.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppStringLiteral* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"fragments"));
+			BeginArray();
+			for (auto&& listItem : node->fragments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppStringLiteralFragment* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"kind"));
+			switch (node->kind)
+			{
+			case cpp_parser::CppStringLiteralKinds::Macro_LPREFIX:
+				WriteString(vl::WString::Unmanaged(L"Macro_LPREFIX"));
+				break;
+			case cpp_parser::CppStringLiteralKinds::String:
+				WriteString(vl::WString::Unmanaged(L"String"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"literal"));
+			WriteToken(node->literal);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppSwitchStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"condition"));
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"stat"));
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppSysFuncExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"argument"));
+			Print(node->argument.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"keyword"));
+			WriteToken(node->keyword);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"variadic"));
+			WriteToken(node->variadic);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppTemplateDeclaration* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"decl"));
+			Print(node->decl.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"genericHeader"));
+			Print(node->genericHeader.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppThrowExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"argument"));
+			Print(node->argument.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppTryStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"catchParts"));
+			BeginArray();
+			for (auto&& listItem : node->catchParts)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"tryStat"));
+			Print(node->tryStat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppTryStatCatchPart* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"decl"));
+			Print(node->decl.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"stat"));
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppTypeOnly* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppTypeOrExpr* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppTypeOrExprOrOthers* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppTypeOrExprOrOthersToResolve* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"candidates"));
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppTypeOrExprToResolve* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"candidates"));
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppTypedefDeclaration* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"decl"));
+			Print(node->decl.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppUsingNamespaceDeclaration* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"names"));
+			BeginArray();
+			for (auto&& listItem : node->names)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppUsingTypeDeclaration* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"type"));
+			Print(node->type.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppUsingValueDeclaration* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"name"));
+			Print(node->name.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"typenameKeyword"));
+			WriteToken(node->typenameKeyword);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppVarBraceInit* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"arguments"));
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppVarInit* node)
+		{
+		}
+		void AstVisitor::PrintFields(CppVarParanthesisInit* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"arguments"));
+			BeginArray();
+			for (auto&& listItem : node->arguments)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppVarStatInit* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"initItems"));
+			BeginArray();
+			for (auto&& listItem : node->initItems)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"stat"));
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppVarStatInitItem* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"init"));
+			Print(node->init.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppVarValueInit* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"expr"));
+			Print(node->expr.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppVariablesDeclaration* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"firstVarPart"));
+			Print(node->firstVarPart.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"type"));
+			Print(node->type.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppVariadicExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"operand"));
+			Print(node->operand.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"variadic"));
+			WriteToken(node->variadic);
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppVolatileType* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"type"));
+			Print(node->type.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(CppWhileStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"condition"));
+			Print(node->condition.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"stat"));
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void AstVisitor::PrintFields(Cpp__LeaveStat* node)
+		{
+		}
+		void AstVisitor::PrintFields(Cpp__TryStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"exceptStat"));
+			Print(node->exceptStat.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"filter"));
+			Print(node->filter.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"finallyStat"));
+			Print(node->finallyStat.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"tryStat"));
+			Print(node->tryStat.Obj());
+			EndField();
+		}
+
+		void AstVisitor::Visit(CppTypeOrExprOrOthersToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"TypeOrExprOrOthersToResolve"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExprOrOthersToResolve*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeclaration* node)
+		{
+			node->Accept(static_cast<CppDeclaration::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppTypeOrExpr* node)
+		{
+			node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppOrdinaryGenericParameter* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"OrdinaryGenericParameter"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppOrdinaryGenericParameter*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppGenericArgument* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"GenericArgument"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppGenericArgument*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeclarationToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DeclarationToResolve"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationToResolve*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeclarationCommon* node)
+		{
+			node->Accept(static_cast<CppDeclarationCommon::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppVariablesDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"VariablesDeclaration"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationCommon*>(node));
+			PrintFields(static_cast<CppVariablesDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppClassDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ClassDeclaration"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationCommon*>(node));
+			PrintFields(static_cast<CppClassDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppEnumDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"EnumDeclaration"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationCommon*>(node));
+			PrintFields(static_cast<CppEnumDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppTemplateDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"TemplateDeclaration"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationCommon*>(node));
+			PrintFields(static_cast<CppTemplateDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppStaticAssertDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"StaticAssertDeclaration"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationCommon*>(node));
+			PrintFields(static_cast<CppStaticAssertDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppTypedefDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"TypedefDeclaration"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationCommon*>(node));
+			PrintFields(static_cast<CppTypedefDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppExternDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ExternDeclaration"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationCommon*>(node));
+			PrintFields(static_cast<CppExternDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppNamespaceDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"NamespaceDeclaration"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationCommon*>(node));
+			PrintFields(static_cast<CppNamespaceDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppUsingNamespaceDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"UsingNamespaceDeclaration"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationCommon*>(node));
+			PrintFields(static_cast<CppUsingNamespaceDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppUsingValueDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"UsingValueDeclaration"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationCommon*>(node));
+			PrintFields(static_cast<CppUsingValueDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppUsingTypeDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"UsingTypeDeclaration"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationCommon*>(node));
+			PrintFields(static_cast<CppUsingTypeDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppFriendTypeDeclaration* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"FriendTypeDeclaration"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppDeclaration*>(node));
+			PrintFields(static_cast<CppDeclarationCommon*>(node));
+			PrintFields(static_cast<CppFriendTypeDeclaration*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppTypeOrExprToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"TypeOrExprToResolve"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppTypeOrExprToResolve*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppExprOnly* node)
+		{
+			node->Accept(static_cast<CppExprOnly::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppTypeOnly* node)
+		{
+			node->Accept(static_cast<CppTypeOnly::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppQualifiedName* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"QualifiedName"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppQualifiedName*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeclaratorType* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DeclaratorType"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppDeclaratorType*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppPrimitiveExprLiteral* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"PrimitiveExprLiteral"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppPrimitiveExprLiteral*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppNumericExprLiteral* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"NumericExprLiteral"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppNumericExprLiteral*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppStringLiteral* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"StringLiteral"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppStringLiteral*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppLambdaExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"LambdaExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppLambdaExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppParenthesisExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ParenthesisExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppParenthesisExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppBraceExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"BraceExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppBraceExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppCastExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"CastExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppCastExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppSysFuncExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"SysFuncExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppSysFuncExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppSizeofExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"SizeofExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppSizeofExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeleteExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DeleteExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppDeleteExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppNewExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"NewExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppNewExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppPrefixUnaryExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"PrefixUnaryExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppPrefixUnaryExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppPostfixUnaryExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"PostfixUnaryExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppPostfixUnaryExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppIndexExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"IndexExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppIndexExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppCallExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"CallExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppCallExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppBinaryExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"BinaryExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppBinaryExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppIfExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"IfExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppIfExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppThrowExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ThrowExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppThrowExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVariadicExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"VariadicExpr"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppExprOnly*>(node));
+			PrintFields(static_cast<CppVariadicExpr*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppPrimitiveType* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"PrimitiveType"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppTypeOnly*>(node));
+			PrintFields(static_cast<CppPrimitiveType*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppConstType* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ConstType"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppTypeOnly*>(node));
+			PrintFields(static_cast<CppConstType*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVolatileType* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"VolatileType"), node);
+			PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			PrintFields(static_cast<CppTypeOrExpr*>(node));
+			PrintFields(static_cast<CppTypeOnly*>(node));
+			PrintFields(static_cast<CppVolatileType*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppStatementToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"StatementToResolve"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppStatementToResolve*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppEmptyStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"EmptyStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppEmptyStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppBlockStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"BlockStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppBlockStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppExprStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ExprStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppExprStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeclStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DeclStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppDeclStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppBreakStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"BreakStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppBreakStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppContinueStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ContinueStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppContinueStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppReturnStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ReturnStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppReturnStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppLabelStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"LabelStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppLabelStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppGotoStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"GotoStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppGotoStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppCaseStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"CaseStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppCaseStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDefaultStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DefaultStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppDefaultStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(Cpp__LeaveStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"__LeaveStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<Cpp__LeaveStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppWhileStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"WhileStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppWhileStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDoWhileStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DoWhileStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppDoWhileStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppIfElseStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"IfElseStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppIfElseStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppForStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ForStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppForStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppSwitchStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"SwitchStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppSwitchStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppTryStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"TryStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<CppTryStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(Cpp__TryStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"__TryStat"), node);
+			PrintFields(static_cast<CppStatement*>(node));
+			PrintFields(static_cast<Cpp__TryStat*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppNameIdentifier* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"NameIdentifier"), node);
+			PrintFields(static_cast<CppIdentifier*>(node));
+			PrintFields(static_cast<CppNameIdentifier*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppOperatorIdentifier* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"OperatorIdentifier"), node);
+			PrintFields(static_cast<CppIdentifier*>(node));
+			PrintFields(static_cast<CppOperatorIdentifier*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppOperatorTypeIdentifier* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"OperatorTypeIdentifier"), node);
+			PrintFields(static_cast<CppIdentifier*>(node));
+			PrintFields(static_cast<CppOperatorTypeIdentifier*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeclaratorFunctionPartToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DeclaratorFunctionPartToResolve"), node);
+			PrintFields(static_cast<CppDeclaratorFunctionPart*>(node));
+			PrintFields(static_cast<CppDeclaratorFunctionPartToResolve*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeclaratorFunctionPartCommon* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DeclaratorFunctionPartCommon"), node);
+			PrintFields(static_cast<CppDeclaratorFunctionPart*>(node));
+			PrintFields(static_cast<CppDeclaratorFunctionPartCommon*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeclaratorToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DeclaratorToResolve"), node);
+			PrintFields(static_cast<CppDeclarator*>(node));
+			PrintFields(static_cast<CppDeclaratorToResolve*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeclaratorCommon* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DeclaratorCommon"), node);
+			PrintFields(static_cast<CppDeclarator*>(node));
+			PrintFields(static_cast<CppDeclaratorCommon*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVarValueInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"VarValueInit"), node);
+			PrintFields(static_cast<CppVarInit*>(node));
+			PrintFields(static_cast<CppVarValueInit*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVarParanthesisInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"VarParanthesisInit"), node);
+			PrintFields(static_cast<CppVarInit*>(node));
+			PrintFields(static_cast<CppVarParanthesisInit*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVarBraceInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"VarBraceInit"), node);
+			PrintFields(static_cast<CppVarInit*>(node));
+			PrintFields(static_cast<CppVarBraceInit*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppVarStatInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"VarStatInit"), node);
+			PrintFields(static_cast<CppVarInit*>(node));
+			PrintFields(static_cast<CppVarStatInit*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeclaratorVariablePartToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DeclaratorVariablePartToResolve"), node);
+			PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
+			PrintFields(static_cast<CppDeclaratorVariablePartToResolve*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppDeclaratorVariablePartCommon* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DeclaratorVariablePartCommon"), node);
+			PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
+			PrintFields(static_cast<CppDeclaratorVariablePartCommon*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppForStatLoopCondition* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ForStatLoopCondition"), node);
+			PrintFields(static_cast<CppForStatConditionPart*>(node));
+			PrintFields(static_cast<CppForStatLoopCondition*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Visit(CppForStatIterateCondition* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ForStatIterateCondition"), node);
+			PrintFields(static_cast<CppForStatConditionPart*>(node));
+			PrintFields(static_cast<CppForStatIterateCondition*>(node));
+			EndObject();
+		}
+
+		AstVisitor::AstVisitor(vl::stream::StreamWriter& _writer)
+			: vl::glr::JsonVisitorBase(_writer)
+		{
+		}
+
+		void AstVisitor::Print(CppTypeOrExprOrOthers* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppStatement* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppStatement::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppIdentifier* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppIdentifier::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppDeclaratorFunctionPart* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppDeclaratorFunctionPart::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppDeclarator* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppDeclarator::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppVarInit* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppVarInit::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppDeclaratorVariablePart* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppDeclaratorVariablePart::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppForStatConditionPart* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<CppForStatConditionPart::IVisitor*>(this));
+		}
+
+		void AstVisitor::Print(CppGenericHeader* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"GenericHeader"), node);
+			PrintFields(static_cast<CppGenericHeader*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppFile* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"File"), node);
+			PrintFields(static_cast<CppFile*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppGenericArguments* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"GenericArguments"), node);
+			PrintFields(static_cast<CppGenericArguments*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppStringLiteralFragment* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"StringLiteralFragment"), node);
+			PrintFields(static_cast<CppStringLiteralFragment*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppLambdaCapture* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"LambdaCapture"), node);
+			PrintFields(static_cast<CppLambdaCapture*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppAdvancedType* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"AdvancedType"), node);
+			PrintFields(static_cast<CppAdvancedType*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppDeclaratorKeyword* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DeclaratorKeyword"), node);
+			PrintFields(static_cast<CppDeclaratorKeyword*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppFunctionKeyword* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"FunctionKeyword"), node);
+			PrintFields(static_cast<CppFunctionKeyword*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppDeclaratorArrayPart* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DeclaratorArrayPart"), node);
+			PrintFields(static_cast<CppDeclaratorArrayPart*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppVarStatInitItem* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"VarStatInitItem"), node);
+			PrintFields(static_cast<CppVarStatInitItem*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppClassInheritance* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ClassInheritance"), node);
+			PrintFields(static_cast<CppClassInheritance*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppClassMemberPart* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ClassMemberPart"), node);
+			PrintFields(static_cast<CppClassMemberPart*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppClassBody* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ClassBody"), node);
+			PrintFields(static_cast<CppClassBody*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppEnumItem* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"EnumItem"), node);
+			PrintFields(static_cast<CppEnumItem*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppEnumBody* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"EnumBody"), node);
+			PrintFields(static_cast<CppEnumBody*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppNamespaceName* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"NamespaceName"), node);
+			PrintFields(static_cast<CppNamespaceName*>(node));
+			EndObject();
+		}
+
+		void AstVisitor::Print(CppTryStatCatchPart* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"TryStatCatchPart"), node);
+			PrintFields(static_cast<CppTryStatCatchPart*>(node));
+			EndObject();
+		}
+
 	}
-	void AstVisitor::PrintFields(Cpp__TryStat* node)
+
+	namespace json_reader
 	{
-		BeginField(vl::WString::Unmanaged(L"exceptStat"));
-		Print(node->exceptStat.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"filter"));
-		Print(node->filter.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"finallyStat"));
-		Print(node->finallyStat.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"tryStat"));
-		Print(node->tryStat.Obj());
-		EndField();
-	}
+		AstVisitor::JsonObjectScope::JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json)
+			: jsonObjects(_jsonObjects)
+		{
+			jsonObjects.Add(json);
+		}
+
+		AstVisitor::JsonObjectScope::~JsonObjectScope()
+		{
+			jsonObjects.RemoveAt(jsonObjects.Count() - 1);
+		}
+
+		vl::glr::json::JsonObject* AstVisitor::CurrentObject()
+		{
+			return jsonObjects[jsonObjects.Count() - 1];
+		}
+
+		vl::glr::json::JsonNode* AstVisitor::FindField(const vl::WString& name)
+		{
+			for (auto field : CurrentObject()->fields)
+			{
+				if (field && field->name.value == name) return field->value.Obj();
+			}
+			return nullptr;
+		}
+
+		bool AstVisitor::IsNull(vl::glr::json::JsonNode* value)
+		{
+			auto literal = dynamic_cast<vl::glr::json::JsonLiteral*>(value);
+			return literal && literal->value == vl::glr::json::JsonLiteralValue::Null;
+		}
+
+		vl::WString AstVisitor::ReadType(vl::glr::json::JsonObject* json)
+		{
+			if (!json) throw vl::Exception(L"AST JSON object cannot be null.");
+			bool typeFound = false;
+			vl::WString typeName;
+			for (auto field : json->fields)
+			{
+				if (field && field->name.value == L"$ast")
+				{
+					if (typeFound) throw vl::Exception(L"AST JSON object contains duplicate \"$ast\" fields.");
+					typeFound = true;
+					auto jsonString = field->value.Cast<vl::glr::json::JsonString>();
+					if (!jsonString) throw vl::Exception(L"AST JSON field \"$ast\" must be a string.");
+					typeName = jsonString->content.value;
+				}
+			}
+			if (!typeFound) throw vl::Exception(L"AST JSON object is missing field \"$ast\".");
+			return typeName;
+		}
+
+		void AstVisitor::ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName)
+		{
+			vl::collections::List<vl::WString> fieldNames;
+			for (auto field : json->fields)
+			{
+				if (!field || !field->value) throw vl::Exception(L"AST JSON object contains an invalid field.");
+				auto name = field->name.value;
+				if (fieldNames.Contains(name)) throw vl::Exception(L"AST JSON object contains duplicate field \"" + name + L"\".");
+				fieldNames.Add(name);
+				bool fieldFound = name == L"$ast";
+				if (typeName == L"TypeOrExprOrOthersToResolve")
+				{
+					fieldFound = fieldFound || name == L"candidates";
+				}
+				else if (typeName == L"DeclarationToResolve")
+				{
+					fieldFound = fieldFound || name == L"candidates";
+				}
+				else if (typeName == L"TypeOrExprToResolve")
+				{
+					fieldFound = fieldFound || name == L"candidates";
+				}
+				else if (typeName == L"StatementToResolve")
+				{
+					fieldFound = fieldFound || name == L"candidates";
+				}
+				else if (typeName == L"OrdinaryGenericParameter")
+				{
+					fieldFound = fieldFound || name == L"genericHeader";
+					fieldFound = fieldFound || name == L"typenameToken";
+					fieldFound = fieldFound || name == L"variadic";
+					fieldFound = fieldFound || name == L"id";
+					fieldFound = fieldFound || name == L"init";
+				}
+				else if (typeName == L"GenericHeader")
+				{
+					fieldFound = fieldFound || name == L"parameters";
+				}
+				else if (typeName == L"File")
+				{
+					fieldFound = fieldFound || name == L"decls";
+				}
+				else if (typeName == L"NameIdentifier")
+				{
+					fieldFound = fieldFound || name == L"kind";
+					fieldFound = fieldFound || name == L"name";
+				}
+				else if (typeName == L"OperatorIdentifier")
+				{
+					fieldFound = fieldFound || name == L"op";
+				}
+				else if (typeName == L"OperatorTypeIdentifier")
+				{
+					fieldFound = fieldFound || name == L"type";
+				}
+				else if (typeName == L"GenericArgument")
+				{
+					fieldFound = fieldFound || name == L"argument";
+					fieldFound = fieldFound || name == L"variadic";
+				}
+				else if (typeName == L"GenericArguments")
+				{
+					fieldFound = fieldFound || name == L"arguments";
+				}
+				else if (typeName == L"QualifiedName")
+				{
+					fieldFound = fieldFound || name == L"kind";
+					fieldFound = fieldFound || name == L"expr";
+					fieldFound = fieldFound || name == L"parent";
+					fieldFound = fieldFound || name == L"id";
+					fieldFound = fieldFound || name == L"arguments";
+				}
+				else if (typeName == L"PrimitiveExprLiteral")
+				{
+					fieldFound = fieldFound || name == L"kind";
+				}
+				else if (typeName == L"NumericExprLiteral")
+				{
+					fieldFound = fieldFound || name == L"kind";
+					fieldFound = fieldFound || name == L"literal";
+				}
+				else if (typeName == L"StringLiteralFragment")
+				{
+					fieldFound = fieldFound || name == L"kind";
+					fieldFound = fieldFound || name == L"literal";
+				}
+				else if (typeName == L"StringLiteral")
+				{
+					fieldFound = fieldFound || name == L"fragments";
+				}
+				else if (typeName == L"LambdaCapture")
+				{
+					fieldFound = fieldFound || name == L"objKind";
+					fieldFound = fieldFound || name == L"refKind";
+					fieldFound = fieldFound || name == L"id";
+					fieldFound = fieldFound || name == L"init";
+				}
+				else if (typeName == L"LambdaExpr")
+				{
+					fieldFound = fieldFound || name == L"captures";
+					fieldFound = fieldFound || name == L"genericHeader";
+					fieldFound = fieldFound || name == L"functionHeader";
+					fieldFound = fieldFound || name == L"stat";
+				}
+				else if (typeName == L"ParenthesisExpr")
+				{
+					fieldFound = fieldFound || name == L"expr";
+				}
+				else if (typeName == L"BraceExpr")
+				{
+					fieldFound = fieldFound || name == L"arguments";
+				}
+				else if (typeName == L"CastExpr")
+				{
+					fieldFound = fieldFound || name == L"keyword";
+					fieldFound = fieldFound || name == L"type";
+					fieldFound = fieldFound || name == L"expr";
+				}
+				else if (typeName == L"SysFuncExpr")
+				{
+					fieldFound = fieldFound || name == L"keyword";
+					fieldFound = fieldFound || name == L"variadic";
+					fieldFound = fieldFound || name == L"argument";
+				}
+				else if (typeName == L"SizeofExpr")
+				{
+					fieldFound = fieldFound || name == L"argument";
+					fieldFound = fieldFound || name == L"variadic";
+				}
+				else if (typeName == L"DeleteExpr")
+				{
+					fieldFound = fieldFound || name == L"scope";
+					fieldFound = fieldFound || name == L"array";
+					fieldFound = fieldFound || name == L"argument";
+				}
+				else if (typeName == L"NewExpr")
+				{
+					fieldFound = fieldFound || name == L"scope";
+					fieldFound = fieldFound || name == L"type";
+					fieldFound = fieldFound || name == L"placementArguments";
+					fieldFound = fieldFound || name == L"arrayArguments";
+					fieldFound = fieldFound || name == L"init";
+				}
+				else if (typeName == L"PrefixUnaryExpr")
+				{
+					fieldFound = fieldFound || name == L"op";
+					fieldFound = fieldFound || name == L"operand";
+				}
+				else if (typeName == L"PostfixUnaryExpr")
+				{
+					fieldFound = fieldFound || name == L"op";
+					fieldFound = fieldFound || name == L"operand";
+				}
+				else if (typeName == L"IndexExpr")
+				{
+					fieldFound = fieldFound || name == L"operand";
+					fieldFound = fieldFound || name == L"index";
+				}
+				else if (typeName == L"CallExpr")
+				{
+					fieldFound = fieldFound || name == L"kind";
+					fieldFound = fieldFound || name == L"operand";
+					fieldFound = fieldFound || name == L"arguments";
+				}
+				else if (typeName == L"BinaryExpr")
+				{
+					fieldFound = fieldFound || name == L"op";
+					fieldFound = fieldFound || name == L"left";
+					fieldFound = fieldFound || name == L"right";
+				}
+				else if (typeName == L"IfExpr")
+				{
+					fieldFound = fieldFound || name == L"condition";
+					fieldFound = fieldFound || name == L"trueBranch";
+					fieldFound = fieldFound || name == L"falseBranch";
+				}
+				else if (typeName == L"ThrowExpr")
+				{
+					fieldFound = fieldFound || name == L"argument";
+				}
+				else if (typeName == L"VariadicExpr")
+				{
+					fieldFound = fieldFound || name == L"operand";
+					fieldFound = fieldFound || name == L"variadic";
+				}
+				else if (typeName == L"PrimitiveType")
+				{
+					fieldFound = fieldFound || name == L"kind";
+					fieldFound = fieldFound || name == L"literal1";
+					fieldFound = fieldFound || name == L"literal2";
+				}
+				else if (typeName == L"ConstType")
+				{
+					fieldFound = fieldFound || name == L"type";
+				}
+				else if (typeName == L"VolatileType")
+				{
+					fieldFound = fieldFound || name == L"type";
+				}
+				else if (typeName == L"AdvancedType")
+				{
+					fieldFound = fieldFound || name == L"kind";
+					fieldFound = fieldFound || name == L"argument";
+				}
+				else if (typeName == L"DeclaratorKeyword")
+				{
+					fieldFound = fieldFound || name == L"keyword";
+				}
+				else if (typeName == L"FunctionKeyword")
+				{
+					fieldFound = fieldFound || name == L"keyword";
+					fieldFound = fieldFound || name == L"arguments";
+				}
+				else if (typeName == L"DeclaratorFunctionPartToResolve")
+				{
+					fieldFound = fieldFound || name == L"candidates";
+				}
+				else if (typeName == L"DeclaratorFunctionPartCommon")
+				{
+					fieldFound = fieldFound || name == L"parameters";
+					fieldFound = fieldFound || name == L"variadic";
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"deferredType";
+				}
+				else if (typeName == L"DeclaratorArrayPart")
+				{
+					fieldFound = fieldFound || name == L"argument";
+				}
+				else if (typeName == L"DeclaratorToResolve")
+				{
+					fieldFound = fieldFound || name == L"candidates";
+				}
+				else if (typeName == L"DeclaratorCommon")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"advancedTypes";
+					fieldFound = fieldFound || name == L"variadic";
+					fieldFound = fieldFound || name == L"id";
+					fieldFound = fieldFound || name == L"arguments";
+					fieldFound = fieldFound || name == L"bitfield";
+					fieldFound = fieldFound || name == L"innerDeclarator";
+					fieldFound = fieldFound || name == L"funcPart";
+					fieldFound = fieldFound || name == L"arrayParts";
+				}
+				else if (typeName == L"DeclaratorType")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"type";
+					fieldFound = fieldFound || name == L"declarator";
+				}
+				else if (typeName == L"VarValueInit")
+				{
+					fieldFound = fieldFound || name == L"expr";
+				}
+				else if (typeName == L"VarParanthesisInit")
+				{
+					fieldFound = fieldFound || name == L"arguments";
+				}
+				else if (typeName == L"VarBraceInit")
+				{
+					fieldFound = fieldFound || name == L"arguments";
+				}
+				else if (typeName == L"VarStatInitItem")
+				{
+					fieldFound = fieldFound || name == L"name";
+					fieldFound = fieldFound || name == L"init";
+				}
+				else if (typeName == L"VarStatInit")
+				{
+					fieldFound = fieldFound || name == L"initItems";
+					fieldFound = fieldFound || name == L"stat";
+				}
+				else if (typeName == L"DeclaratorVariablePartToResolve")
+				{
+					fieldFound = fieldFound || name == L"candidates";
+				}
+				else if (typeName == L"DeclaratorVariablePartCommon")
+				{
+					fieldFound = fieldFound || name == L"declarator";
+					fieldFound = fieldFound || name == L"init";
+					fieldFound = fieldFound || name == L"nextVarPart";
+				}
+				else if (typeName == L"VariablesDeclaration")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"type";
+					fieldFound = fieldFound || name == L"firstVarPart";
+				}
+				else if (typeName == L"ClassInheritance")
+				{
+					fieldFound = fieldFound || name == L"accessor";
+					fieldFound = fieldFound || name == L"variadic";
+					fieldFound = fieldFound || name == L"type";
+				}
+				else if (typeName == L"ClassMemberPart")
+				{
+					fieldFound = fieldFound || name == L"accessor";
+					fieldFound = fieldFound || name == L"decls";
+				}
+				else if (typeName == L"ClassBody")
+				{
+					fieldFound = fieldFound || name == L"inheritances";
+					fieldFound = fieldFound || name == L"memberParts";
+					fieldFound = fieldFound || name == L"firstVarPart";
+				}
+				else if (typeName == L"ClassDeclaration")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"kind";
+					fieldFound = fieldFound || name == L"name";
+					fieldFound = fieldFound || name == L"arguments";
+					fieldFound = fieldFound || name == L"body";
+				}
+				else if (typeName == L"EnumItem")
+				{
+					fieldFound = fieldFound || name == L"name";
+					fieldFound = fieldFound || name == L"expr";
+				}
+				else if (typeName == L"EnumBody")
+				{
+					fieldFound = fieldFound || name == L"items";
+					fieldFound = fieldFound || name == L"firstVarPart";
+				}
+				else if (typeName == L"EnumDeclaration")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"kind";
+					fieldFound = fieldFound || name == L"name";
+					fieldFound = fieldFound || name == L"type";
+					fieldFound = fieldFound || name == L"body";
+				}
+				else if (typeName == L"TemplateDeclaration")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"genericHeader";
+					fieldFound = fieldFound || name == L"decl";
+				}
+				else if (typeName == L"StaticAssertDeclaration")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"expr";
+					fieldFound = fieldFound || name == L"message";
+				}
+				else if (typeName == L"TypedefDeclaration")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"decl";
+				}
+				else if (typeName == L"ExternDeclaration")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"decls";
+				}
+				else if (typeName == L"NamespaceName")
+				{
+					fieldFound = fieldFound || name == L"name";
+				}
+				else if (typeName == L"NamespaceDeclaration")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"names";
+					fieldFound = fieldFound || name == L"decls";
+				}
+				else if (typeName == L"UsingNamespaceDeclaration")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"names";
+				}
+				else if (typeName == L"UsingValueDeclaration")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"typenameKeyword";
+					fieldFound = fieldFound || name == L"name";
+				}
+				else if (typeName == L"UsingTypeDeclaration")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"name";
+					fieldFound = fieldFound || name == L"type";
+				}
+				else if (typeName == L"FriendTypeDeclaration")
+				{
+					fieldFound = fieldFound || name == L"keywords";
+					fieldFound = fieldFound || name == L"type";
+				}
+				else if (typeName == L"EmptyStat")
+				{
+				}
+				else if (typeName == L"BlockStat")
+				{
+					fieldFound = fieldFound || name == L"statements";
+				}
+				else if (typeName == L"ExprStat")
+				{
+					fieldFound = fieldFound || name == L"expr";
+				}
+				else if (typeName == L"DeclStat")
+				{
+					fieldFound = fieldFound || name == L"decl";
+				}
+				else if (typeName == L"BreakStat")
+				{
+				}
+				else if (typeName == L"ContinueStat")
+				{
+				}
+				else if (typeName == L"ReturnStat")
+				{
+					fieldFound = fieldFound || name == L"expr";
+				}
+				else if (typeName == L"LabelStat")
+				{
+					fieldFound = fieldFound || name == L"label";
+					fieldFound = fieldFound || name == L"stat";
+				}
+				else if (typeName == L"GotoStat")
+				{
+					fieldFound = fieldFound || name == L"label";
+				}
+				else if (typeName == L"CaseStat")
+				{
+					fieldFound = fieldFound || name == L"expr";
+					fieldFound = fieldFound || name == L"stat";
+				}
+				else if (typeName == L"DefaultStat")
+				{
+					fieldFound = fieldFound || name == L"stat";
+				}
+				else if (typeName == L"__LeaveStat")
+				{
+				}
+				else if (typeName == L"WhileStat")
+				{
+					fieldFound = fieldFound || name == L"condition";
+					fieldFound = fieldFound || name == L"stat";
+				}
+				else if (typeName == L"DoWhileStat")
+				{
+					fieldFound = fieldFound || name == L"condition";
+					fieldFound = fieldFound || name == L"stat";
+				}
+				else if (typeName == L"IfElseStat")
+				{
+					fieldFound = fieldFound || name == L"varsDecl";
+					fieldFound = fieldFound || name == L"condition";
+					fieldFound = fieldFound || name == L"trueStat";
+					fieldFound = fieldFound || name == L"falseStat";
+				}
+				else if (typeName == L"ForStatLoopCondition")
+				{
+					fieldFound = fieldFound || name == L"varsDecl";
+					fieldFound = fieldFound || name == L"condition";
+					fieldFound = fieldFound || name == L"sideEffect";
+				}
+				else if (typeName == L"ForStatIterateCondition")
+				{
+					fieldFound = fieldFound || name == L"decl";
+					fieldFound = fieldFound || name == L"collection";
+				}
+				else if (typeName == L"ForStat")
+				{
+					fieldFound = fieldFound || name == L"conditionPart";
+					fieldFound = fieldFound || name == L"stat";
+				}
+				else if (typeName == L"SwitchStat")
+				{
+					fieldFound = fieldFound || name == L"condition";
+					fieldFound = fieldFound || name == L"stat";
+				}
+				else if (typeName == L"TryStatCatchPart")
+				{
+					fieldFound = fieldFound || name == L"decl";
+					fieldFound = fieldFound || name == L"stat";
+				}
+				else if (typeName == L"TryStat")
+				{
+					fieldFound = fieldFound || name == L"tryStat";
+					fieldFound = fieldFound || name == L"catchParts";
+				}
+				else if (typeName == L"__TryStat")
+				{
+					fieldFound = fieldFound || name == L"tryStat";
+					fieldFound = fieldFound || name == L"exceptStat";
+					fieldFound = fieldFound || name == L"finallyStat";
+					fieldFound = fieldFound || name == L"filter";
+				}
+				if (!fieldFound) throw vl::Exception(L"AST JSON object contains unknown field \"" + name + L"\" for type \"" + typeName + L"\".");
+			}
+		}
+
+		void AstVisitor::FillFields(CppAdvancedType* node)
+		{
+			node->kind = CppAdvancedTypeKinds::LRef;
+			if (auto value = FindField(vl::WString::Unmanaged(L"kind")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"kind\" must be a string.");
+				if (jsonString->content.value == L"LRef") node->kind = CppAdvancedTypeKinds::LRef;
+				else if (jsonString->content.value == L"RRef") node->kind = CppAdvancedTypeKinds::RRef;
+				else if (jsonString->content.value == L"Const") node->kind = CppAdvancedTypeKinds::Const;
+				else if (jsonString->content.value == L"Volatile") node->kind = CppAdvancedTypeKinds::Volatile;
+				else if (jsonString->content.value == L"Pointer") node->kind = CppAdvancedTypeKinds::Pointer;
+				else if (jsonString->content.value == L"Pointer32") node->kind = CppAdvancedTypeKinds::Pointer32;
+				else if (jsonString->content.value == L"Pointer64") node->kind = CppAdvancedTypeKinds::Pointer64;
+				else if (jsonString->content.value == L"Member") node->kind = CppAdvancedTypeKinds::Member;
+				else if (jsonString->content.value == L"AlignAs") node->kind = CppAdvancedTypeKinds::AlignAs;
+				else throw vl::Exception(L"AST JSON field \"kind\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"argument")))
+			{
+				if (IsNull(value))
+				{
+					node->argument = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"argument\" contains an incompatible AST type.");
+					node->argument = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"argument\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppBinaryExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			node->op = CppOperators::New;
+			if (auto value = FindField(vl::WString::Unmanaged(L"op")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"op\" must be a string.");
+				if (jsonString->content.value == L"New") node->op = CppOperators::New;
+				else if (jsonString->content.value == L"NewArray") node->op = CppOperators::NewArray;
+				else if (jsonString->content.value == L"Delete") node->op = CppOperators::Delete;
+				else if (jsonString->content.value == L"DeleteArray") node->op = CppOperators::DeleteArray;
+				else if (jsonString->content.value == L"Comma") node->op = CppOperators::Comma;
+				else if (jsonString->content.value == L"RoundBracket") node->op = CppOperators::RoundBracket;
+				else if (jsonString->content.value == L"Parantheses") node->op = CppOperators::Parantheses;
+				else if (jsonString->content.value == L"Bracket") node->op = CppOperators::Bracket;
+				else if (jsonString->content.value == L"PointerDeref") node->op = CppOperators::PointerDeref;
+				else if (jsonString->content.value == L"Pointer") node->op = CppOperators::Pointer;
+				else if (jsonString->content.value == L"MemberDeref") node->op = CppOperators::MemberDeref;
+				else if (jsonString->content.value == L"Member") node->op = CppOperators::Member;
+				else if (jsonString->content.value == L"Compare") node->op = CppOperators::Compare;
+				else if (jsonString->content.value == L"EQ") node->op = CppOperators::EQ;
+				else if (jsonString->content.value == L"NE") node->op = CppOperators::NE;
+				else if (jsonString->content.value == L"LT") node->op = CppOperators::LT;
+				else if (jsonString->content.value == L"LE") node->op = CppOperators::LE;
+				else if (jsonString->content.value == L"GT") node->op = CppOperators::GT;
+				else if (jsonString->content.value == L"GE") node->op = CppOperators::GE;
+				else if (jsonString->content.value == L"Not") node->op = CppOperators::Not;
+				else if (jsonString->content.value == L"Revert") node->op = CppOperators::Revert;
+				else if (jsonString->content.value == L"Xor") node->op = CppOperators::Xor;
+				else if (jsonString->content.value == L"And") node->op = CppOperators::And;
+				else if (jsonString->content.value == L"BitwiseAnd") node->op = CppOperators::BitwiseAnd;
+				else if (jsonString->content.value == L"Or") node->op = CppOperators::Or;
+				else if (jsonString->content.value == L"BitwiseOr") node->op = CppOperators::BitwiseOr;
+				else if (jsonString->content.value == L"Mul") node->op = CppOperators::Mul;
+				else if (jsonString->content.value == L"Div") node->op = CppOperators::Div;
+				else if (jsonString->content.value == L"Mod") node->op = CppOperators::Mod;
+				else if (jsonString->content.value == L"Plus") node->op = CppOperators::Plus;
+				else if (jsonString->content.value == L"Increase") node->op = CppOperators::Increase;
+				else if (jsonString->content.value == L"Minus") node->op = CppOperators::Minus;
+				else if (jsonString->content.value == L"Decrease") node->op = CppOperators::Decrease;
+				else if (jsonString->content.value == L"LeftShift") node->op = CppOperators::LeftShift;
+				else if (jsonString->content.value == L"RightShift") node->op = CppOperators::RightShift;
+				else if (jsonString->content.value == L"Assign") node->op = CppOperators::Assign;
+				else if (jsonString->content.value == L"RevertAssign") node->op = CppOperators::RevertAssign;
+				else if (jsonString->content.value == L"XorAssign") node->op = CppOperators::XorAssign;
+				else if (jsonString->content.value == L"AndAssign") node->op = CppOperators::AndAssign;
+				else if (jsonString->content.value == L"OrAssign") node->op = CppOperators::OrAssign;
+				else if (jsonString->content.value == L"MulAssign") node->op = CppOperators::MulAssign;
+				else if (jsonString->content.value == L"DivAssign") node->op = CppOperators::DivAssign;
+				else if (jsonString->content.value == L"ModAssign") node->op = CppOperators::ModAssign;
+				else if (jsonString->content.value == L"PlusAssign") node->op = CppOperators::PlusAssign;
+				else if (jsonString->content.value == L"MinusAssign") node->op = CppOperators::MinusAssign;
+				else if (jsonString->content.value == L"LeftShiftAssign") node->op = CppOperators::LeftShiftAssign;
+				else if (jsonString->content.value == L"RightShiftAssign") node->op = CppOperators::RightShiftAssign;
+				else throw vl::Exception(L"AST JSON field \"op\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"left")))
+			{
+				if (IsNull(value))
+				{
+					node->left = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"left\" contains an incompatible AST type.");
+					node->left = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"left\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"right")))
+			{
+				if (IsNull(value))
+				{
+					node->right = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"right\" contains an incompatible AST type.");
+					node->right = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"right\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppBlockStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"statements")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"statements\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->statements.Add(vl::Ptr<CppStatement>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppStatement>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"statements\" contains an incompatible AST type.");
+						node->statements.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"statements\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppBraceExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"arguments")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"arguments\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->arguments.Add(vl::Ptr<CppTypeOrExpr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExpr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"arguments\" contains an incompatible AST type.");
+						node->arguments.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"arguments\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppBreakStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+		}
+
+		void AstVisitor::FillFields(CppCallExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			node->kind = CppCallKinds::Parenthesis;
+			if (auto value = FindField(vl::WString::Unmanaged(L"kind")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"kind\" must be a string.");
+				if (jsonString->content.value == L"Parenthesis") node->kind = CppCallKinds::Parenthesis;
+				else if (jsonString->content.value == L"Brace") node->kind = CppCallKinds::Brace;
+				else throw vl::Exception(L"AST JSON field \"kind\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"operand")))
+			{
+				if (IsNull(value))
+				{
+					node->operand = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"operand\" contains an incompatible AST type.");
+					node->operand = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"operand\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"arguments")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"arguments\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->arguments.Add(vl::Ptr<CppTypeOrExpr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExpr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"arguments\" contains an incompatible AST type.");
+						node->arguments.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"arguments\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppCaseStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"expr")))
+			{
+				if (IsNull(value))
+				{
+					node->expr = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expr\" contains an incompatible AST type.");
+					node->expr = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expr\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"stat")))
+			{
+				if (IsNull(value))
+				{
+					node->stat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"stat\" contains an incompatible AST type.");
+					node->stat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"stat\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppCastExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"keyword")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"keyword\" must be a string.");
+				node->keyword.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				if (IsNull(value))
+				{
+					node->type = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"type\" contains an incompatible AST type.");
+					node->type = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"type\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"expr")))
+			{
+				if (IsNull(value))
+				{
+					node->expr = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expr\" contains an incompatible AST type.");
+					node->expr = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expr\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppClassBody* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"inheritances")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"inheritances\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->inheritances.Add(vl::Ptr<CppClassInheritance>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppClassInheritance>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"inheritances\" contains an incompatible AST type.");
+						node->inheritances.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"inheritances\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"memberParts")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"memberParts\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->memberParts.Add(vl::Ptr<CppClassMemberPart>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppClassMemberPart>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"memberParts\" contains an incompatible AST type.");
+						node->memberParts.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"memberParts\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"firstVarPart")))
+			{
+				if (IsNull(value))
+				{
+					node->firstVarPart = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppDeclaratorVariablePart>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"firstVarPart\" contains an incompatible AST type.");
+					node->firstVarPart = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"firstVarPart\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppClassDeclaration* node)
+		{
+			FillFields(static_cast<CppDeclarationCommon*>(node));
+			node->kind = CppClassKind::Class;
+			if (auto value = FindField(vl::WString::Unmanaged(L"kind")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"kind\" must be a string.");
+				if (jsonString->content.value == L"Class") node->kind = CppClassKind::Class;
+				else if (jsonString->content.value == L"Struct") node->kind = CppClassKind::Struct;
+				else if (jsonString->content.value == L"Union") node->kind = CppClassKind::Union;
+				else throw vl::Exception(L"AST JSON field \"kind\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"arguments")))
+			{
+				if (IsNull(value))
+				{
+					node->arguments = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppGenericArguments>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"arguments\" contains an incompatible AST type.");
+					node->arguments = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"arguments\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"body")))
+			{
+				if (IsNull(value))
+				{
+					node->body = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppClassBody>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"body\" contains an incompatible AST type.");
+					node->body = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"body\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppClassInheritance* node)
+		{
+			node->accessor = CppClassAccessor::Default;
+			if (auto value = FindField(vl::WString::Unmanaged(L"accessor")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"accessor\" must be a string.");
+				if (jsonString->content.value == L"Default") node->accessor = CppClassAccessor::Default;
+				else if (jsonString->content.value == L"Private") node->accessor = CppClassAccessor::Private;
+				else if (jsonString->content.value == L"Protected") node->accessor = CppClassAccessor::Protected;
+				else if (jsonString->content.value == L"Public") node->accessor = CppClassAccessor::Public;
+				else throw vl::Exception(L"AST JSON field \"accessor\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"variadic")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"variadic\" must be a string.");
+				node->variadic.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				if (IsNull(value))
+				{
+					node->type = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"type\" contains an incompatible AST type.");
+					node->type = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"type\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppClassMemberPart* node)
+		{
+			node->accessor = CppClassAccessor::Default;
+			if (auto value = FindField(vl::WString::Unmanaged(L"accessor")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"accessor\" must be a string.");
+				if (jsonString->content.value == L"Default") node->accessor = CppClassAccessor::Default;
+				else if (jsonString->content.value == L"Private") node->accessor = CppClassAccessor::Private;
+				else if (jsonString->content.value == L"Protected") node->accessor = CppClassAccessor::Protected;
+				else if (jsonString->content.value == L"Public") node->accessor = CppClassAccessor::Public;
+				else throw vl::Exception(L"AST JSON field \"accessor\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"decls")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"decls\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->decls.Add(vl::Ptr<CppDeclaration>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppDeclaration>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"decls\" contains an incompatible AST type.");
+						node->decls.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"decls\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppConstType* node)
+		{
+			FillFields(static_cast<CppTypeOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				if (IsNull(value))
+				{
+					node->type = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"type\" contains an incompatible AST type.");
+					node->type = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"type\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppContinueStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+		}
+
+		void AstVisitor::FillFields(CppDeclStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"decl")))
+			{
+				if (IsNull(value))
+				{
+					node->decl = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppDeclaration>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"decl\" contains an incompatible AST type.");
+					node->decl = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"decl\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppDeclaration* node)
+		{
+			FillFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		}
+
+		void AstVisitor::FillFields(CppDeclarationCommon* node)
+		{
+			FillFields(static_cast<CppDeclaration*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"keywords")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"keywords\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->keywords.Add(vl::Ptr<CppDeclaratorKeyword>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppDeclaratorKeyword>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"keywords\" contains an incompatible AST type.");
+						node->keywords.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"keywords\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppDeclarationToResolve* node)
+		{
+			FillFields(static_cast<CppDeclaration*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"candidates")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"candidates\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->candidates.Add(vl::Ptr<CppDeclaration>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppDeclaration>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"candidates\" contains an incompatible AST type.");
+						node->candidates.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"candidates\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppDeclarator* node)
+		{
+		}
+
+		void AstVisitor::FillFields(CppDeclaratorArrayPart* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"argument")))
+			{
+				if (IsNull(value))
+				{
+					node->argument = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"argument\" contains an incompatible AST type.");
+					node->argument = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"argument\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppDeclaratorCommon* node)
+		{
+			FillFields(static_cast<CppDeclarator*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"keywords")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"keywords\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->keywords.Add(vl::Ptr<CppDeclaratorKeyword>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppDeclaratorKeyword>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"keywords\" contains an incompatible AST type.");
+						node->keywords.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"keywords\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"advancedTypes")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"advancedTypes\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->advancedTypes.Add(vl::Ptr<CppAdvancedType>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppAdvancedType>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"advancedTypes\" contains an incompatible AST type.");
+						node->advancedTypes.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"advancedTypes\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"variadic")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"variadic\" must be a string.");
+				node->variadic.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"id")))
+			{
+				if (IsNull(value))
+				{
+					node->id = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppIdentifier>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"id\" contains an incompatible AST type.");
+					node->id = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"id\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"arguments")))
+			{
+				if (IsNull(value))
+				{
+					node->arguments = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppGenericArguments>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"arguments\" contains an incompatible AST type.");
+					node->arguments = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"arguments\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"bitfield")))
+			{
+				if (IsNull(value))
+				{
+					node->bitfield = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"bitfield\" contains an incompatible AST type.");
+					node->bitfield = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"bitfield\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"innerDeclarator")))
+			{
+				if (IsNull(value))
+				{
+					node->innerDeclarator = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppDeclarator>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"innerDeclarator\" contains an incompatible AST type.");
+					node->innerDeclarator = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"innerDeclarator\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"funcPart")))
+			{
+				if (IsNull(value))
+				{
+					node->funcPart = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppDeclaratorFunctionPart>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"funcPart\" contains an incompatible AST type.");
+					node->funcPart = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"funcPart\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"arrayParts")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"arrayParts\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->arrayParts.Add(vl::Ptr<CppDeclaratorArrayPart>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppDeclaratorArrayPart>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"arrayParts\" contains an incompatible AST type.");
+						node->arrayParts.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"arrayParts\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppDeclaratorFunctionPart* node)
+		{
+		}
+
+		void AstVisitor::FillFields(CppDeclaratorFunctionPartCommon* node)
+		{
+			FillFields(static_cast<CppDeclaratorFunctionPart*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"parameters")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"parameters\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->parameters.Add(vl::Ptr<CppTypeOrExprOrOthers>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExprOrOthers>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"parameters\" contains an incompatible AST type.");
+						node->parameters.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"parameters\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"variadic")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"variadic\" must be a string.");
+				node->variadic.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"keywords")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"keywords\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->keywords.Add(vl::Ptr<CppFunctionKeyword>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppFunctionKeyword>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"keywords\" contains an incompatible AST type.");
+						node->keywords.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"keywords\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"deferredType")))
+			{
+				if (IsNull(value))
+				{
+					node->deferredType = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"deferredType\" contains an incompatible AST type.");
+					node->deferredType = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"deferredType\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppTypeOrExprOrOthersToResolve* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"TypeOrExprOrOthersToResolve"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExprOrOthersToResolve*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppDeclaratorFunctionPartToResolve* node)
+		{
+			FillFields(static_cast<CppDeclaratorFunctionPart*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"candidates")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"candidates\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->candidates.Add(vl::Ptr<CppDeclaratorFunctionPart>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppDeclaratorFunctionPart>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"candidates\" contains an incompatible AST type.");
+						node->candidates.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"candidates\" contains a non-object, non-null item.");
+				}
+			}
+		}
 
-	void AstVisitor::Visit(CppDeclaration* node)
-	{
-		node->Accept(static_cast<CppDeclaration::IVisitor*>(this));
-	}
+		void AstVisitor::FillFields(CppDeclaratorKeyword* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"keyword")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"keyword\" must be a string.");
+				node->keyword.value = jsonString->content.value;
+			}
+		}
 
-	void AstVisitor::Visit(CppTypeOrExpr* node)
-	{
-		node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
-	}
+		void AstVisitor::FillFields(CppDeclaratorToResolve* node)
+		{
+			FillFields(static_cast<CppDeclarator*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"candidates")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"candidates\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->candidates.Add(vl::Ptr<CppDeclarator>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppDeclarator>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"candidates\" contains an incompatible AST type.");
+						node->candidates.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"candidates\" contains a non-object, non-null item.");
+				}
+			}
+		}
 
-	void AstVisitor::Visit(CppOrdinaryGenericParameter* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"OrdinaryGenericParameter"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppOrdinaryGenericParameter*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppDeclaratorType* node)
+		{
+			FillFields(static_cast<CppTypeOrExpr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"keywords")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"keywords\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->keywords.Add(vl::Ptr<CppDeclaratorKeyword>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppDeclaratorKeyword>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"keywords\" contains an incompatible AST type.");
+						node->keywords.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"keywords\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				if (IsNull(value))
+				{
+					node->type = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"type\" contains an incompatible AST type.");
+					node->type = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"type\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"declarator")))
+			{
+				if (IsNull(value))
+				{
+					node->declarator = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppDeclarator>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"declarator\" contains an incompatible AST type.");
+					node->declarator = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"declarator\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppGenericArgument* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"GenericArgument"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppGenericArgument*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppDeclaratorVariablePart* node)
+		{
+		}
 
-	void AstVisitor::Visit(CppDeclarationToResolve* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DeclarationToResolve"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationToResolve*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppDeclaratorVariablePartCommon* node)
+		{
+			FillFields(static_cast<CppDeclaratorVariablePart*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"declarator")))
+			{
+				if (IsNull(value))
+				{
+					node->declarator = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppDeclarator>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"declarator\" contains an incompatible AST type.");
+					node->declarator = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"declarator\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"init")))
+			{
+				if (IsNull(value))
+				{
+					node->init = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppVarInit>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"init\" contains an incompatible AST type.");
+					node->init = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"init\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"nextVarPart")))
+			{
+				if (IsNull(value))
+				{
+					node->nextVarPart = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppDeclaratorVariablePart>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"nextVarPart\" contains an incompatible AST type.");
+					node->nextVarPart = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"nextVarPart\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppDeclarationCommon* node)
-	{
-		node->Accept(static_cast<CppDeclarationCommon::IVisitor*>(this));
-	}
+		void AstVisitor::FillFields(CppDeclaratorVariablePartToResolve* node)
+		{
+			FillFields(static_cast<CppDeclaratorVariablePart*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"candidates")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"candidates\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->candidates.Add(vl::Ptr<CppDeclaratorVariablePart>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppDeclaratorVariablePart>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"candidates\" contains an incompatible AST type.");
+						node->candidates.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"candidates\" contains a non-object, non-null item.");
+				}
+			}
+		}
 
-	void AstVisitor::Visit(CppVariablesDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"VariablesDeclaration"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationCommon*>(node));
-		PrintFields(static_cast<CppVariablesDeclaration*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppDefaultStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"stat")))
+			{
+				if (IsNull(value))
+				{
+					node->stat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"stat\" contains an incompatible AST type.");
+					node->stat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"stat\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppClassDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ClassDeclaration"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationCommon*>(node));
-		PrintFields(static_cast<CppClassDeclaration*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppDeleteExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			node->scope = CppOperatorScope::Root;
+			if (auto value = FindField(vl::WString::Unmanaged(L"scope")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"scope\" must be a string.");
+				if (jsonString->content.value == L"Root") node->scope = CppOperatorScope::Root;
+				else if (jsonString->content.value == L"Context") node->scope = CppOperatorScope::Context;
+				else throw vl::Exception(L"AST JSON field \"scope\" contains an unknown enum item.");
+			}
+			node->array = CppOperatorArray::Array;
+			if (auto value = FindField(vl::WString::Unmanaged(L"array")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"array\" must be a string.");
+				if (jsonString->content.value == L"Array") node->array = CppOperatorArray::Array;
+				else if (jsonString->content.value == L"NotArray") node->array = CppOperatorArray::NotArray;
+				else throw vl::Exception(L"AST JSON field \"array\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"argument")))
+			{
+				if (IsNull(value))
+				{
+					node->argument = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"argument\" contains an incompatible AST type.");
+					node->argument = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"argument\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppEnumDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"EnumDeclaration"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationCommon*>(node));
-		PrintFields(static_cast<CppEnumDeclaration*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppDoWhileStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"condition")))
+			{
+				if (IsNull(value))
+				{
+					node->condition = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"condition\" contains an incompatible AST type.");
+					node->condition = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"condition\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"stat")))
+			{
+				if (IsNull(value))
+				{
+					node->stat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"stat\" contains an incompatible AST type.");
+					node->stat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"stat\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppTemplateDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"TemplateDeclaration"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationCommon*>(node));
-		PrintFields(static_cast<CppTemplateDeclaration*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppEmptyStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+		}
 
-	void AstVisitor::Visit(CppStaticAssertDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"StaticAssertDeclaration"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationCommon*>(node));
-		PrintFields(static_cast<CppStaticAssertDeclaration*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppEnumBody* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"items")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"items\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->items.Add(vl::Ptr<CppEnumItem>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppEnumItem>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"items\" contains an incompatible AST type.");
+						node->items.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"items\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"firstVarPart")))
+			{
+				if (IsNull(value))
+				{
+					node->firstVarPart = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppDeclaratorVariablePart>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"firstVarPart\" contains an incompatible AST type.");
+					node->firstVarPart = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"firstVarPart\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppTypedefDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"TypedefDeclaration"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationCommon*>(node));
-		PrintFields(static_cast<CppTypedefDeclaration*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppEnumDeclaration* node)
+		{
+			FillFields(static_cast<CppDeclarationCommon*>(node));
+			node->kind = CppEnumKind::Enum;
+			if (auto value = FindField(vl::WString::Unmanaged(L"kind")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"kind\" must be a string.");
+				if (jsonString->content.value == L"Enum") node->kind = CppEnumKind::Enum;
+				else if (jsonString->content.value == L"EnumClass") node->kind = CppEnumKind::EnumClass;
+				else throw vl::Exception(L"AST JSON field \"kind\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				if (IsNull(value))
+				{
+					node->type = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"type\" contains an incompatible AST type.");
+					node->type = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"type\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"body")))
+			{
+				if (IsNull(value))
+				{
+					node->body = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppEnumBody>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"body\" contains an incompatible AST type.");
+					node->body = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"body\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppExternDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ExternDeclaration"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationCommon*>(node));
-		PrintFields(static_cast<CppExternDeclaration*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppEnumItem* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"expr")))
+			{
+				if (IsNull(value))
+				{
+					node->expr = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expr\" contains an incompatible AST type.");
+					node->expr = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expr\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppNamespaceDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"NamespaceDeclaration"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationCommon*>(node));
-		PrintFields(static_cast<CppNamespaceDeclaration*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppExprOnly* node)
+		{
+			FillFields(static_cast<CppTypeOrExpr*>(node));
+		}
 
-	void AstVisitor::Visit(CppUsingNamespaceDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"UsingNamespaceDeclaration"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationCommon*>(node));
-		PrintFields(static_cast<CppUsingNamespaceDeclaration*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppExprStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"expr")))
+			{
+				if (IsNull(value))
+				{
+					node->expr = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expr\" contains an incompatible AST type.");
+					node->expr = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expr\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppUsingValueDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"UsingValueDeclaration"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationCommon*>(node));
-		PrintFields(static_cast<CppUsingValueDeclaration*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppExternDeclaration* node)
+		{
+			FillFields(static_cast<CppDeclarationCommon*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"decls")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"decls\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->decls.Add(vl::Ptr<CppDeclaration>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppDeclaration>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"decls\" contains an incompatible AST type.");
+						node->decls.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"decls\" contains a non-object, non-null item.");
+				}
+			}
+		}
 
-	void AstVisitor::Visit(CppUsingTypeDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"UsingTypeDeclaration"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationCommon*>(node));
-		PrintFields(static_cast<CppUsingTypeDeclaration*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppFile* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"decls")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"decls\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->decls.Add(vl::Ptr<CppDeclaration>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppDeclaration>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"decls\" contains an incompatible AST type.");
+						node->decls.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"decls\" contains a non-object, non-null item.");
+				}
+			}
+		}
 
-	void AstVisitor::Visit(CppFriendTypeDeclaration* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"FriendTypeDeclaration"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppDeclaration*>(node));
-		PrintFields(static_cast<CppDeclarationCommon*>(node));
-		PrintFields(static_cast<CppFriendTypeDeclaration*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppForStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"conditionPart")))
+			{
+				if (IsNull(value))
+				{
+					node->conditionPart = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppForStatConditionPart>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"conditionPart\" contains an incompatible AST type.");
+					node->conditionPart = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"conditionPart\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"stat")))
+			{
+				if (IsNull(value))
+				{
+					node->stat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"stat\" contains an incompatible AST type.");
+					node->stat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"stat\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppTypeOrExprToResolve* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"TypeOrExprToResolve"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppTypeOrExprToResolve*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppForStatConditionPart* node)
+		{
+		}
 
-	void AstVisitor::Visit(CppExprOnly* node)
-	{
-		node->Accept(static_cast<CppExprOnly::IVisitor*>(this));
-	}
+		void AstVisitor::FillFields(CppForStatIterateCondition* node)
+		{
+			FillFields(static_cast<CppForStatConditionPart*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"decl")))
+			{
+				if (IsNull(value))
+				{
+					node->decl = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppVariablesDeclaration>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"decl\" contains an incompatible AST type.");
+					node->decl = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"decl\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"collection")))
+			{
+				if (IsNull(value))
+				{
+					node->collection = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"collection\" contains an incompatible AST type.");
+					node->collection = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"collection\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppTypeOnly* node)
-	{
-		node->Accept(static_cast<CppTypeOnly::IVisitor*>(this));
-	}
+		void AstVisitor::FillFields(CppForStatLoopCondition* node)
+		{
+			FillFields(static_cast<CppForStatConditionPart*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"varsDecl")))
+			{
+				if (IsNull(value))
+				{
+					node->varsDecl = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExprOrOthers>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"varsDecl\" contains an incompatible AST type.");
+					node->varsDecl = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"varsDecl\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"condition")))
+			{
+				if (IsNull(value))
+				{
+					node->condition = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"condition\" contains an incompatible AST type.");
+					node->condition = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"condition\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"sideEffect")))
+			{
+				if (IsNull(value))
+				{
+					node->sideEffect = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"sideEffect\" contains an incompatible AST type.");
+					node->sideEffect = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"sideEffect\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppQualifiedName* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"QualifiedName"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppQualifiedName*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppFriendTypeDeclaration* node)
+		{
+			FillFields(static_cast<CppDeclarationCommon*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				if (IsNull(value))
+				{
+					node->type = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppQualifiedName>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"type\" contains an incompatible AST type.");
+					node->type = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"type\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppDeclaratorType* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DeclaratorType"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppDeclaratorType*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppFunctionKeyword* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"keyword")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"keyword\" must be a string.");
+				node->keyword.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"arguments")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"arguments\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->arguments.Add(vl::Ptr<CppTypeOrExpr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExpr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"arguments\" contains an incompatible AST type.");
+						node->arguments.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"arguments\" contains a non-object, non-null item.");
+				}
+			}
+		}
 
-	void AstVisitor::Visit(CppPrimitiveExprLiteral* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"PrimitiveExprLiteral"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppPrimitiveExprLiteral*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppGenericArgument* node)
+		{
+			FillFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"argument")))
+			{
+				if (IsNull(value))
+				{
+					node->argument = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"argument\" contains an incompatible AST type.");
+					node->argument = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"argument\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"variadic")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"variadic\" must be a string.");
+				node->variadic.value = jsonString->content.value;
+			}
+		}
 
-	void AstVisitor::Visit(CppNumericExprLiteral* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"NumericExprLiteral"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppNumericExprLiteral*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppGenericArguments* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"arguments")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"arguments\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->arguments.Add(vl::Ptr<CppTypeOrExprOrOthers>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExprOrOthers>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"arguments\" contains an incompatible AST type.");
+						node->arguments.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"arguments\" contains a non-object, non-null item.");
+				}
+			}
+		}
 
-	void AstVisitor::Visit(CppStringLiteral* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"StringLiteral"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppStringLiteral*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppGenericHeader* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"parameters")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"parameters\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->parameters.Add(vl::Ptr<CppTypeOrExprOrOthers>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExprOrOthers>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"parameters\" contains an incompatible AST type.");
+						node->parameters.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"parameters\" contains a non-object, non-null item.");
+				}
+			}
+		}
 
-	void AstVisitor::Visit(CppLambdaExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"LambdaExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppLambdaExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppGotoStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"label")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"label\" must be a string.");
+				node->label.value = jsonString->content.value;
+			}
+		}
 
-	void AstVisitor::Visit(CppParenthesisExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ParenthesisExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppParenthesisExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppIdentifier* node)
+		{
+		}
 
-	void AstVisitor::Visit(CppBraceExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"BraceExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppBraceExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppIfElseStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"varsDecl")))
+			{
+				if (IsNull(value))
+				{
+					node->varsDecl = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppVariablesDeclaration>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"varsDecl\" contains an incompatible AST type.");
+					node->varsDecl = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"varsDecl\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"condition")))
+			{
+				if (IsNull(value))
+				{
+					node->condition = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExprOrOthers>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"condition\" contains an incompatible AST type.");
+					node->condition = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"condition\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"trueStat")))
+			{
+				if (IsNull(value))
+				{
+					node->trueStat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"trueStat\" contains an incompatible AST type.");
+					node->trueStat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"trueStat\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"falseStat")))
+			{
+				if (IsNull(value))
+				{
+					node->falseStat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"falseStat\" contains an incompatible AST type.");
+					node->falseStat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"falseStat\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppCastExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"CastExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppCastExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppIfExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"condition")))
+			{
+				if (IsNull(value))
+				{
+					node->condition = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"condition\" contains an incompatible AST type.");
+					node->condition = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"condition\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"trueBranch")))
+			{
+				if (IsNull(value))
+				{
+					node->trueBranch = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"trueBranch\" contains an incompatible AST type.");
+					node->trueBranch = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"trueBranch\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"falseBranch")))
+			{
+				if (IsNull(value))
+				{
+					node->falseBranch = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"falseBranch\" contains an incompatible AST type.");
+					node->falseBranch = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"falseBranch\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppSysFuncExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"SysFuncExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppSysFuncExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppIndexExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"operand")))
+			{
+				if (IsNull(value))
+				{
+					node->operand = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"operand\" contains an incompatible AST type.");
+					node->operand = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"operand\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"index")))
+			{
+				if (IsNull(value))
+				{
+					node->index = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"index\" contains an incompatible AST type.");
+					node->index = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"index\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppSizeofExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"SizeofExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppSizeofExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppLabelStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"label")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"label\" must be a string.");
+				node->label.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"stat")))
+			{
+				if (IsNull(value))
+				{
+					node->stat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"stat\" contains an incompatible AST type.");
+					node->stat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"stat\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppDeleteExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DeleteExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppDeleteExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppLambdaCapture* node)
+		{
+			node->objKind = CppLambdaCaptureObjectKinds::Default;
+			if (auto value = FindField(vl::WString::Unmanaged(L"objKind")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"objKind\" must be a string.");
+				if (jsonString->content.value == L"Default") node->objKind = CppLambdaCaptureObjectKinds::Default;
+				else if (jsonString->content.value == L"This") node->objKind = CppLambdaCaptureObjectKinds::This;
+				else if (jsonString->content.value == L"Id") node->objKind = CppLambdaCaptureObjectKinds::Id;
+				else if (jsonString->content.value == L"PackId") node->objKind = CppLambdaCaptureObjectKinds::PackId;
+				else if (jsonString->content.value == L"PackInit") node->objKind = CppLambdaCaptureObjectKinds::PackInit;
+				else throw vl::Exception(L"AST JSON field \"objKind\" contains an unknown enum item.");
+			}
+			node->refKind = CppLambdaCaptureRefeferenceKinds::Ref;
+			if (auto value = FindField(vl::WString::Unmanaged(L"refKind")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"refKind\" must be a string.");
+				if (jsonString->content.value == L"Ref") node->refKind = CppLambdaCaptureRefeferenceKinds::Ref;
+				else if (jsonString->content.value == L"Copy") node->refKind = CppLambdaCaptureRefeferenceKinds::Copy;
+				else throw vl::Exception(L"AST JSON field \"refKind\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"id")))
+			{
+				if (IsNull(value))
+				{
+					node->id = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppIdentifier>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"id\" contains an incompatible AST type.");
+					node->id = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"id\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"init")))
+			{
+				if (IsNull(value))
+				{
+					node->init = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppVarInit>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"init\" contains an incompatible AST type.");
+					node->init = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"init\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppNewExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"NewExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppNewExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppLambdaExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"captures")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"captures\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->captures.Add(vl::Ptr<CppLambdaCapture>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppLambdaCapture>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"captures\" contains an incompatible AST type.");
+						node->captures.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"captures\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"genericHeader")))
+			{
+				if (IsNull(value))
+				{
+					node->genericHeader = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppGenericHeader>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"genericHeader\" contains an incompatible AST type.");
+					node->genericHeader = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"genericHeader\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"functionHeader")))
+			{
+				if (IsNull(value))
+				{
+					node->functionHeader = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppDeclaratorFunctionPart>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"functionHeader\" contains an incompatible AST type.");
+					node->functionHeader = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"functionHeader\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"stat")))
+			{
+				if (IsNull(value))
+				{
+					node->stat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"stat\" contains an incompatible AST type.");
+					node->stat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"stat\" must be an object or null.");
+			}
+		}
 
-	void AstVisitor::Visit(CppPrefixUnaryExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"PrefixUnaryExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppPrefixUnaryExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppNameIdentifier* node)
+		{
+			FillFields(static_cast<CppIdentifier*>(node));
+			node->kind = CppNameKinds::Normal;
+			if (auto value = FindField(vl::WString::Unmanaged(L"kind")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"kind\" must be a string.");
+				if (jsonString->content.value == L"Normal") node->kind = CppNameKinds::Normal;
+				else if (jsonString->content.value == L"Enum") node->kind = CppNameKinds::Enum;
+				else if (jsonString->content.value == L"EnumClass") node->kind = CppNameKinds::EnumClass;
+				else if (jsonString->content.value == L"Class") node->kind = CppNameKinds::Class;
+				else if (jsonString->content.value == L"Struct") node->kind = CppNameKinds::Struct;
+				else if (jsonString->content.value == L"Union") node->kind = CppNameKinds::Union;
+				else if (jsonString->content.value == L"Dtor") node->kind = CppNameKinds::Dtor;
+				else if (jsonString->content.value == L"UserDefinedLiteral") node->kind = CppNameKinds::UserDefinedLiteral;
+				else throw vl::Exception(L"AST JSON field \"kind\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+		}
 
-	void AstVisitor::Visit(CppPostfixUnaryExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"PostfixUnaryExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppPostfixUnaryExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppNamespaceDeclaration* node)
+		{
+			FillFields(static_cast<CppDeclarationCommon*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"names")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"names\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->names.Add(vl::Ptr<CppNamespaceName>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppNamespaceName>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"names\" contains an incompatible AST type.");
+						node->names.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"names\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"decls")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"decls\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->decls.Add(vl::Ptr<CppDeclaration>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppDeclaration>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"decls\" contains an incompatible AST type.");
+						node->decls.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"decls\" contains a non-object, non-null item.");
+				}
+			}
+		}
 
-	void AstVisitor::Visit(CppIndexExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"IndexExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppIndexExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppNamespaceName* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+		}
 
-	void AstVisitor::Visit(CppCallExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"CallExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppCallExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::FillFields(CppNewExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			node->scope = CppOperatorScope::Root;
+			if (auto value = FindField(vl::WString::Unmanaged(L"scope")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"scope\" must be a string.");
+				if (jsonString->content.value == L"Root") node->scope = CppOperatorScope::Root;
+				else if (jsonString->content.value == L"Context") node->scope = CppOperatorScope::Context;
+				else throw vl::Exception(L"AST JSON field \"scope\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"type\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->type.Add(vl::Ptr<CppTypeOrExpr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExpr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"type\" contains an incompatible AST type.");
+						node->type.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"type\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"placementArguments")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"placementArguments\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->placementArguments.Add(vl::Ptr<CppTypeOrExpr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExpr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"placementArguments\" contains an incompatible AST type.");
+						node->placementArguments.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"placementArguments\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"arrayArguments")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"arrayArguments\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->arrayArguments.Add(vl::Ptr<CppTypeOrExpr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExpr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"arrayArguments\" contains an incompatible AST type.");
+						node->arrayArguments.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"arrayArguments\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"init")))
+			{
+				if (IsNull(value))
+				{
+					node->init = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppVarInit>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"init\" contains an incompatible AST type.");
+					node->init = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"init\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppNumericExprLiteral* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			node->kind = CppNumericExprLiteralKinds::Integer;
+			if (auto value = FindField(vl::WString::Unmanaged(L"kind")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"kind\" must be a string.");
+				if (jsonString->content.value == L"Integer") node->kind = CppNumericExprLiteralKinds::Integer;
+				else if (jsonString->content.value == L"Hex") node->kind = CppNumericExprLiteralKinds::Hex;
+				else if (jsonString->content.value == L"Binary") node->kind = CppNumericExprLiteralKinds::Binary;
+				else if (jsonString->content.value == L"Float") node->kind = CppNumericExprLiteralKinds::Float;
+				else if (jsonString->content.value == L"FloatHex") node->kind = CppNumericExprLiteralKinds::FloatHex;
+				else if (jsonString->content.value == L"Char") node->kind = CppNumericExprLiteralKinds::Char;
+				else throw vl::Exception(L"AST JSON field \"kind\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"literal")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"literal\" must be a string.");
+				node->literal.value = jsonString->content.value;
+			}
+		}
+
+		void AstVisitor::FillFields(CppOperatorIdentifier* node)
+		{
+			FillFields(static_cast<CppIdentifier*>(node));
+			node->op = CppOperators::New;
+			if (auto value = FindField(vl::WString::Unmanaged(L"op")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"op\" must be a string.");
+				if (jsonString->content.value == L"New") node->op = CppOperators::New;
+				else if (jsonString->content.value == L"NewArray") node->op = CppOperators::NewArray;
+				else if (jsonString->content.value == L"Delete") node->op = CppOperators::Delete;
+				else if (jsonString->content.value == L"DeleteArray") node->op = CppOperators::DeleteArray;
+				else if (jsonString->content.value == L"Comma") node->op = CppOperators::Comma;
+				else if (jsonString->content.value == L"RoundBracket") node->op = CppOperators::RoundBracket;
+				else if (jsonString->content.value == L"Parantheses") node->op = CppOperators::Parantheses;
+				else if (jsonString->content.value == L"Bracket") node->op = CppOperators::Bracket;
+				else if (jsonString->content.value == L"PointerDeref") node->op = CppOperators::PointerDeref;
+				else if (jsonString->content.value == L"Pointer") node->op = CppOperators::Pointer;
+				else if (jsonString->content.value == L"MemberDeref") node->op = CppOperators::MemberDeref;
+				else if (jsonString->content.value == L"Member") node->op = CppOperators::Member;
+				else if (jsonString->content.value == L"Compare") node->op = CppOperators::Compare;
+				else if (jsonString->content.value == L"EQ") node->op = CppOperators::EQ;
+				else if (jsonString->content.value == L"NE") node->op = CppOperators::NE;
+				else if (jsonString->content.value == L"LT") node->op = CppOperators::LT;
+				else if (jsonString->content.value == L"LE") node->op = CppOperators::LE;
+				else if (jsonString->content.value == L"GT") node->op = CppOperators::GT;
+				else if (jsonString->content.value == L"GE") node->op = CppOperators::GE;
+				else if (jsonString->content.value == L"Not") node->op = CppOperators::Not;
+				else if (jsonString->content.value == L"Revert") node->op = CppOperators::Revert;
+				else if (jsonString->content.value == L"Xor") node->op = CppOperators::Xor;
+				else if (jsonString->content.value == L"And") node->op = CppOperators::And;
+				else if (jsonString->content.value == L"BitwiseAnd") node->op = CppOperators::BitwiseAnd;
+				else if (jsonString->content.value == L"Or") node->op = CppOperators::Or;
+				else if (jsonString->content.value == L"BitwiseOr") node->op = CppOperators::BitwiseOr;
+				else if (jsonString->content.value == L"Mul") node->op = CppOperators::Mul;
+				else if (jsonString->content.value == L"Div") node->op = CppOperators::Div;
+				else if (jsonString->content.value == L"Mod") node->op = CppOperators::Mod;
+				else if (jsonString->content.value == L"Plus") node->op = CppOperators::Plus;
+				else if (jsonString->content.value == L"Increase") node->op = CppOperators::Increase;
+				else if (jsonString->content.value == L"Minus") node->op = CppOperators::Minus;
+				else if (jsonString->content.value == L"Decrease") node->op = CppOperators::Decrease;
+				else if (jsonString->content.value == L"LeftShift") node->op = CppOperators::LeftShift;
+				else if (jsonString->content.value == L"RightShift") node->op = CppOperators::RightShift;
+				else if (jsonString->content.value == L"Assign") node->op = CppOperators::Assign;
+				else if (jsonString->content.value == L"RevertAssign") node->op = CppOperators::RevertAssign;
+				else if (jsonString->content.value == L"XorAssign") node->op = CppOperators::XorAssign;
+				else if (jsonString->content.value == L"AndAssign") node->op = CppOperators::AndAssign;
+				else if (jsonString->content.value == L"OrAssign") node->op = CppOperators::OrAssign;
+				else if (jsonString->content.value == L"MulAssign") node->op = CppOperators::MulAssign;
+				else if (jsonString->content.value == L"DivAssign") node->op = CppOperators::DivAssign;
+				else if (jsonString->content.value == L"ModAssign") node->op = CppOperators::ModAssign;
+				else if (jsonString->content.value == L"PlusAssign") node->op = CppOperators::PlusAssign;
+				else if (jsonString->content.value == L"MinusAssign") node->op = CppOperators::MinusAssign;
+				else if (jsonString->content.value == L"LeftShiftAssign") node->op = CppOperators::LeftShiftAssign;
+				else if (jsonString->content.value == L"RightShiftAssign") node->op = CppOperators::RightShiftAssign;
+				else throw vl::Exception(L"AST JSON field \"op\" contains an unknown enum item.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppOperatorTypeIdentifier* node)
+		{
+			FillFields(static_cast<CppIdentifier*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				if (IsNull(value))
+				{
+					node->type = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExprOrOthers>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"type\" contains an incompatible AST type.");
+					node->type = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"type\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppOrdinaryGenericParameter* node)
+		{
+			FillFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"genericHeader")))
+			{
+				if (IsNull(value))
+				{
+					node->genericHeader = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppGenericHeader>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"genericHeader\" contains an incompatible AST type.");
+					node->genericHeader = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"genericHeader\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"typenameToken")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"typenameToken\" must be a string.");
+				node->typenameToken.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"variadic")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"variadic\" must be a string.");
+				node->variadic.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"id")))
+			{
+				if (IsNull(value))
+				{
+					node->id = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppIdentifier>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"id\" contains an incompatible AST type.");
+					node->id = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"id\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"init")))
+			{
+				if (IsNull(value))
+				{
+					node->init = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"init\" contains an incompatible AST type.");
+					node->init = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"init\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppParenthesisExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"expr")))
+			{
+				if (IsNull(value))
+				{
+					node->expr = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expr\" contains an incompatible AST type.");
+					node->expr = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expr\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppPostfixUnaryExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			node->op = CppOperators::New;
+			if (auto value = FindField(vl::WString::Unmanaged(L"op")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"op\" must be a string.");
+				if (jsonString->content.value == L"New") node->op = CppOperators::New;
+				else if (jsonString->content.value == L"NewArray") node->op = CppOperators::NewArray;
+				else if (jsonString->content.value == L"Delete") node->op = CppOperators::Delete;
+				else if (jsonString->content.value == L"DeleteArray") node->op = CppOperators::DeleteArray;
+				else if (jsonString->content.value == L"Comma") node->op = CppOperators::Comma;
+				else if (jsonString->content.value == L"RoundBracket") node->op = CppOperators::RoundBracket;
+				else if (jsonString->content.value == L"Parantheses") node->op = CppOperators::Parantheses;
+				else if (jsonString->content.value == L"Bracket") node->op = CppOperators::Bracket;
+				else if (jsonString->content.value == L"PointerDeref") node->op = CppOperators::PointerDeref;
+				else if (jsonString->content.value == L"Pointer") node->op = CppOperators::Pointer;
+				else if (jsonString->content.value == L"MemberDeref") node->op = CppOperators::MemberDeref;
+				else if (jsonString->content.value == L"Member") node->op = CppOperators::Member;
+				else if (jsonString->content.value == L"Compare") node->op = CppOperators::Compare;
+				else if (jsonString->content.value == L"EQ") node->op = CppOperators::EQ;
+				else if (jsonString->content.value == L"NE") node->op = CppOperators::NE;
+				else if (jsonString->content.value == L"LT") node->op = CppOperators::LT;
+				else if (jsonString->content.value == L"LE") node->op = CppOperators::LE;
+				else if (jsonString->content.value == L"GT") node->op = CppOperators::GT;
+				else if (jsonString->content.value == L"GE") node->op = CppOperators::GE;
+				else if (jsonString->content.value == L"Not") node->op = CppOperators::Not;
+				else if (jsonString->content.value == L"Revert") node->op = CppOperators::Revert;
+				else if (jsonString->content.value == L"Xor") node->op = CppOperators::Xor;
+				else if (jsonString->content.value == L"And") node->op = CppOperators::And;
+				else if (jsonString->content.value == L"BitwiseAnd") node->op = CppOperators::BitwiseAnd;
+				else if (jsonString->content.value == L"Or") node->op = CppOperators::Or;
+				else if (jsonString->content.value == L"BitwiseOr") node->op = CppOperators::BitwiseOr;
+				else if (jsonString->content.value == L"Mul") node->op = CppOperators::Mul;
+				else if (jsonString->content.value == L"Div") node->op = CppOperators::Div;
+				else if (jsonString->content.value == L"Mod") node->op = CppOperators::Mod;
+				else if (jsonString->content.value == L"Plus") node->op = CppOperators::Plus;
+				else if (jsonString->content.value == L"Increase") node->op = CppOperators::Increase;
+				else if (jsonString->content.value == L"Minus") node->op = CppOperators::Minus;
+				else if (jsonString->content.value == L"Decrease") node->op = CppOperators::Decrease;
+				else if (jsonString->content.value == L"LeftShift") node->op = CppOperators::LeftShift;
+				else if (jsonString->content.value == L"RightShift") node->op = CppOperators::RightShift;
+				else if (jsonString->content.value == L"Assign") node->op = CppOperators::Assign;
+				else if (jsonString->content.value == L"RevertAssign") node->op = CppOperators::RevertAssign;
+				else if (jsonString->content.value == L"XorAssign") node->op = CppOperators::XorAssign;
+				else if (jsonString->content.value == L"AndAssign") node->op = CppOperators::AndAssign;
+				else if (jsonString->content.value == L"OrAssign") node->op = CppOperators::OrAssign;
+				else if (jsonString->content.value == L"MulAssign") node->op = CppOperators::MulAssign;
+				else if (jsonString->content.value == L"DivAssign") node->op = CppOperators::DivAssign;
+				else if (jsonString->content.value == L"ModAssign") node->op = CppOperators::ModAssign;
+				else if (jsonString->content.value == L"PlusAssign") node->op = CppOperators::PlusAssign;
+				else if (jsonString->content.value == L"MinusAssign") node->op = CppOperators::MinusAssign;
+				else if (jsonString->content.value == L"LeftShiftAssign") node->op = CppOperators::LeftShiftAssign;
+				else if (jsonString->content.value == L"RightShiftAssign") node->op = CppOperators::RightShiftAssign;
+				else throw vl::Exception(L"AST JSON field \"op\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"operand")))
+			{
+				if (IsNull(value))
+				{
+					node->operand = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"operand\" contains an incompatible AST type.");
+					node->operand = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"operand\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppPrefixUnaryExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			node->op = CppOperators::New;
+			if (auto value = FindField(vl::WString::Unmanaged(L"op")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"op\" must be a string.");
+				if (jsonString->content.value == L"New") node->op = CppOperators::New;
+				else if (jsonString->content.value == L"NewArray") node->op = CppOperators::NewArray;
+				else if (jsonString->content.value == L"Delete") node->op = CppOperators::Delete;
+				else if (jsonString->content.value == L"DeleteArray") node->op = CppOperators::DeleteArray;
+				else if (jsonString->content.value == L"Comma") node->op = CppOperators::Comma;
+				else if (jsonString->content.value == L"RoundBracket") node->op = CppOperators::RoundBracket;
+				else if (jsonString->content.value == L"Parantheses") node->op = CppOperators::Parantheses;
+				else if (jsonString->content.value == L"Bracket") node->op = CppOperators::Bracket;
+				else if (jsonString->content.value == L"PointerDeref") node->op = CppOperators::PointerDeref;
+				else if (jsonString->content.value == L"Pointer") node->op = CppOperators::Pointer;
+				else if (jsonString->content.value == L"MemberDeref") node->op = CppOperators::MemberDeref;
+				else if (jsonString->content.value == L"Member") node->op = CppOperators::Member;
+				else if (jsonString->content.value == L"Compare") node->op = CppOperators::Compare;
+				else if (jsonString->content.value == L"EQ") node->op = CppOperators::EQ;
+				else if (jsonString->content.value == L"NE") node->op = CppOperators::NE;
+				else if (jsonString->content.value == L"LT") node->op = CppOperators::LT;
+				else if (jsonString->content.value == L"LE") node->op = CppOperators::LE;
+				else if (jsonString->content.value == L"GT") node->op = CppOperators::GT;
+				else if (jsonString->content.value == L"GE") node->op = CppOperators::GE;
+				else if (jsonString->content.value == L"Not") node->op = CppOperators::Not;
+				else if (jsonString->content.value == L"Revert") node->op = CppOperators::Revert;
+				else if (jsonString->content.value == L"Xor") node->op = CppOperators::Xor;
+				else if (jsonString->content.value == L"And") node->op = CppOperators::And;
+				else if (jsonString->content.value == L"BitwiseAnd") node->op = CppOperators::BitwiseAnd;
+				else if (jsonString->content.value == L"Or") node->op = CppOperators::Or;
+				else if (jsonString->content.value == L"BitwiseOr") node->op = CppOperators::BitwiseOr;
+				else if (jsonString->content.value == L"Mul") node->op = CppOperators::Mul;
+				else if (jsonString->content.value == L"Div") node->op = CppOperators::Div;
+				else if (jsonString->content.value == L"Mod") node->op = CppOperators::Mod;
+				else if (jsonString->content.value == L"Plus") node->op = CppOperators::Plus;
+				else if (jsonString->content.value == L"Increase") node->op = CppOperators::Increase;
+				else if (jsonString->content.value == L"Minus") node->op = CppOperators::Minus;
+				else if (jsonString->content.value == L"Decrease") node->op = CppOperators::Decrease;
+				else if (jsonString->content.value == L"LeftShift") node->op = CppOperators::LeftShift;
+				else if (jsonString->content.value == L"RightShift") node->op = CppOperators::RightShift;
+				else if (jsonString->content.value == L"Assign") node->op = CppOperators::Assign;
+				else if (jsonString->content.value == L"RevertAssign") node->op = CppOperators::RevertAssign;
+				else if (jsonString->content.value == L"XorAssign") node->op = CppOperators::XorAssign;
+				else if (jsonString->content.value == L"AndAssign") node->op = CppOperators::AndAssign;
+				else if (jsonString->content.value == L"OrAssign") node->op = CppOperators::OrAssign;
+				else if (jsonString->content.value == L"MulAssign") node->op = CppOperators::MulAssign;
+				else if (jsonString->content.value == L"DivAssign") node->op = CppOperators::DivAssign;
+				else if (jsonString->content.value == L"ModAssign") node->op = CppOperators::ModAssign;
+				else if (jsonString->content.value == L"PlusAssign") node->op = CppOperators::PlusAssign;
+				else if (jsonString->content.value == L"MinusAssign") node->op = CppOperators::MinusAssign;
+				else if (jsonString->content.value == L"LeftShiftAssign") node->op = CppOperators::LeftShiftAssign;
+				else if (jsonString->content.value == L"RightShiftAssign") node->op = CppOperators::RightShiftAssign;
+				else throw vl::Exception(L"AST JSON field \"op\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"operand")))
+			{
+				if (IsNull(value))
+				{
+					node->operand = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"operand\" contains an incompatible AST type.");
+					node->operand = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"operand\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppPrimitiveExprLiteral* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			node->kind = CppPrimitiveExprLiteralKinds::True;
+			if (auto value = FindField(vl::WString::Unmanaged(L"kind")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"kind\" must be a string.");
+				if (jsonString->content.value == L"True") node->kind = CppPrimitiveExprLiteralKinds::True;
+				else if (jsonString->content.value == L"False") node->kind = CppPrimitiveExprLiteralKinds::False;
+				else if (jsonString->content.value == L"Nullptr") node->kind = CppPrimitiveExprLiteralKinds::Nullptr;
+				else if (jsonString->content.value == L"This") node->kind = CppPrimitiveExprLiteralKinds::This;
+				else if (jsonString->content.value == L"__Nullptr") node->kind = CppPrimitiveExprLiteralKinds::__Nullptr;
+				else throw vl::Exception(L"AST JSON field \"kind\" contains an unknown enum item.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppPrimitiveType* node)
+		{
+			FillFields(static_cast<CppTypeOnly*>(node));
+			node->kind = CppPrimitiveTypeKinds::Neutral;
+			if (auto value = FindField(vl::WString::Unmanaged(L"kind")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"kind\" must be a string.");
+				if (jsonString->content.value == L"Neutral") node->kind = CppPrimitiveTypeKinds::Neutral;
+				else if (jsonString->content.value == L"Signed") node->kind = CppPrimitiveTypeKinds::Signed;
+				else if (jsonString->content.value == L"Unsigned") node->kind = CppPrimitiveTypeKinds::Unsigned;
+				else throw vl::Exception(L"AST JSON field \"kind\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"literal1")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"literal1\" must be a string.");
+				node->literal1.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"literal2")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"literal2\" must be a string.");
+				node->literal2.value = jsonString->content.value;
+			}
+		}
+
+		void AstVisitor::FillFields(CppQualifiedName* node)
+		{
+			FillFields(static_cast<CppTypeOrExpr*>(node));
+			node->kind = CppQualifiedNameKinds::Root;
+			if (auto value = FindField(vl::WString::Unmanaged(L"kind")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"kind\" must be a string.");
+				if (jsonString->content.value == L"Root") node->kind = CppQualifiedNameKinds::Root;
+				else if (jsonString->content.value == L"Context") node->kind = CppQualifiedNameKinds::Context;
+				else if (jsonString->content.value == L"Auto") node->kind = CppQualifiedNameKinds::Auto;
+				else if (jsonString->content.value == L"Decltype") node->kind = CppQualifiedNameKinds::Decltype;
+				else if (jsonString->content.value == L"Member") node->kind = CppQualifiedNameKinds::Member;
+				else throw vl::Exception(L"AST JSON field \"kind\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"expr")))
+			{
+				if (IsNull(value))
+				{
+					node->expr = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expr\" contains an incompatible AST type.");
+					node->expr = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expr\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"parent")))
+			{
+				if (IsNull(value))
+				{
+					node->parent = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppQualifiedName>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"parent\" contains an incompatible AST type.");
+					node->parent = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"parent\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"id")))
+			{
+				if (IsNull(value))
+				{
+					node->id = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppIdentifier>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"id\" contains an incompatible AST type.");
+					node->id = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"id\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"arguments")))
+			{
+				if (IsNull(value))
+				{
+					node->arguments = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppGenericArguments>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"arguments\" contains an incompatible AST type.");
+					node->arguments = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"arguments\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppReturnStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"expr")))
+			{
+				if (IsNull(value))
+				{
+					node->expr = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expr\" contains an incompatible AST type.");
+					node->expr = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expr\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppSizeofExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"argument")))
+			{
+				if (IsNull(value))
+				{
+					node->argument = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"argument\" contains an incompatible AST type.");
+					node->argument = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"argument\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"variadic")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"variadic\" must be a string.");
+				node->variadic.value = jsonString->content.value;
+			}
+		}
+
+		void AstVisitor::FillFields(CppStatement* node)
+		{
+		}
+
+		void AstVisitor::FillFields(CppStatementToResolve* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"candidates")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"candidates\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->candidates.Add(vl::Ptr<CppStatement>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppStatement>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"candidates\" contains an incompatible AST type.");
+						node->candidates.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"candidates\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppStaticAssertDeclaration* node)
+		{
+			FillFields(static_cast<CppDeclarationCommon*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"expr")))
+			{
+				if (IsNull(value))
+				{
+					node->expr = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expr\" contains an incompatible AST type.");
+					node->expr = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expr\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"message")))
+			{
+				if (IsNull(value))
+				{
+					node->message = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"message\" contains an incompatible AST type.");
+					node->message = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"message\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppStringLiteral* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"fragments")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"fragments\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->fragments.Add(vl::Ptr<CppStringLiteralFragment>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppStringLiteralFragment>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"fragments\" contains an incompatible AST type.");
+						node->fragments.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"fragments\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppStringLiteralFragment* node)
+		{
+			node->kind = CppStringLiteralKinds::String;
+			if (auto value = FindField(vl::WString::Unmanaged(L"kind")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"kind\" must be a string.");
+				if (jsonString->content.value == L"String") node->kind = CppStringLiteralKinds::String;
+				else if (jsonString->content.value == L"Macro_LPREFIX") node->kind = CppStringLiteralKinds::Macro_LPREFIX;
+				else throw vl::Exception(L"AST JSON field \"kind\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"literal")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"literal\" must be a string.");
+				node->literal.value = jsonString->content.value;
+			}
+		}
+
+		void AstVisitor::FillFields(CppSwitchStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"condition")))
+			{
+				if (IsNull(value))
+				{
+					node->condition = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExprOrOthers>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"condition\" contains an incompatible AST type.");
+					node->condition = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"condition\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"stat")))
+			{
+				if (IsNull(value))
+				{
+					node->stat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"stat\" contains an incompatible AST type.");
+					node->stat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"stat\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppSysFuncExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"keyword")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"keyword\" must be a string.");
+				node->keyword.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"variadic")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"variadic\" must be a string.");
+				node->variadic.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"argument")))
+			{
+				if (IsNull(value))
+				{
+					node->argument = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"argument\" contains an incompatible AST type.");
+					node->argument = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"argument\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppTemplateDeclaration* node)
+		{
+			FillFields(static_cast<CppDeclarationCommon*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"genericHeader")))
+			{
+				if (IsNull(value))
+				{
+					node->genericHeader = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppGenericHeader>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"genericHeader\" contains an incompatible AST type.");
+					node->genericHeader = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"genericHeader\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"decl")))
+			{
+				if (IsNull(value))
+				{
+					node->decl = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppDeclaration>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"decl\" contains an incompatible AST type.");
+					node->decl = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"decl\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppThrowExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"argument")))
+			{
+				if (IsNull(value))
+				{
+					node->argument = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"argument\" contains an incompatible AST type.");
+					node->argument = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"argument\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppTryStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"tryStat")))
+			{
+				if (IsNull(value))
+				{
+					node->tryStat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"tryStat\" contains an incompatible AST type.");
+					node->tryStat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"tryStat\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"catchParts")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"catchParts\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->catchParts.Add(vl::Ptr<CppTryStatCatchPart>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTryStatCatchPart>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"catchParts\" contains an incompatible AST type.");
+						node->catchParts.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"catchParts\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppTryStatCatchPart* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"decl")))
+			{
+				if (IsNull(value))
+				{
+					node->decl = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExprOrOthers>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"decl\" contains an incompatible AST type.");
+					node->decl = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"decl\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"stat")))
+			{
+				if (IsNull(value))
+				{
+					node->stat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"stat\" contains an incompatible AST type.");
+					node->stat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"stat\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppTypeOnly* node)
+		{
+			FillFields(static_cast<CppTypeOrExpr*>(node));
+		}
+
+		void AstVisitor::FillFields(CppTypeOrExpr* node)
+		{
+			FillFields(static_cast<CppTypeOrExprOrOthers*>(node));
+		}
+
+		void AstVisitor::FillFields(CppTypeOrExprOrOthers* node)
+		{
+		}
+
+		void AstVisitor::FillFields(CppTypeOrExprOrOthersToResolve* node)
+		{
+			FillFields(static_cast<CppTypeOrExprOrOthers*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"candidates")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"candidates\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->candidates.Add(vl::Ptr<CppTypeOrExprOrOthers>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExprOrOthers>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"candidates\" contains an incompatible AST type.");
+						node->candidates.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"candidates\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppTypeOrExprToResolve* node)
+		{
+			FillFields(static_cast<CppTypeOrExpr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"candidates")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"candidates\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->candidates.Add(vl::Ptr<CppTypeOrExpr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExpr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"candidates\" contains an incompatible AST type.");
+						node->candidates.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"candidates\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppTypedefDeclaration* node)
+		{
+			FillFields(static_cast<CppDeclarationCommon*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"decl")))
+			{
+				if (IsNull(value))
+				{
+					node->decl = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppDeclaration>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"decl\" contains an incompatible AST type.");
+					node->decl = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"decl\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppUsingNamespaceDeclaration* node)
+		{
+			FillFields(static_cast<CppDeclarationCommon*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"names")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"names\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->names.Add(vl::Ptr<CppNamespaceName>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppNamespaceName>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"names\" contains an incompatible AST type.");
+						node->names.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"names\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppUsingTypeDeclaration* node)
+		{
+			FillFields(static_cast<CppDeclarationCommon*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				if (IsNull(value))
+				{
+					node->type = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"type\" contains an incompatible AST type.");
+					node->type = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"type\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppUsingValueDeclaration* node)
+		{
+			FillFields(static_cast<CppDeclarationCommon*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"typenameKeyword")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"typenameKeyword\" must be a string.");
+				node->typenameKeyword.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				if (IsNull(value))
+				{
+					node->name = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppQualifiedName>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"name\" contains an incompatible AST type.");
+					node->name = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"name\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppVarBraceInit* node)
+		{
+			FillFields(static_cast<CppVarInit*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"arguments")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"arguments\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->arguments.Add(vl::Ptr<CppTypeOrExpr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExpr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"arguments\" contains an incompatible AST type.");
+						node->arguments.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"arguments\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppVarInit* node)
+		{
+		}
+
+		void AstVisitor::FillFields(CppVarParanthesisInit* node)
+		{
+			FillFields(static_cast<CppVarInit*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"arguments")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"arguments\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->arguments.Add(vl::Ptr<CppTypeOrExpr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppTypeOrExpr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"arguments\" contains an incompatible AST type.");
+						node->arguments.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"arguments\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void AstVisitor::FillFields(CppVarStatInit* node)
+		{
+			FillFields(static_cast<CppVarInit*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"initItems")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"initItems\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->initItems.Add(vl::Ptr<CppVarStatInitItem>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<CppVarStatInitItem>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"initItems\" contains an incompatible AST type.");
+						node->initItems.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"initItems\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"stat")))
+			{
+				if (IsNull(value))
+				{
+					node->stat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppBlockStat>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"stat\" contains an incompatible AST type.");
+					node->stat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"stat\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppVarStatInitItem* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"init")))
+			{
+				if (IsNull(value))
+				{
+					node->init = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppVarInit>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"init\" contains an incompatible AST type.");
+					node->init = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"init\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppVarValueInit* node)
+		{
+			FillFields(static_cast<CppVarInit*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"expr")))
+			{
+				if (IsNull(value))
+				{
+					node->expr = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expr\" contains an incompatible AST type.");
+					node->expr = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expr\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppVariablesDeclaration* node)
+		{
+			FillFields(static_cast<CppDeclarationCommon*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				if (IsNull(value))
+				{
+					node->type = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"type\" contains an incompatible AST type.");
+					node->type = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"type\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"firstVarPart")))
+			{
+				if (IsNull(value))
+				{
+					node->firstVarPart = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppDeclaratorVariablePart>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"firstVarPart\" contains an incompatible AST type.");
+					node->firstVarPart = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"firstVarPart\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppVariadicExpr* node)
+		{
+			FillFields(static_cast<CppExprOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"operand")))
+			{
+				if (IsNull(value))
+				{
+					node->operand = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"operand\" contains an incompatible AST type.");
+					node->operand = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"operand\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"variadic")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"variadic\" must be a string.");
+				node->variadic.value = jsonString->content.value;
+			}
+		}
+
+		void AstVisitor::FillFields(CppVolatileType* node)
+		{
+			FillFields(static_cast<CppTypeOnly*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				if (IsNull(value))
+				{
+					node->type = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"type\" contains an incompatible AST type.");
+					node->type = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"type\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(CppWhileStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"condition")))
+			{
+				if (IsNull(value))
+				{
+					node->condition = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExprOrOthers>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"condition\" contains an incompatible AST type.");
+					node->condition = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"condition\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"stat")))
+			{
+				if (IsNull(value))
+				{
+					node->stat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"stat\" contains an incompatible AST type.");
+					node->stat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"stat\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::FillFields(Cpp__LeaveStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+		}
+
+		void AstVisitor::FillFields(Cpp__TryStat* node)
+		{
+			FillFields(static_cast<CppStatement*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"tryStat")))
+			{
+				if (IsNull(value))
+				{
+					node->tryStat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"tryStat\" contains an incompatible AST type.");
+					node->tryStat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"tryStat\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"exceptStat")))
+			{
+				if (IsNull(value))
+				{
+					node->exceptStat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"exceptStat\" contains an incompatible AST type.");
+					node->exceptStat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"exceptStat\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"finallyStat")))
+			{
+				if (IsNull(value))
+				{
+					node->finallyStat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppStatement>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"finallyStat\" contains an incompatible AST type.");
+					node->finallyStat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"finallyStat\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"filter")))
+			{
+				if (IsNull(value))
+				{
+					node->filter = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<CppTypeOrExpr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"filter\" contains an incompatible AST type.");
+					node->filter = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"filter\" must be an object or null.");
+			}
+		}
+
+		void AstVisitor::Visit(CppTypeOrExprOrOthersToResolve* node)
+		{
+			FillFields(node);
+		}
+
+		void AstVisitor::Visit(CppDeclaration* node)
+		{
+			node->Accept(static_cast<CppDeclaration::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppTypeOrExpr* node)
+		{
+			node->Accept(static_cast<CppTypeOrExpr::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppOrdinaryGenericParameter* node)
+		{
+			FillFields(node);
+		}
+
+		void AstVisitor::Visit(CppGenericArgument* node)
+		{
+			FillFields(node);
+		}
+
+		void AstVisitor::Visit(CppDeclarationToResolve* node)
+		{
+			FillFields(node);
+		}
+
+		void AstVisitor::Visit(CppDeclarationCommon* node)
+		{
+			node->Accept(static_cast<CppDeclarationCommon::IVisitor*>(this));
+		}
+
+		void AstVisitor::Visit(CppVariablesDeclaration* node)
+		{
+			FillFields(node);
+		}
+
+		void AstVisitor::Visit(CppClassDeclaration* node)
+		{
+			FillFields(node);
+		}
+
+		void AstVisitor::Visit(CppEnumDeclaration* node)
+		{
+			FillFields(node);
+		}
+
+		void AstVisitor::Visit(CppTemplateDeclaration* node)
+		{
+			FillFields(node);
+		}
+
+		void AstVisitor::Visit(CppStaticAssertDeclaration* node)
+		{
+			FillFields(node);
+		}
+
+		void AstVisitor::Visit(CppTypedefDeclaration* node)
+		{
+			FillFields(node);
+		}
+
+		void AstVisitor::Visit(CppExternDeclaration* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppBinaryExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"BinaryExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppBinaryExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppNamespaceDeclaration* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppIfExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"IfExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppIfExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppUsingNamespaceDeclaration* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppThrowExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ThrowExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppThrowExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppUsingValueDeclaration* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppVariadicExpr* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"VariadicExpr"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppExprOnly*>(node));
-		PrintFields(static_cast<CppVariadicExpr*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppUsingTypeDeclaration* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppPrimitiveType* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"PrimitiveType"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppTypeOnly*>(node));
-		PrintFields(static_cast<CppPrimitiveType*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppFriendTypeDeclaration* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppConstType* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ConstType"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppTypeOnly*>(node));
-		PrintFields(static_cast<CppConstType*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppTypeOrExprToResolve* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppVolatileType* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"VolatileType"), node);
-		PrintFields(static_cast<CppTypeOrExprOrOthers*>(node));
-		PrintFields(static_cast<CppTypeOrExpr*>(node));
-		PrintFields(static_cast<CppTypeOnly*>(node));
-		PrintFields(static_cast<CppVolatileType*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppExprOnly* node)
+		{
+			node->Accept(static_cast<CppExprOnly::IVisitor*>(this));
+		}
 
-	void AstVisitor::Visit(CppStatementToResolve* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"StatementToResolve"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppStatementToResolve*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppTypeOnly* node)
+		{
+			node->Accept(static_cast<CppTypeOnly::IVisitor*>(this));
+		}
 
-	void AstVisitor::Visit(CppEmptyStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"EmptyStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppEmptyStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppQualifiedName* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppBlockStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"BlockStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppBlockStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppDeclaratorType* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppExprStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ExprStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppExprStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppPrimitiveExprLiteral* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppDeclStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DeclStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppDeclStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppNumericExprLiteral* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppBreakStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"BreakStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppBreakStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppStringLiteral* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppContinueStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ContinueStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppContinueStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppLambdaExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppReturnStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ReturnStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppReturnStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppParenthesisExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppLabelStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"LabelStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppLabelStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppBraceExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppGotoStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"GotoStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppGotoStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppCastExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppCaseStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"CaseStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppCaseStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppSysFuncExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppDefaultStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DefaultStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppDefaultStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppSizeofExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(Cpp__LeaveStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"__LeaveStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<Cpp__LeaveStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppDeleteExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppWhileStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"WhileStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppWhileStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppNewExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppDoWhileStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DoWhileStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppDoWhileStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppPrefixUnaryExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppIfElseStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"IfElseStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppIfElseStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppPostfixUnaryExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppForStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ForStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppForStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppIndexExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppSwitchStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"SwitchStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppSwitchStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppCallExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppTryStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"TryStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<CppTryStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppBinaryExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(Cpp__TryStat* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"__TryStat"), node);
-		PrintFields(static_cast<CppStatement*>(node));
-		PrintFields(static_cast<Cpp__TryStat*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppIfExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppNameIdentifier* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"NameIdentifier"), node);
-		PrintFields(static_cast<CppIdentifier*>(node));
-		PrintFields(static_cast<CppNameIdentifier*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppThrowExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppOperatorIdentifier* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"OperatorIdentifier"), node);
-		PrintFields(static_cast<CppIdentifier*>(node));
-		PrintFields(static_cast<CppOperatorIdentifier*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppVariadicExpr* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppOperatorTypeIdentifier* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"OperatorTypeIdentifier"), node);
-		PrintFields(static_cast<CppIdentifier*>(node));
-		PrintFields(static_cast<CppOperatorTypeIdentifier*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppPrimitiveType* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppDeclaratorFunctionPartToResolve* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DeclaratorFunctionPartToResolve"), node);
-		PrintFields(static_cast<CppDeclaratorFunctionPart*>(node));
-		PrintFields(static_cast<CppDeclaratorFunctionPartToResolve*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppConstType* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppDeclaratorFunctionPartCommon* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DeclaratorFunctionPartCommon"), node);
-		PrintFields(static_cast<CppDeclaratorFunctionPart*>(node));
-		PrintFields(static_cast<CppDeclaratorFunctionPartCommon*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppVolatileType* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppDeclaratorToResolve* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DeclaratorToResolve"), node);
-		PrintFields(static_cast<CppDeclarator*>(node));
-		PrintFields(static_cast<CppDeclaratorToResolve*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppStatementToResolve* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppDeclaratorCommon* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DeclaratorCommon"), node);
-		PrintFields(static_cast<CppDeclarator*>(node));
-		PrintFields(static_cast<CppDeclaratorCommon*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppEmptyStat* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppVarValueInit* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"VarValueInit"), node);
-		PrintFields(static_cast<CppVarInit*>(node));
-		PrintFields(static_cast<CppVarValueInit*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppBlockStat* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppVarParanthesisInit* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"VarParanthesisInit"), node);
-		PrintFields(static_cast<CppVarInit*>(node));
-		PrintFields(static_cast<CppVarParanthesisInit*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppExprStat* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppVarBraceInit* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"VarBraceInit"), node);
-		PrintFields(static_cast<CppVarInit*>(node));
-		PrintFields(static_cast<CppVarBraceInit*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppDeclStat* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppVarStatInit* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"VarStatInit"), node);
-		PrintFields(static_cast<CppVarInit*>(node));
-		PrintFields(static_cast<CppVarStatInit*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppBreakStat* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppDeclaratorVariablePartToResolve* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DeclaratorVariablePartToResolve"), node);
-		PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
-		PrintFields(static_cast<CppDeclaratorVariablePartToResolve*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppContinueStat* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppDeclaratorVariablePartCommon* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DeclaratorVariablePartCommon"), node);
-		PrintFields(static_cast<CppDeclaratorVariablePart*>(node));
-		PrintFields(static_cast<CppDeclaratorVariablePartCommon*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppReturnStat* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppForStatLoopCondition* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ForStatLoopCondition"), node);
-		PrintFields(static_cast<CppForStatConditionPart*>(node));
-		PrintFields(static_cast<CppForStatLoopCondition*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppLabelStat* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Visit(CppForStatIterateCondition* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ForStatIterateCondition"), node);
-		PrintFields(static_cast<CppForStatConditionPart*>(node));
-		PrintFields(static_cast<CppForStatIterateCondition*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppGotoStat* node)
+		{
+			FillFields(node);
+		}
 
-	AstVisitor::AstVisitor(vl::stream::StreamWriter& _writer)
-		: vl::glr::JsonVisitorBase(_writer)
-	{
-	}
+		void AstVisitor::Visit(CppCaseStat* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppTypeOrExprOrOthers* node)
-	{
-		if (!node)
+		void AstVisitor::Visit(CppDefaultStat* node)
 		{
-			WriteNull();
-			return;
+			FillFields(node);
 		}
-		node->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
-	}
 
-	void AstVisitor::Print(CppStatement* node)
-	{
-		if (!node)
+		void AstVisitor::Visit(Cpp__LeaveStat* node)
 		{
-			WriteNull();
-			return;
+			FillFields(node);
 		}
-		node->Accept(static_cast<CppStatement::IVisitor*>(this));
-	}
 
-	void AstVisitor::Print(CppIdentifier* node)
-	{
-		if (!node)
+		void AstVisitor::Visit(CppWhileStat* node)
 		{
-			WriteNull();
-			return;
+			FillFields(node);
 		}
-		node->Accept(static_cast<CppIdentifier::IVisitor*>(this));
-	}
 
-	void AstVisitor::Print(CppDeclaratorFunctionPart* node)
-	{
-		if (!node)
+		void AstVisitor::Visit(CppDoWhileStat* node)
 		{
-			WriteNull();
-			return;
+			FillFields(node);
 		}
-		node->Accept(static_cast<CppDeclaratorFunctionPart::IVisitor*>(this));
-	}
 
-	void AstVisitor::Print(CppDeclarator* node)
-	{
-		if (!node)
+		void AstVisitor::Visit(CppIfElseStat* node)
 		{
-			WriteNull();
-			return;
+			FillFields(node);
 		}
-		node->Accept(static_cast<CppDeclarator::IVisitor*>(this));
-	}
 
-	void AstVisitor::Print(CppVarInit* node)
-	{
-		if (!node)
+		void AstVisitor::Visit(CppForStat* node)
 		{
-			WriteNull();
-			return;
+			FillFields(node);
 		}
-		node->Accept(static_cast<CppVarInit::IVisitor*>(this));
-	}
 
-	void AstVisitor::Print(CppDeclaratorVariablePart* node)
-	{
-		if (!node)
+		void AstVisitor::Visit(CppSwitchStat* node)
 		{
-			WriteNull();
-			return;
+			FillFields(node);
 		}
-		node->Accept(static_cast<CppDeclaratorVariablePart::IVisitor*>(this));
-	}
 
-	void AstVisitor::Print(CppForStatConditionPart* node)
-	{
-		if (!node)
+		void AstVisitor::Visit(CppTryStat* node)
 		{
-			WriteNull();
-			return;
+			FillFields(node);
 		}
-		node->Accept(static_cast<CppForStatConditionPart::IVisitor*>(this));
-	}
 
-	void AstVisitor::Print(CppGenericHeader* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"GenericHeader"), node);
-		PrintFields(static_cast<CppGenericHeader*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(Cpp__TryStat* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppFile* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"File"), node);
-		PrintFields(static_cast<CppFile*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppNameIdentifier* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppGenericArguments* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"GenericArguments"), node);
-		PrintFields(static_cast<CppGenericArguments*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppOperatorIdentifier* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppStringLiteralFragment* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"StringLiteralFragment"), node);
-		PrintFields(static_cast<CppStringLiteralFragment*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppOperatorTypeIdentifier* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppLambdaCapture* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"LambdaCapture"), node);
-		PrintFields(static_cast<CppLambdaCapture*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppDeclaratorFunctionPartToResolve* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppAdvancedType* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"AdvancedType"), node);
-		PrintFields(static_cast<CppAdvancedType*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppDeclaratorFunctionPartCommon* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppDeclaratorKeyword* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DeclaratorKeyword"), node);
-		PrintFields(static_cast<CppDeclaratorKeyword*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppDeclaratorToResolve* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppFunctionKeyword* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"FunctionKeyword"), node);
-		PrintFields(static_cast<CppFunctionKeyword*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppDeclaratorCommon* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppDeclaratorArrayPart* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DeclaratorArrayPart"), node);
-		PrintFields(static_cast<CppDeclaratorArrayPart*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppVarValueInit* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppVarStatInitItem* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"VarStatInitItem"), node);
-		PrintFields(static_cast<CppVarStatInitItem*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppVarParanthesisInit* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppClassInheritance* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ClassInheritance"), node);
-		PrintFields(static_cast<CppClassInheritance*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppVarBraceInit* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppClassMemberPart* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ClassMemberPart"), node);
-		PrintFields(static_cast<CppClassMemberPart*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppVarStatInit* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppClassBody* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ClassBody"), node);
-		PrintFields(static_cast<CppClassBody*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppDeclaratorVariablePartToResolve* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppEnumItem* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"EnumItem"), node);
-		PrintFields(static_cast<CppEnumItem*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppDeclaratorVariablePartCommon* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppEnumBody* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"EnumBody"), node);
-		PrintFields(static_cast<CppEnumBody*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppForStatLoopCondition* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppNamespaceName* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"NamespaceName"), node);
-		PrintFields(static_cast<CppNamespaceName*>(node));
-		EndObject();
-	}
+		void AstVisitor::Visit(CppForStatIterateCondition* node)
+		{
+			FillFields(node);
+		}
 
-	void AstVisitor::Print(CppTryStatCatchPart* node)
-	{
-		if (!node)
-		{
-			WriteNull();
-			return;
-		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"TryStatCatchPart"), node);
-		PrintFields(static_cast<CppTryStatCatchPart*>(node));
-		EndObject();
+		vl::Ptr<vl::glr::ParsingAstBase> AstVisitor::ReadJson(vl::glr::json::JsonObject* json)
+		{
+			auto typeName = ReadType(json);
+			if (typeName == L"TypeOrExprOrOthersToResolve")
+			{
+				auto node = vl::Ptr(new CppTypeOrExprOrOthersToResolve);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DeclarationToResolve")
+			{
+				auto node = vl::Ptr(new CppDeclarationToResolve);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"TypeOrExprToResolve")
+			{
+				auto node = vl::Ptr(new CppTypeOrExprToResolve);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"StatementToResolve")
+			{
+				auto node = vl::Ptr(new CppStatementToResolve);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"OrdinaryGenericParameter")
+			{
+				auto node = vl::Ptr(new CppOrdinaryGenericParameter);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"GenericHeader")
+			{
+				auto node = vl::Ptr(new CppGenericHeader);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"File")
+			{
+				auto node = vl::Ptr(new CppFile);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"NameIdentifier")
+			{
+				auto node = vl::Ptr(new CppNameIdentifier);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppIdentifier*>(node.Obj())->Accept(static_cast<CppIdentifier::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"OperatorIdentifier")
+			{
+				auto node = vl::Ptr(new CppOperatorIdentifier);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppIdentifier*>(node.Obj())->Accept(static_cast<CppIdentifier::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"OperatorTypeIdentifier")
+			{
+				auto node = vl::Ptr(new CppOperatorTypeIdentifier);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppIdentifier*>(node.Obj())->Accept(static_cast<CppIdentifier::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"GenericArgument")
+			{
+				auto node = vl::Ptr(new CppGenericArgument);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"GenericArguments")
+			{
+				auto node = vl::Ptr(new CppGenericArguments);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"QualifiedName")
+			{
+				auto node = vl::Ptr(new CppQualifiedName);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"PrimitiveExprLiteral")
+			{
+				auto node = vl::Ptr(new CppPrimitiveExprLiteral);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"NumericExprLiteral")
+			{
+				auto node = vl::Ptr(new CppNumericExprLiteral);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"StringLiteralFragment")
+			{
+				auto node = vl::Ptr(new CppStringLiteralFragment);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"StringLiteral")
+			{
+				auto node = vl::Ptr(new CppStringLiteral);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"LambdaCapture")
+			{
+				auto node = vl::Ptr(new CppLambdaCapture);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"LambdaExpr")
+			{
+				auto node = vl::Ptr(new CppLambdaExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ParenthesisExpr")
+			{
+				auto node = vl::Ptr(new CppParenthesisExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"BraceExpr")
+			{
+				auto node = vl::Ptr(new CppBraceExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"CastExpr")
+			{
+				auto node = vl::Ptr(new CppCastExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"SysFuncExpr")
+			{
+				auto node = vl::Ptr(new CppSysFuncExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"SizeofExpr")
+			{
+				auto node = vl::Ptr(new CppSizeofExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DeleteExpr")
+			{
+				auto node = vl::Ptr(new CppDeleteExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"NewExpr")
+			{
+				auto node = vl::Ptr(new CppNewExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"PrefixUnaryExpr")
+			{
+				auto node = vl::Ptr(new CppPrefixUnaryExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"PostfixUnaryExpr")
+			{
+				auto node = vl::Ptr(new CppPostfixUnaryExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"IndexExpr")
+			{
+				auto node = vl::Ptr(new CppIndexExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"CallExpr")
+			{
+				auto node = vl::Ptr(new CppCallExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"BinaryExpr")
+			{
+				auto node = vl::Ptr(new CppBinaryExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"IfExpr")
+			{
+				auto node = vl::Ptr(new CppIfExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ThrowExpr")
+			{
+				auto node = vl::Ptr(new CppThrowExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"VariadicExpr")
+			{
+				auto node = vl::Ptr(new CppVariadicExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"PrimitiveType")
+			{
+				auto node = vl::Ptr(new CppPrimitiveType);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ConstType")
+			{
+				auto node = vl::Ptr(new CppConstType);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"VolatileType")
+			{
+				auto node = vl::Ptr(new CppVolatileType);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"AdvancedType")
+			{
+				auto node = vl::Ptr(new CppAdvancedType);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DeclaratorKeyword")
+			{
+				auto node = vl::Ptr(new CppDeclaratorKeyword);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"FunctionKeyword")
+			{
+				auto node = vl::Ptr(new CppFunctionKeyword);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DeclaratorFunctionPartToResolve")
+			{
+				auto node = vl::Ptr(new CppDeclaratorFunctionPartToResolve);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppDeclaratorFunctionPart*>(node.Obj())->Accept(static_cast<CppDeclaratorFunctionPart::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DeclaratorFunctionPartCommon")
+			{
+				auto node = vl::Ptr(new CppDeclaratorFunctionPartCommon);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppDeclaratorFunctionPart*>(node.Obj())->Accept(static_cast<CppDeclaratorFunctionPart::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DeclaratorArrayPart")
+			{
+				auto node = vl::Ptr(new CppDeclaratorArrayPart);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DeclaratorToResolve")
+			{
+				auto node = vl::Ptr(new CppDeclaratorToResolve);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppDeclarator*>(node.Obj())->Accept(static_cast<CppDeclarator::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DeclaratorCommon")
+			{
+				auto node = vl::Ptr(new CppDeclaratorCommon);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppDeclarator*>(node.Obj())->Accept(static_cast<CppDeclarator::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DeclaratorType")
+			{
+				auto node = vl::Ptr(new CppDeclaratorType);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"VarValueInit")
+			{
+				auto node = vl::Ptr(new CppVarValueInit);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppVarInit*>(node.Obj())->Accept(static_cast<CppVarInit::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"VarParanthesisInit")
+			{
+				auto node = vl::Ptr(new CppVarParanthesisInit);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppVarInit*>(node.Obj())->Accept(static_cast<CppVarInit::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"VarBraceInit")
+			{
+				auto node = vl::Ptr(new CppVarBraceInit);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppVarInit*>(node.Obj())->Accept(static_cast<CppVarInit::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"VarStatInitItem")
+			{
+				auto node = vl::Ptr(new CppVarStatInitItem);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"VarStatInit")
+			{
+				auto node = vl::Ptr(new CppVarStatInit);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppVarInit*>(node.Obj())->Accept(static_cast<CppVarInit::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DeclaratorVariablePartToResolve")
+			{
+				auto node = vl::Ptr(new CppDeclaratorVariablePartToResolve);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppDeclaratorVariablePart*>(node.Obj())->Accept(static_cast<CppDeclaratorVariablePart::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DeclaratorVariablePartCommon")
+			{
+				auto node = vl::Ptr(new CppDeclaratorVariablePartCommon);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppDeclaratorVariablePart*>(node.Obj())->Accept(static_cast<CppDeclaratorVariablePart::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"VariablesDeclaration")
+			{
+				auto node = vl::Ptr(new CppVariablesDeclaration);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ClassInheritance")
+			{
+				auto node = vl::Ptr(new CppClassInheritance);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ClassMemberPart")
+			{
+				auto node = vl::Ptr(new CppClassMemberPart);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ClassBody")
+			{
+				auto node = vl::Ptr(new CppClassBody);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ClassDeclaration")
+			{
+				auto node = vl::Ptr(new CppClassDeclaration);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"EnumItem")
+			{
+				auto node = vl::Ptr(new CppEnumItem);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"EnumBody")
+			{
+				auto node = vl::Ptr(new CppEnumBody);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"EnumDeclaration")
+			{
+				auto node = vl::Ptr(new CppEnumDeclaration);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"TemplateDeclaration")
+			{
+				auto node = vl::Ptr(new CppTemplateDeclaration);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"StaticAssertDeclaration")
+			{
+				auto node = vl::Ptr(new CppStaticAssertDeclaration);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"TypedefDeclaration")
+			{
+				auto node = vl::Ptr(new CppTypedefDeclaration);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ExternDeclaration")
+			{
+				auto node = vl::Ptr(new CppExternDeclaration);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"NamespaceName")
+			{
+				auto node = vl::Ptr(new CppNamespaceName);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"NamespaceDeclaration")
+			{
+				auto node = vl::Ptr(new CppNamespaceDeclaration);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"UsingNamespaceDeclaration")
+			{
+				auto node = vl::Ptr(new CppUsingNamespaceDeclaration);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"UsingValueDeclaration")
+			{
+				auto node = vl::Ptr(new CppUsingValueDeclaration);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"UsingTypeDeclaration")
+			{
+				auto node = vl::Ptr(new CppUsingTypeDeclaration);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"FriendTypeDeclaration")
+			{
+				auto node = vl::Ptr(new CppFriendTypeDeclaration);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppTypeOrExprOrOthers*>(node.Obj())->Accept(static_cast<CppTypeOrExprOrOthers::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"EmptyStat")
+			{
+				auto node = vl::Ptr(new CppEmptyStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"BlockStat")
+			{
+				auto node = vl::Ptr(new CppBlockStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ExprStat")
+			{
+				auto node = vl::Ptr(new CppExprStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DeclStat")
+			{
+				auto node = vl::Ptr(new CppDeclStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"BreakStat")
+			{
+				auto node = vl::Ptr(new CppBreakStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ContinueStat")
+			{
+				auto node = vl::Ptr(new CppContinueStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ReturnStat")
+			{
+				auto node = vl::Ptr(new CppReturnStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"LabelStat")
+			{
+				auto node = vl::Ptr(new CppLabelStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"GotoStat")
+			{
+				auto node = vl::Ptr(new CppGotoStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"CaseStat")
+			{
+				auto node = vl::Ptr(new CppCaseStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DefaultStat")
+			{
+				auto node = vl::Ptr(new CppDefaultStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"__LeaveStat")
+			{
+				auto node = vl::Ptr(new Cpp__LeaveStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"WhileStat")
+			{
+				auto node = vl::Ptr(new CppWhileStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DoWhileStat")
+			{
+				auto node = vl::Ptr(new CppDoWhileStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"IfElseStat")
+			{
+				auto node = vl::Ptr(new CppIfElseStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ForStatLoopCondition")
+			{
+				auto node = vl::Ptr(new CppForStatLoopCondition);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppForStatConditionPart*>(node.Obj())->Accept(static_cast<CppForStatConditionPart::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ForStatIterateCondition")
+			{
+				auto node = vl::Ptr(new CppForStatIterateCondition);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppForStatConditionPart*>(node.Obj())->Accept(static_cast<CppForStatConditionPart::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ForStat")
+			{
+				auto node = vl::Ptr(new CppForStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"SwitchStat")
+			{
+				auto node = vl::Ptr(new CppSwitchStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"TryStatCatchPart")
+			{
+				auto node = vl::Ptr(new CppTryStatCatchPart);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"TryStat")
+			{
+				auto node = vl::Ptr(new CppTryStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"__TryStat")
+			{
+				auto node = vl::Ptr(new Cpp__TryStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<CppStatement*>(node.Obj())->Accept(static_cast<CppStatement::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			throw vl::Exception(L"AST JSON field \"$ast\" contains an unknown or abstract type \"" + typeName + L"\".");
+		}
 	}
-
 }

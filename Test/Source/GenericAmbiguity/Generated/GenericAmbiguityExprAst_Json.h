@@ -4,43 +4,95 @@ From parser definition:ExprAst
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_UNITTEST_GENERICAMBIGUITY_EXPRAST_AST_JSON_VISITOR
-#define VCZH_PARSER2_UNITTEST_GENERICAMBIGUITY_EXPRAST_AST_JSON_VISITOR
+#ifndef VCZH_PARSER2_UNITTEST_GENERICAMBIGUITY_EXPRAST_AST_JSON
+#define VCZH_PARSER2_UNITTEST_GENERICAMBIGUITY_EXPRAST_AST_JSON
 
 #include "GenericAmbiguityExprAst.h"
+#include "../../../../Source/Json/Generated/JsonAst.h"
 
-namespace genericambiguity::json_visitor
+namespace genericambiguity
 {
-	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-	class ExprAstVisitor
-		: public vl::glr::JsonVisitorBase
-		, protected virtual Expr::IVisitor
+	namespace json_visitor
 	{
-	protected:
-		virtual void PrintFields(BinaryExpr* node);
-		virtual void PrintFields(CallExpr* node);
-		virtual void PrintFields(DecrementExpr* node);
-		virtual void PrintFields(Expr* node);
-		virtual void PrintFields(ExprToResolve* node);
-		virtual void PrintFields(GenericExpr* node);
-		virtual void PrintFields(Module* node);
-		virtual void PrintFields(PostfixExpr* node);
-		virtual void PrintFields(RefExpr* node);
+		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+		class ExprAstVisitor
+			: public vl::glr::JsonVisitorBase
+			, protected virtual Expr::IVisitor
+		{
+		protected:
+			virtual void PrintFields(BinaryExpr* node);
+			virtual void PrintFields(CallExpr* node);
+			virtual void PrintFields(DecrementExpr* node);
+			virtual void PrintFields(Expr* node);
+			virtual void PrintFields(ExprToResolve* node);
+			virtual void PrintFields(GenericExpr* node);
+			virtual void PrintFields(Module* node);
+			virtual void PrintFields(PostfixExpr* node);
+			virtual void PrintFields(RefExpr* node);
 
-	protected:
-		void Visit(ExprToResolve* node) override;
-		void Visit(RefExpr* node) override;
-		void Visit(GenericExpr* node) override;
-		void Visit(CallExpr* node) override;
-		void Visit(PostfixExpr* node) override;
-		void Visit(DecrementExpr* node) override;
-		void Visit(BinaryExpr* node) override;
+		protected:
+			void Visit(ExprToResolve* node) override;
+			void Visit(RefExpr* node) override;
+			void Visit(GenericExpr* node) override;
+			void Visit(CallExpr* node) override;
+			void Visit(PostfixExpr* node) override;
+			void Visit(DecrementExpr* node) override;
+			void Visit(BinaryExpr* node) override;
 
-	public:
-		ExprAstVisitor(vl::stream::StreamWriter& _writer);
+		public:
+			ExprAstVisitor(vl::stream::StreamWriter& _writer);
 
-		void Print(Expr* node);
-		void Print(Module* node);
-	};
+			void Print(Expr* node);
+			void Print(Module* node);
+		};
+	}
+
+	namespace json_reader
+	{
+		/// <summary>A JSON reader, overriding all abstract methods with JSON to AST deserialization code.</summary>
+		class ExprAstVisitor
+			: protected virtual Expr::IVisitor
+		{
+		protected:
+			class JsonObjectScope
+			{
+			protected:
+				vl::collections::List<vl::glr::json::JsonObject*>& jsonObjects;
+
+			public:
+				JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json);
+				~JsonObjectScope();
+			};
+
+			vl::collections::List<vl::glr::json::JsonObject*> jsonObjects;
+			vl::glr::json::JsonObject* CurrentObject();
+			vl::glr::json::JsonNode* FindField(const vl::WString& name);
+			bool IsNull(vl::glr::json::JsonNode* value);
+			vl::WString ReadType(vl::glr::json::JsonObject* json);
+			void ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName);
+
+			virtual void FillFields(BinaryExpr* node);
+			virtual void FillFields(CallExpr* node);
+			virtual void FillFields(DecrementExpr* node);
+			virtual void FillFields(Expr* node);
+			virtual void FillFields(ExprToResolve* node);
+			virtual void FillFields(GenericExpr* node);
+			virtual void FillFields(Module* node);
+			virtual void FillFields(PostfixExpr* node);
+			virtual void FillFields(RefExpr* node);
+
+		protected:
+			void Visit(ExprToResolve* node) override;
+			void Visit(RefExpr* node) override;
+			void Visit(GenericExpr* node) override;
+			void Visit(CallExpr* node) override;
+			void Visit(PostfixExpr* node) override;
+			void Visit(DecrementExpr* node) override;
+			void Visit(BinaryExpr* node) override;
+
+		public:
+			vl::Ptr<vl::glr::ParsingAstBase> ReadJson(vl::glr::json::JsonObject* json);
+		};
+	}
 }
 #endif

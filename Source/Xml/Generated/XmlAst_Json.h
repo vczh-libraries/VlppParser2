@@ -4,41 +4,91 @@ From parser definition:Ast
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_BUILTIN_XML_AST_AST_JSON_VISITOR
-#define VCZH_PARSER2_BUILTIN_XML_AST_AST_JSON_VISITOR
+#ifndef VCZH_PARSER2_BUILTIN_XML_AST_AST_JSON
+#define VCZH_PARSER2_BUILTIN_XML_AST_AST_JSON
 
 #include "XmlAst.h"
+#include "../../Json/Generated/JsonAst.h"
 
-namespace vl::glr::xml::json_visitor
+namespace vl::glr::xml
 {
-	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-	class AstVisitor
-		: public vl::glr::JsonVisitorBase
-		, protected virtual XmlNode::IVisitor
+	namespace json_visitor
 	{
-	protected:
-		virtual void PrintFields(XmlAttribute* node);
-		virtual void PrintFields(XmlCData* node);
-		virtual void PrintFields(XmlComment* node);
-		virtual void PrintFields(XmlDocument* node);
-		virtual void PrintFields(XmlElement* node);
-		virtual void PrintFields(XmlInstruction* node);
-		virtual void PrintFields(XmlNode* node);
-		virtual void PrintFields(XmlText* node);
+		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+		class AstVisitor
+			: public vl::glr::JsonVisitorBase
+			, protected virtual XmlNode::IVisitor
+		{
+		protected:
+			virtual void PrintFields(XmlAttribute* node);
+			virtual void PrintFields(XmlCData* node);
+			virtual void PrintFields(XmlComment* node);
+			virtual void PrintFields(XmlDocument* node);
+			virtual void PrintFields(XmlElement* node);
+			virtual void PrintFields(XmlInstruction* node);
+			virtual void PrintFields(XmlNode* node);
+			virtual void PrintFields(XmlText* node);
 
-	protected:
-		void Visit(XmlText* node) override;
-		void Visit(XmlCData* node) override;
-		void Visit(XmlComment* node) override;
-		void Visit(XmlElement* node) override;
-		void Visit(XmlInstruction* node) override;
-		void Visit(XmlDocument* node) override;
+		protected:
+			void Visit(XmlText* node) override;
+			void Visit(XmlCData* node) override;
+			void Visit(XmlComment* node) override;
+			void Visit(XmlElement* node) override;
+			void Visit(XmlInstruction* node) override;
+			void Visit(XmlDocument* node) override;
 
-	public:
-		AstVisitor(vl::stream::StreamWriter& _writer);
+		public:
+			AstVisitor(vl::stream::StreamWriter& _writer);
 
-		void Print(XmlNode* node);
-		void Print(XmlAttribute* node);
-	};
+			void Print(XmlNode* node);
+			void Print(XmlAttribute* node);
+		};
+	}
+
+	namespace json_reader
+	{
+		/// <summary>A JSON reader, overriding all abstract methods with JSON to AST deserialization code.</summary>
+		class AstVisitor
+			: protected virtual XmlNode::IVisitor
+		{
+		protected:
+			class JsonObjectScope
+			{
+			protected:
+				vl::collections::List<vl::glr::json::JsonObject*>& jsonObjects;
+
+			public:
+				JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json);
+				~JsonObjectScope();
+			};
+
+			vl::collections::List<vl::glr::json::JsonObject*> jsonObjects;
+			vl::glr::json::JsonObject* CurrentObject();
+			vl::glr::json::JsonNode* FindField(const vl::WString& name);
+			bool IsNull(vl::glr::json::JsonNode* value);
+			vl::WString ReadType(vl::glr::json::JsonObject* json);
+			void ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName);
+
+			virtual void FillFields(XmlAttribute* node);
+			virtual void FillFields(XmlCData* node);
+			virtual void FillFields(XmlComment* node);
+			virtual void FillFields(XmlDocument* node);
+			virtual void FillFields(XmlElement* node);
+			virtual void FillFields(XmlInstruction* node);
+			virtual void FillFields(XmlNode* node);
+			virtual void FillFields(XmlText* node);
+
+		protected:
+			void Visit(XmlText* node) override;
+			void Visit(XmlCData* node) override;
+			void Visit(XmlComment* node) override;
+			void Visit(XmlElement* node) override;
+			void Visit(XmlInstruction* node) override;
+			void Visit(XmlDocument* node) override;
+
+		public:
+			vl::Ptr<vl::glr::ParsingAstBase> ReadJson(vl::glr::json::JsonObject* json);
+		};
+	}
 }
 #endif

@@ -6,174 +6,464 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "ParserGenTypeAst_Json.h"
 
-namespace vl::glr::parsergen::json_visitor
+namespace vl::glr::parsergen
 {
-	void TypeAstVisitor::PrintFields(GlrAstFile* node)
+	namespace json_visitor
 	{
-		BeginField(vl::WString::Unmanaged(L"types"));
-		BeginArray();
-		for (auto&& listItem : node->types)
+		void TypeAstVisitor::PrintFields(GlrAstFile* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"types"));
+			BeginArray();
+			for (auto&& listItem : node->types)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
 		}
-		EndArray();
-		EndField();
-	}
-	void TypeAstVisitor::PrintFields(GlrClass* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"attAmbiguous"));
-		WriteToken(node->attAmbiguous);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"baseClass"));
-		WriteToken(node->baseClass);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"props"));
-		BeginArray();
-		for (auto&& listItem : node->props)
+		void TypeAstVisitor::PrintFields(GlrClass* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"attAmbiguous"));
+			WriteToken(node->attAmbiguous);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"baseClass"));
+			WriteToken(node->baseClass);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"props"));
+			BeginArray();
+			for (auto&& listItem : node->props)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
 		}
-		EndArray();
-		EndField();
-	}
-	void TypeAstVisitor::PrintFields(GlrClassProp* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"propType"));
-		switch (node->propType)
+		void TypeAstVisitor::PrintFields(GlrClassProp* node)
 		{
-		case vl::glr::parsergen::GlrPropType::Array:
-			WriteString(vl::WString::Unmanaged(L"Array"));
-			break;
-		case vl::glr::parsergen::GlrPropType::Token:
-			WriteString(vl::WString::Unmanaged(L"Token"));
-			break;
-		case vl::glr::parsergen::GlrPropType::Type:
-			WriteString(vl::WString::Unmanaged(L"Type"));
-			break;
-		default:
-			WriteNull();
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"propType"));
+			switch (node->propType)
+			{
+			case vl::glr::parsergen::GlrPropType::Array:
+				WriteString(vl::WString::Unmanaged(L"Array"));
+				break;
+			case vl::glr::parsergen::GlrPropType::Token:
+				WriteString(vl::WString::Unmanaged(L"Token"));
+				break;
+			case vl::glr::parsergen::GlrPropType::Type:
+				WriteString(vl::WString::Unmanaged(L"Type"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"propTypeName"));
+			WriteToken(node->propTypeName);
+			EndField();
 		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"propTypeName"));
-		WriteToken(node->propTypeName);
-		EndField();
-	}
-	void TypeAstVisitor::PrintFields(GlrEnum* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"items"));
-		BeginArray();
-		for (auto&& listItem : node->items)
+		void TypeAstVisitor::PrintFields(GlrEnum* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"items"));
+			BeginArray();
+			for (auto&& listItem : node->items)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
 		}
-		EndArray();
-		EndField();
-	}
-	void TypeAstVisitor::PrintFields(GlrEnumItem* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-	}
-	void TypeAstVisitor::PrintFields(GlrType* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"attPublic"));
-		WriteToken(node->attPublic);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
+		void TypeAstVisitor::PrintFields(GlrEnumItem* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+		void TypeAstVisitor::PrintFields(GlrType* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"attPublic"));
+			WriteToken(node->attPublic);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+
+		void TypeAstVisitor::Visit(GlrEnum* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Enum"), node);
+			PrintFields(static_cast<GlrType*>(node));
+			PrintFields(static_cast<GlrEnum*>(node));
+			EndObject();
+		}
+
+		void TypeAstVisitor::Visit(GlrClass* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Class"), node);
+			PrintFields(static_cast<GlrType*>(node));
+			PrintFields(static_cast<GlrClass*>(node));
+			EndObject();
+		}
+
+		TypeAstVisitor::TypeAstVisitor(vl::stream::StreamWriter& _writer)
+			: vl::glr::JsonVisitorBase(_writer)
+		{
+		}
+
+		void TypeAstVisitor::Print(GlrType* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<GlrType::IVisitor*>(this));
+		}
+
+		void TypeAstVisitor::Print(GlrEnumItem* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"EnumItem"), node);
+			PrintFields(static_cast<GlrEnumItem*>(node));
+			EndObject();
+		}
+
+		void TypeAstVisitor::Print(GlrClassProp* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ClassProp"), node);
+			PrintFields(static_cast<GlrClassProp*>(node));
+			EndObject();
+		}
+
+		void TypeAstVisitor::Print(GlrAstFile* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"AstFile"), node);
+			PrintFields(static_cast<GlrAstFile*>(node));
+			EndObject();
+		}
+
 	}
 
-	void TypeAstVisitor::Visit(GlrEnum* node)
+	namespace json_reader
 	{
-		if (!node)
+		TypeAstVisitor::JsonObjectScope::JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json)
+			: jsonObjects(_jsonObjects)
 		{
-			WriteNull();
-			return;
+			jsonObjects.Add(json);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Enum"), node);
-		PrintFields(static_cast<GlrType*>(node));
-		PrintFields(static_cast<GlrEnum*>(node));
-		EndObject();
-	}
 
-	void TypeAstVisitor::Visit(GlrClass* node)
-	{
-		if (!node)
+		TypeAstVisitor::JsonObjectScope::~JsonObjectScope()
 		{
-			WriteNull();
-			return;
+			jsonObjects.RemoveAt(jsonObjects.Count() - 1);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Class"), node);
-		PrintFields(static_cast<GlrType*>(node));
-		PrintFields(static_cast<GlrClass*>(node));
-		EndObject();
-	}
 
-	TypeAstVisitor::TypeAstVisitor(vl::stream::StreamWriter& _writer)
-		: vl::glr::JsonVisitorBase(_writer)
-	{
-	}
-
-	void TypeAstVisitor::Print(GlrType* node)
-	{
-		if (!node)
+		vl::glr::json::JsonObject* TypeAstVisitor::CurrentObject()
 		{
-			WriteNull();
-			return;
+			return jsonObjects[jsonObjects.Count() - 1];
 		}
-		node->Accept(static_cast<GlrType::IVisitor*>(this));
-	}
 
-	void TypeAstVisitor::Print(GlrEnumItem* node)
-	{
-		if (!node)
+		vl::glr::json::JsonNode* TypeAstVisitor::FindField(const vl::WString& name)
 		{
-			WriteNull();
-			return;
+			for (auto field : CurrentObject()->fields)
+			{
+				if (field && field->name.value == name) return field->value.Obj();
+			}
+			return nullptr;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"EnumItem"), node);
-		PrintFields(static_cast<GlrEnumItem*>(node));
-		EndObject();
-	}
 
-	void TypeAstVisitor::Print(GlrClassProp* node)
-	{
-		if (!node)
+		bool TypeAstVisitor::IsNull(vl::glr::json::JsonNode* value)
 		{
-			WriteNull();
-			return;
+			auto literal = dynamic_cast<vl::glr::json::JsonLiteral*>(value);
+			return literal && literal->value == vl::glr::json::JsonLiteralValue::Null;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ClassProp"), node);
-		PrintFields(static_cast<GlrClassProp*>(node));
-		EndObject();
-	}
 
-	void TypeAstVisitor::Print(GlrAstFile* node)
-	{
-		if (!node)
+		vl::WString TypeAstVisitor::ReadType(vl::glr::json::JsonObject* json)
 		{
-			WriteNull();
-			return;
+			if (!json) throw vl::Exception(L"AST JSON object cannot be null.");
+			bool typeFound = false;
+			vl::WString typeName;
+			for (auto field : json->fields)
+			{
+				if (field && field->name.value == L"$ast")
+				{
+					if (typeFound) throw vl::Exception(L"AST JSON object contains duplicate \"$ast\" fields.");
+					typeFound = true;
+					auto jsonString = field->value.Cast<vl::glr::json::JsonString>();
+					if (!jsonString) throw vl::Exception(L"AST JSON field \"$ast\" must be a string.");
+					typeName = jsonString->content.value;
+				}
+			}
+			if (!typeFound) throw vl::Exception(L"AST JSON object is missing field \"$ast\".");
+			return typeName;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"AstFile"), node);
-		PrintFields(static_cast<GlrAstFile*>(node));
-		EndObject();
-	}
 
+		void TypeAstVisitor::ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName)
+		{
+			vl::collections::List<vl::WString> fieldNames;
+			for (auto field : json->fields)
+			{
+				if (!field || !field->value) throw vl::Exception(L"AST JSON object contains an invalid field.");
+				auto name = field->name.value;
+				if (fieldNames.Contains(name)) throw vl::Exception(L"AST JSON object contains duplicate field \"" + name + L"\".");
+				fieldNames.Add(name);
+				bool fieldFound = name == L"$ast";
+				if (typeName == L"EnumItem")
+				{
+					fieldFound = fieldFound || name == L"name";
+				}
+				else if (typeName == L"Enum")
+				{
+					fieldFound = fieldFound || name == L"attPublic";
+					fieldFound = fieldFound || name == L"name";
+					fieldFound = fieldFound || name == L"items";
+				}
+				else if (typeName == L"ClassProp")
+				{
+					fieldFound = fieldFound || name == L"name";
+					fieldFound = fieldFound || name == L"propType";
+					fieldFound = fieldFound || name == L"propTypeName";
+				}
+				else if (typeName == L"Class")
+				{
+					fieldFound = fieldFound || name == L"attPublic";
+					fieldFound = fieldFound || name == L"name";
+					fieldFound = fieldFound || name == L"attAmbiguous";
+					fieldFound = fieldFound || name == L"baseClass";
+					fieldFound = fieldFound || name == L"props";
+				}
+				else if (typeName == L"AstFile")
+				{
+					fieldFound = fieldFound || name == L"types";
+				}
+				if (!fieldFound) throw vl::Exception(L"AST JSON object contains unknown field \"" + name + L"\" for type \"" + typeName + L"\".");
+			}
+		}
+
+		void TypeAstVisitor::FillFields(GlrAstFile* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"types")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"types\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->types.Add(vl::Ptr<GlrType>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<GlrType>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"types\" contains an incompatible AST type.");
+						node->types.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"types\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void TypeAstVisitor::FillFields(GlrClass* node)
+		{
+			FillFields(static_cast<GlrType*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"attAmbiguous")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"attAmbiguous\" must be a string.");
+				node->attAmbiguous.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"baseClass")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"baseClass\" must be a string.");
+				node->baseClass.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"props")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"props\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->props.Add(vl::Ptr<GlrClassProp>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<GlrClassProp>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"props\" contains an incompatible AST type.");
+						node->props.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"props\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void TypeAstVisitor::FillFields(GlrClassProp* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+			node->propType = GlrPropType::Token;
+			if (auto value = FindField(vl::WString::Unmanaged(L"propType")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"propType\" must be a string.");
+				if (jsonString->content.value == L"Token") node->propType = GlrPropType::Token;
+				else if (jsonString->content.value == L"Type") node->propType = GlrPropType::Type;
+				else if (jsonString->content.value == L"Array") node->propType = GlrPropType::Array;
+				else throw vl::Exception(L"AST JSON field \"propType\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"propTypeName")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"propTypeName\" must be a string.");
+				node->propTypeName.value = jsonString->content.value;
+			}
+		}
+
+		void TypeAstVisitor::FillFields(GlrEnum* node)
+		{
+			FillFields(static_cast<GlrType*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"items")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"items\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->items.Add(vl::Ptr<GlrEnumItem>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<GlrEnumItem>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"items\" contains an incompatible AST type.");
+						node->items.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"items\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void TypeAstVisitor::FillFields(GlrEnumItem* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+		}
+
+		void TypeAstVisitor::FillFields(GlrType* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"attPublic")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"attPublic\" must be a string.");
+				node->attPublic.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+		}
+
+		void TypeAstVisitor::Visit(GlrEnum* node)
+		{
+			FillFields(node);
+		}
+
+		void TypeAstVisitor::Visit(GlrClass* node)
+		{
+			FillFields(node);
+		}
+
+		vl::Ptr<vl::glr::ParsingAstBase> TypeAstVisitor::ReadJson(vl::glr::json::JsonObject* json)
+		{
+			auto typeName = ReadType(json);
+			if (typeName == L"EnumItem")
+			{
+				auto node = vl::Ptr(new GlrEnumItem);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Enum")
+			{
+				auto node = vl::Ptr(new GlrEnum);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrType*>(node.Obj())->Accept(static_cast<GlrType::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ClassProp")
+			{
+				auto node = vl::Ptr(new GlrClassProp);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Class")
+			{
+				auto node = vl::Ptr(new GlrClass);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<GlrType*>(node.Obj())->Accept(static_cast<GlrType::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"AstFile")
+			{
+				auto node = vl::Ptr(new GlrAstFile);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			throw vl::Exception(L"AST JSON field \"$ast\" contains an unknown or abstract type \"" + typeName + L"\".");
+		}
+	}
 }

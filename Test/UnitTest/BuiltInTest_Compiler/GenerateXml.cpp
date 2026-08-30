@@ -17,6 +17,7 @@ TEST_FILE
 
 	global.name = L"Xml";
 	Fill(global.astIncludes, L"../../AstBase.h");
+	Fill(global.jsonIncludes, L"../../Json/Generated/JsonAst.h");
 	Fill(global.syntaxIncludes, L"../../SyntaxBase.h");
 	Fill(global.cppNss, L"vl", L"glr", L"xml");
 	global.headerGuard = L"VCZH_PARSER2_BUILTIN_XML";

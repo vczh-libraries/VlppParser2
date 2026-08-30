@@ -38,7 +38,7 @@ These files are present in the runtime-only release. They do not depend on parse
 | [`Ast/AstCppGen_EmptyVisitor.cpp`](../Source/Ast/AstCppGen_EmptyVisitor.cpp) | Emits no-op visitor bases for selective overrides. |
 | [`Ast/AstCppGen_CopyVisitor.cpp`](../Source/Ast/AstCppGen_CopyVisitor.cpp) | Emits deep-copy traversal for tokens, objects, arrays, enums, and source ranges. |
 | [`Ast/AstCppGen_TraverseVisitor.cpp`](../Source/Ast/AstCppGen_TraverseVisitor.cpp) | Emits generic traversal hooks in base-to-derived order and finishing hooks in reverse order. |
-| [`Ast/AstCppGen_JsonVisitor.cpp`](../Source/Ast/AstCppGen_JsonVisitor.cpp) | Emits AST-to-JSON visitors and TypeScript declarations, including discriminants, unions, nullable references, and range options. |
+| [`Ast/AstCppGen_JsonVisitor.cpp`](../Source/Ast/AstCppGen_JsonVisitor.cpp) | Emits AST-to-JSON writers, compact JSON-to-AST readers, and TypeScript declarations. Reader generation owns direct type/enum/field dispatch, inherited filling, recursive typed conversion, validation, and missing-field defaults. |
 
 The assembler writer is a stage boundary, not only a text emitter: it fills `CppParserGenOutput::classIds` and `fieldIds`, which syntax lowering consumes later.
 
@@ -200,7 +200,7 @@ These files are generated through the staged workflow described in [Bootstrappin
 | Files | Responsibility |
 | --- | --- |
 | [`Json/Syntax/Ast.txt`](../Source/Json/Syntax/Ast.txt), [`Lexer.txt`](../Source/Json/Syntax/Lexer.txt), [`Syntax.txt`](../Source/Json/Syntax/Syntax.txt) | Declarative JSON AST, tokens, and grammar. |
-| [`Json/Generated`](../Source/Json/Generated) | Generated JSON AST, utilities, lexer, assembler, and parser. |
+| [`Json/Generated`](../Source/Json/Generated) | Generated JSON AST, utilities, lexer, assembler, and parser. The JSON AST declarations are the DOM dependency imported by generated optional `_Json` utilities; core generated AST headers do not acquire this dependency. |
 | [`Json/GlrJson.h`](../Source/Json/GlrJson.h), [`Json/GlrJson.cpp`](../Source/Json/GlrJson.cpp) | Stable wrapper: parsing with string/name unescaping, configurable printing, and node-list serialization. |
 
 The wrapper owns domain semantics that should not be forced into the generic grammar runtime. In particular, generated token fields retain source spelling; `JsonUnescapeVisitor` converts quoted JSON strings into client values after parsing.

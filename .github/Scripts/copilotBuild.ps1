@@ -20,6 +20,7 @@ Remove-Item -Path $logFile, $logFileUnfinished -Force -ErrorAction SilentlyConti
 # Find the solution folder by looking for *.sln files
 $solutionFolder = GetSolutionDir
 $solutionFile = "$solutionFolder\$((Get-ChildItem -Path $solutionFolder -Filter "*.sln" -ErrorAction SilentlyContinue)[0].Name)"
+$solutionPlatform = if ($Platform -eq "Win32") { "x86" } else { $Platform }
 
 $vsdevcmd = $env:VLPP_VSDEVCMD_PATH
 if ($vsdevcmd -eq $null) {
@@ -29,7 +30,7 @@ if ($vsdevcmd -eq $null) {
 }
 
 # Execute MSBuild with output to both console and log file
-$msbuild_arguments = "MSBUILD `"$solutionFile`" /m:8 $rebuildControl /p:Configuration=`"$Configuration`";Platform=`"$Platform`""
+$msbuild_arguments = "MSBUILD `"$solutionFile`" /m:8 $rebuildControl /p:Configuration=`"$Configuration`";Platform=`"$solutionPlatform`""
 $cmd_arguments = "`"`"$vsdevcmd`" & $msbuild_arguments"
 
 $commandLine = "/c $cmd_arguments"

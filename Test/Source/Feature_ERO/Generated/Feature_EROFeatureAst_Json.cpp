@@ -6,114 +6,318 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "Feature_EROFeatureAst_Json.h"
 
-namespace feature_ero::json_visitor
+namespace feature_ero
 {
-	void FeatureAstVisitor::PrintFields(BranchedOptionalFeature* node)
+	namespace json_visitor
 	{
-		BeginField(vl::WString::Unmanaged(L"optional"));
-		Print(node->optional.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"tails"));
-		BeginArray();
-		for (auto&& listItem : node->tails)
+		void FeatureAstVisitor::PrintFields(BranchedOptionalFeature* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"optional"));
+			Print(node->optional.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"tails"));
+			BeginArray();
+			for (auto&& listItem : node->tails)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"type"));
+			switch (node->type)
+			{
+			case feature_ero::BranchType::Minus:
+				WriteString(vl::WString::Unmanaged(L"Minus"));
+				break;
+			case feature_ero::BranchType::NoCompetition:
+				WriteString(vl::WString::Unmanaged(L"NoCompetition"));
+				break;
+			case feature_ero::BranchType::Plus:
+				WriteString(vl::WString::Unmanaged(L"Plus"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
 		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"type"));
-		switch (node->type)
+		void FeatureAstVisitor::PrintFields(Feature* node)
 		{
-		case feature_ero::BranchType::Minus:
-			WriteString(vl::WString::Unmanaged(L"Minus"));
-			break;
-		case feature_ero::BranchType::NoCompetition:
-			WriteString(vl::WString::Unmanaged(L"NoCompetition"));
-			break;
-		case feature_ero::BranchType::Plus:
-			WriteString(vl::WString::Unmanaged(L"Plus"));
-			break;
-		default:
-			WriteNull();
 		}
-		EndField();
-	}
-	void FeatureAstVisitor::PrintFields(Feature* node)
-	{
-	}
-	void FeatureAstVisitor::PrintFields(FeatureToResolve* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"candidates"));
-		BeginArray();
-		for (auto&& listItem : node->candidates)
+		void FeatureAstVisitor::PrintFields(FeatureToResolve* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"candidates"));
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
 		}
-		EndArray();
-		EndField();
-	}
-	void FeatureAstVisitor::PrintFields(Plus* node)
-	{
+		void FeatureAstVisitor::PrintFields(Plus* node)
+		{
+		}
+
+		void FeatureAstVisitor::Visit(FeatureToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"FeatureToResolve"), node);
+			PrintFields(static_cast<Feature*>(node));
+			PrintFields(static_cast<FeatureToResolve*>(node));
+			EndObject();
+		}
+
+		void FeatureAstVisitor::Visit(BranchedOptionalFeature* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"BranchedOptionalFeature"), node);
+			PrintFields(static_cast<Feature*>(node));
+			PrintFields(static_cast<BranchedOptionalFeature*>(node));
+			EndObject();
+		}
+
+		FeatureAstVisitor::FeatureAstVisitor(vl::stream::StreamWriter& _writer)
+			: vl::glr::JsonVisitorBase(_writer)
+		{
+		}
+
+		void FeatureAstVisitor::Print(Feature* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<Feature::IVisitor*>(this));
+		}
+
+		void FeatureAstVisitor::Print(Plus* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Plus"), node);
+			PrintFields(static_cast<Plus*>(node));
+			EndObject();
+		}
+
 	}
 
-	void FeatureAstVisitor::Visit(FeatureToResolve* node)
+	namespace json_reader
 	{
-		if (!node)
+		FeatureAstVisitor::JsonObjectScope::JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json)
+			: jsonObjects(_jsonObjects)
 		{
-			WriteNull();
-			return;
+			jsonObjects.Add(json);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"FeatureToResolve"), node);
-		PrintFields(static_cast<Feature*>(node));
-		PrintFields(static_cast<FeatureToResolve*>(node));
-		EndObject();
-	}
 
-	void FeatureAstVisitor::Visit(BranchedOptionalFeature* node)
-	{
-		if (!node)
+		FeatureAstVisitor::JsonObjectScope::~JsonObjectScope()
 		{
-			WriteNull();
-			return;
+			jsonObjects.RemoveAt(jsonObjects.Count() - 1);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"BranchedOptionalFeature"), node);
-		PrintFields(static_cast<Feature*>(node));
-		PrintFields(static_cast<BranchedOptionalFeature*>(node));
-		EndObject();
-	}
 
-	FeatureAstVisitor::FeatureAstVisitor(vl::stream::StreamWriter& _writer)
-		: vl::glr::JsonVisitorBase(_writer)
-	{
-	}
-
-	void FeatureAstVisitor::Print(Feature* node)
-	{
-		if (!node)
+		vl::glr::json::JsonObject* FeatureAstVisitor::CurrentObject()
 		{
-			WriteNull();
-			return;
+			return jsonObjects[jsonObjects.Count() - 1];
 		}
-		node->Accept(static_cast<Feature::IVisitor*>(this));
-	}
 
-	void FeatureAstVisitor::Print(Plus* node)
-	{
-		if (!node)
+		vl::glr::json::JsonNode* FeatureAstVisitor::FindField(const vl::WString& name)
 		{
-			WriteNull();
-			return;
+			for (auto field : CurrentObject()->fields)
+			{
+				if (field && field->name.value == name) return field->value.Obj();
+			}
+			return nullptr;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Plus"), node);
-		PrintFields(static_cast<Plus*>(node));
-		EndObject();
-	}
 
+		bool FeatureAstVisitor::IsNull(vl::glr::json::JsonNode* value)
+		{
+			auto literal = dynamic_cast<vl::glr::json::JsonLiteral*>(value);
+			return literal && literal->value == vl::glr::json::JsonLiteralValue::Null;
+		}
+
+		vl::WString FeatureAstVisitor::ReadType(vl::glr::json::JsonObject* json)
+		{
+			if (!json) throw vl::Exception(L"AST JSON object cannot be null.");
+			bool typeFound = false;
+			vl::WString typeName;
+			for (auto field : json->fields)
+			{
+				if (field && field->name.value == L"$ast")
+				{
+					if (typeFound) throw vl::Exception(L"AST JSON object contains duplicate \"$ast\" fields.");
+					typeFound = true;
+					auto jsonString = field->value.Cast<vl::glr::json::JsonString>();
+					if (!jsonString) throw vl::Exception(L"AST JSON field \"$ast\" must be a string.");
+					typeName = jsonString->content.value;
+				}
+			}
+			if (!typeFound) throw vl::Exception(L"AST JSON object is missing field \"$ast\".");
+			return typeName;
+		}
+
+		void FeatureAstVisitor::ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName)
+		{
+			vl::collections::List<vl::WString> fieldNames;
+			for (auto field : json->fields)
+			{
+				if (!field || !field->value) throw vl::Exception(L"AST JSON object contains an invalid field.");
+				auto name = field->name.value;
+				if (fieldNames.Contains(name)) throw vl::Exception(L"AST JSON object contains duplicate field \"" + name + L"\".");
+				fieldNames.Add(name);
+				bool fieldFound = name == L"$ast";
+				if (typeName == L"Plus")
+				{
+				}
+				else if (typeName == L"FeatureToResolve")
+				{
+					fieldFound = fieldFound || name == L"candidates";
+				}
+				else if (typeName == L"BranchedOptionalFeature")
+				{
+					fieldFound = fieldFound || name == L"type";
+					fieldFound = fieldFound || name == L"optional";
+					fieldFound = fieldFound || name == L"tails";
+				}
+				if (!fieldFound) throw vl::Exception(L"AST JSON object contains unknown field \"" + name + L"\" for type \"" + typeName + L"\".");
+			}
+		}
+
+		void FeatureAstVisitor::FillFields(BranchedOptionalFeature* node)
+		{
+			FillFields(static_cast<Feature*>(node));
+			node->type = BranchType::Plus;
+			if (auto value = FindField(vl::WString::Unmanaged(L"type")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"type\" must be a string.");
+				if (jsonString->content.value == L"Plus") node->type = BranchType::Plus;
+				else if (jsonString->content.value == L"Minus") node->type = BranchType::Minus;
+				else if (jsonString->content.value == L"NoCompetition") node->type = BranchType::NoCompetition;
+				else throw vl::Exception(L"AST JSON field \"type\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"optional")))
+			{
+				if (IsNull(value))
+				{
+					node->optional = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Plus>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"optional\" contains an incompatible AST type.");
+					node->optional = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"optional\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"tails")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"tails\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->tails.Add(vl::Ptr<Plus>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<Plus>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"tails\" contains an incompatible AST type.");
+						node->tails.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"tails\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void FeatureAstVisitor::FillFields(Feature* node)
+		{
+		}
+
+		void FeatureAstVisitor::FillFields(FeatureToResolve* node)
+		{
+			FillFields(static_cast<Feature*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"candidates")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"candidates\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->candidates.Add(vl::Ptr<Feature>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<Feature>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"candidates\" contains an incompatible AST type.");
+						node->candidates.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"candidates\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void FeatureAstVisitor::FillFields(Plus* node)
+		{
+		}
+
+		void FeatureAstVisitor::Visit(FeatureToResolve* node)
+		{
+			FillFields(node);
+		}
+
+		void FeatureAstVisitor::Visit(BranchedOptionalFeature* node)
+		{
+			FillFields(node);
+		}
+
+		vl::Ptr<vl::glr::ParsingAstBase> FeatureAstVisitor::ReadJson(vl::glr::json::JsonObject* json)
+		{
+			auto typeName = ReadType(json);
+			if (typeName == L"Plus")
+			{
+				auto node = vl::Ptr(new Plus);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"FeatureToResolve")
+			{
+				auto node = vl::Ptr(new FeatureToResolve);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Feature*>(node.Obj())->Accept(static_cast<Feature::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"BranchedOptionalFeature")
+			{
+				auto node = vl::Ptr(new BranchedOptionalFeature);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Feature*>(node.Obj())->Accept(static_cast<Feature::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			throw vl::Exception(L"AST JSON field \"$ast\" contains an unknown or abstract type \"" + typeName + L"\".");
+		}
+	}
 }

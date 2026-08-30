@@ -121,9 +121,9 @@
 
 # PROPOSALS
 
-- No.1 Generate a direct compact-JSON AST reader beside the existing writer.
+- No.1 Generate a direct compact-JSON AST reader beside the existing writer. [CONFIRMED]
 
-## No.1 Generate a direct compact-JSON AST reader beside the existing writer
+## No.1 Generate a direct compact-JSON AST reader beside the existing writer [CONFIRMED]
 
 The existing JSON utility generator already owns the generated header/source/TypeScript family and already has the complete AST symbol graph required for static dispatch. Extend that generator instead of adding runtime reflection or another generated file family. The generated header will keep `json_visitor` unchanged and add a sibling `json_reader` namespace containing the matching `<AstGroupName>Visitor` class and its public `ReadJson(vl::glr::json::JsonObject*)` entry point.
 
@@ -134,3 +134,19 @@ Generated field code will directly inspect the compact JSON DOM. Missing token, 
 Add an internal `jsonIncludes` list to `ParserSymbolManager` and use it only from the generated `_Json.h` utility. In-tree generators will point it at the built-in generated JSON AST declaration; the command-line driver will mirror its configured public include list because installed parser configurations already name the umbrella header that owns the JSON DOM. This keeps JSON declarations out of the core generated AST header and makes the implementation available only to consumers of the optional JSON utility. Header/source boilerplate in `AstCppGen` will be generalized just enough to emit both sibling utility namespaces in one file.
 
 Regenerate all checked-in parsers only by running the ordered generator executables. The already-added Calculator validation matrix and the round-trip checks at every logged generated/built-in JSON site will verify the implementation. Update `doc/CodeGeneration.md`, `doc/SourceMap.md`, the GlrParserGen design knowledge-base page, and the API manual with the compact-only reader contract, generated namespace/API, validation/default behavior, and JSON dependency ownership. Then run the complete ordered Debug/Win32 and Debug/x64 chains, TypeScript build, and downstream release/import/regeneration projects exactly as required by the task.
+
+### CODE CHANGE
+
+- Added `ParserSymbolManager::jsonIncludes` and configured the in-tree generators and GlrParserGen driver so generated `_Json.h` files can reference the JSON DOM without adding a dependency to core AST headers.
+- Generalized the AST utility header/source wrappers to emit multiple sibling namespaces and utility-specific includes, while preserving the existing single-namespace overloads for all other generated utilities.
+- Extended the JSON utility generator with `json_reader::<AstGroupName>Visitor`, direct concrete-type construction, generated base-to-derived `FillFields` functions, exception-safe recursive object state, direct token/enum/object/array conversion, deterministic missing-enum defaults, and external-input validation through `vl::Exception`.
+- Regenerated every affected `_Json.h/.cpp` pair through the required ordered generator executables and refreshed the VlppParser2 release amalgamations. An unrelated opaque BuiltIn-C++ parser-data regeneration was deliberately excluded because the JSON utility change cannot affect syntax automata.
+- Added direct Calculator success/error coverage and exact writer-reader-writer round trips at every existing generated/built-in logged JSON site, using the built-in JSON parser dependency in each consuming test project.
+- Updated the code-generation, source-map, GlrParserGen design, and generated-API documentation. Also corrected the repository build wrapper to map its documented `Win32` argument to the solution's `x86` platform name.
+- Released VlppParser2 into Workflow and GacUI, released Workflow into GacUI, regenerated downstream JSON readers and release amalgamations, and preserved only changes attributable to those release flows.
+
+### CONFIRMED
+
+The proposal is confirmed. The pre-implementation Debug/x64 build reproduced the missing API with 139 compile errors centered on `json_reader` and `ReadJson`. After implementation, the complete ordered 12-project Debug chain passed on both x64 and Win32/x86. This included the direct Calculator conversion/default/error matrix (24/24), all generated parser cases and 413 unchanged baselines (463/463), JSON (130/130), XML (25/25), Workflow (717/717), and C++ (888/888); all other ordered suites also passed, and no memory-leak report was produced.
+
+`Test/TypeScript/prepare.ps1` followed by `npm run build` passed with no TypeScript workspace changes. The repository release script then rebuilt and tested VlppParser2 on both Release architectures, repeated generator validation, type-checked TypeScript, and refreshed the expected four release amalgamations. The Workflow release imported those files, regenerated its JSON reader, passed both Release architectures plus TypeScript and RPC integration, and refreshed its release amalgamation. The GacUI release imported both upstream releases, regenerated both parser consumers, passed metadata and main unit tests on both Release architectures, rebuilt GacGen, regenerated DarkSkin resources, and refreshed its release amalgamation. Tools remained clean. Every parser-log rewrite produced during execution was removed, so existing baselines are unchanged.

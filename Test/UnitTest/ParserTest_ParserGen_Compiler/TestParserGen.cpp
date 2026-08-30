@@ -116,6 +116,7 @@ TEST_FILE
 
 			global.name = parserName;
 			Fill(global.astIncludes, L"../../../../Source/AstBase.h");
+			Fill(global.jsonIncludes, L"../../../../Source/Json/Generated/JsonAst.h");
 			Fill(global.syntaxIncludes, L"../../../../Source/SyntaxBase.h");
 			global.cppNss.Add(wlower(parserName));
 			global.headerGuard = L"VCZH_PARSER2_UNITTEST_" + wupper(parserName);

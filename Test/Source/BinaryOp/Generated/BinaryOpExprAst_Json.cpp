@@ -6,93 +6,267 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "BinaryOpExprAst_Json.h"
 
-namespace binaryop::json_visitor
+namespace binaryop
 {
-	void ExprAstVisitor::PrintFields(BinaryExpr* node)
+	namespace json_visitor
 	{
-		BeginField(vl::WString::Unmanaged(L"left"));
-		Print(node->left.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"op"));
-		switch (node->op)
+		void ExprAstVisitor::PrintFields(BinaryExpr* node)
 		{
-		case binaryop::BinaryOp::Add:
-			WriteString(vl::WString::Unmanaged(L"Add"));
-			break;
-		case binaryop::BinaryOp::Assign:
-			WriteString(vl::WString::Unmanaged(L"Assign"));
-			break;
-		case binaryop::BinaryOp::Dollar:
-			WriteString(vl::WString::Unmanaged(L"Dollar"));
-			break;
-		case binaryop::BinaryOp::Exp:
-			WriteString(vl::WString::Unmanaged(L"Exp"));
-			break;
-		case binaryop::BinaryOp::Mul:
-			WriteString(vl::WString::Unmanaged(L"Mul"));
-			break;
-		case binaryop::BinaryOp::Try:
-			WriteString(vl::WString::Unmanaged(L"Try"));
-			break;
-		default:
-			WriteNull();
+			BeginField(vl::WString::Unmanaged(L"left"));
+			Print(node->left.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"op"));
+			switch (node->op)
+			{
+			case binaryop::BinaryOp::Add:
+				WriteString(vl::WString::Unmanaged(L"Add"));
+				break;
+			case binaryop::BinaryOp::Assign:
+				WriteString(vl::WString::Unmanaged(L"Assign"));
+				break;
+			case binaryop::BinaryOp::Dollar:
+				WriteString(vl::WString::Unmanaged(L"Dollar"));
+				break;
+			case binaryop::BinaryOp::Exp:
+				WriteString(vl::WString::Unmanaged(L"Exp"));
+				break;
+			case binaryop::BinaryOp::Mul:
+				WriteString(vl::WString::Unmanaged(L"Mul"));
+				break;
+			case binaryop::BinaryOp::Try:
+				WriteString(vl::WString::Unmanaged(L"Try"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"right"));
+			Print(node->right.Obj());
+			EndField();
 		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"right"));
-		Print(node->right.Obj());
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(Expr* node)
-	{
-	}
-	void ExprAstVisitor::PrintFields(RefExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-	}
-
-	void ExprAstVisitor::Visit(RefExpr* node)
-	{
-		if (!node)
+		void ExprAstVisitor::PrintFields(Expr* node)
 		{
-			WriteNull();
-			return;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"RefExpr"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<RefExpr*>(node));
-		EndObject();
-	}
-
-	void ExprAstVisitor::Visit(BinaryExpr* node)
-	{
-		if (!node)
+		void ExprAstVisitor::PrintFields(RefExpr* node)
 		{
-			WriteNull();
-			return;
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"BinaryExpr"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<BinaryExpr*>(node));
-		EndObject();
-	}
 
-	ExprAstVisitor::ExprAstVisitor(vl::stream::StreamWriter& _writer)
-		: vl::glr::JsonVisitorBase(_writer)
-	{
-	}
-
-	void ExprAstVisitor::Print(Expr* node)
-	{
-		if (!node)
+		void ExprAstVisitor::Visit(RefExpr* node)
 		{
-			WriteNull();
-			return;
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"RefExpr"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<RefExpr*>(node));
+			EndObject();
 		}
-		node->Accept(static_cast<Expr::IVisitor*>(this));
+
+		void ExprAstVisitor::Visit(BinaryExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"BinaryExpr"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<BinaryExpr*>(node));
+			EndObject();
+		}
+
+		ExprAstVisitor::ExprAstVisitor(vl::stream::StreamWriter& _writer)
+			: vl::glr::JsonVisitorBase(_writer)
+		{
+		}
+
+		void ExprAstVisitor::Print(Expr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<Expr::IVisitor*>(this));
+		}
+
 	}
 
+	namespace json_reader
+	{
+		ExprAstVisitor::JsonObjectScope::JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json)
+			: jsonObjects(_jsonObjects)
+		{
+			jsonObjects.Add(json);
+		}
+
+		ExprAstVisitor::JsonObjectScope::~JsonObjectScope()
+		{
+			jsonObjects.RemoveAt(jsonObjects.Count() - 1);
+		}
+
+		vl::glr::json::JsonObject* ExprAstVisitor::CurrentObject()
+		{
+			return jsonObjects[jsonObjects.Count() - 1];
+		}
+
+		vl::glr::json::JsonNode* ExprAstVisitor::FindField(const vl::WString& name)
+		{
+			for (auto field : CurrentObject()->fields)
+			{
+				if (field && field->name.value == name) return field->value.Obj();
+			}
+			return nullptr;
+		}
+
+		bool ExprAstVisitor::IsNull(vl::glr::json::JsonNode* value)
+		{
+			auto literal = dynamic_cast<vl::glr::json::JsonLiteral*>(value);
+			return literal && literal->value == vl::glr::json::JsonLiteralValue::Null;
+		}
+
+		vl::WString ExprAstVisitor::ReadType(vl::glr::json::JsonObject* json)
+		{
+			if (!json) throw vl::Exception(L"AST JSON object cannot be null.");
+			bool typeFound = false;
+			vl::WString typeName;
+			for (auto field : json->fields)
+			{
+				if (field && field->name.value == L"$ast")
+				{
+					if (typeFound) throw vl::Exception(L"AST JSON object contains duplicate \"$ast\" fields.");
+					typeFound = true;
+					auto jsonString = field->value.Cast<vl::glr::json::JsonString>();
+					if (!jsonString) throw vl::Exception(L"AST JSON field \"$ast\" must be a string.");
+					typeName = jsonString->content.value;
+				}
+			}
+			if (!typeFound) throw vl::Exception(L"AST JSON object is missing field \"$ast\".");
+			return typeName;
+		}
+
+		void ExprAstVisitor::ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName)
+		{
+			vl::collections::List<vl::WString> fieldNames;
+			for (auto field : json->fields)
+			{
+				if (!field || !field->value) throw vl::Exception(L"AST JSON object contains an invalid field.");
+				auto name = field->name.value;
+				if (fieldNames.Contains(name)) throw vl::Exception(L"AST JSON object contains duplicate field \"" + name + L"\".");
+				fieldNames.Add(name);
+				bool fieldFound = name == L"$ast";
+				if (typeName == L"RefExpr")
+				{
+					fieldFound = fieldFound || name == L"name";
+				}
+				else if (typeName == L"BinaryExpr")
+				{
+					fieldFound = fieldFound || name == L"op";
+					fieldFound = fieldFound || name == L"left";
+					fieldFound = fieldFound || name == L"right";
+				}
+				if (!fieldFound) throw vl::Exception(L"AST JSON object contains unknown field \"" + name + L"\" for type \"" + typeName + L"\".");
+			}
+		}
+
+		void ExprAstVisitor::FillFields(BinaryExpr* node)
+		{
+			FillFields(static_cast<Expr*>(node));
+			node->op = BinaryOp::Add;
+			if (auto value = FindField(vl::WString::Unmanaged(L"op")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"op\" must be a string.");
+				if (jsonString->content.value == L"Add") node->op = BinaryOp::Add;
+				else if (jsonString->content.value == L"Mul") node->op = BinaryOp::Mul;
+				else if (jsonString->content.value == L"Exp") node->op = BinaryOp::Exp;
+				else if (jsonString->content.value == L"Assign") node->op = BinaryOp::Assign;
+				else if (jsonString->content.value == L"Try") node->op = BinaryOp::Try;
+				else if (jsonString->content.value == L"Dollar") node->op = BinaryOp::Dollar;
+				else throw vl::Exception(L"AST JSON field \"op\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"left")))
+			{
+				if (IsNull(value))
+				{
+					node->left = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"left\" contains an incompatible AST type.");
+					node->left = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"left\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"right")))
+			{
+				if (IsNull(value))
+				{
+					node->right = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"right\" contains an incompatible AST type.");
+					node->right = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"right\" must be an object or null.");
+			}
+		}
+
+		void ExprAstVisitor::FillFields(Expr* node)
+		{
+		}
+
+		void ExprAstVisitor::FillFields(RefExpr* node)
+		{
+			FillFields(static_cast<Expr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+		}
+
+		void ExprAstVisitor::Visit(RefExpr* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(BinaryExpr* node)
+		{
+			FillFields(node);
+		}
+
+		vl::Ptr<vl::glr::ParsingAstBase> ExprAstVisitor::ReadJson(vl::glr::json::JsonObject* json)
+		{
+			auto typeName = ReadType(json);
+			if (typeName == L"RefExpr")
+			{
+				auto node = vl::Ptr(new RefExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"BinaryExpr")
+			{
+				auto node = vl::Ptr(new BinaryExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			throw vl::Exception(L"AST JSON field \"$ast\" contains an unknown or abstract type \"" + typeName + L"\".");
+		}
+	}
 }

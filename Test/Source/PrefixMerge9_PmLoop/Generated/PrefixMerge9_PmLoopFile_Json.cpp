@@ -6,200 +6,519 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "PrefixMerge9_PmLoopFile_Json.h"
 
-namespace prefixmerge9_pmloop::json_visitor
+namespace prefixmerge9_pmloop
 {
-	void FileVisitor::PrintFields(ClassItem* node)
+	namespace json_visitor
 	{
-	}
-	void FileVisitor::PrintFields(ClassQuestionItem* node)
-	{
-	}
-	void FileVisitor::PrintFields(File* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"items"));
-		BeginArray();
-		for (auto&& listItem : node->items)
+		void FileVisitor::PrintFields(ClassItem* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
 		}
-		EndArray();
-		EndField();
-	}
-	void FileVisitor::PrintFields(IntCommaItem* node)
-	{
-	}
-	void FileVisitor::PrintFields(IntDotItem* node)
-	{
-	}
-	void FileVisitor::PrintFields(IntItem* node)
-	{
-	}
-	void FileVisitor::PrintFields(IntQuestionItem* node)
-	{
-	}
-	void FileVisitor::PrintFields(Item* node)
-	{
-	}
-	void FileVisitor::PrintFields(ItemToResolve* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"candidates"));
-		BeginArray();
-		for (auto&& listItem : node->candidates)
+		void FileVisitor::PrintFields(ClassQuestionItem* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
 		}
-		EndArray();
-		EndField();
-	}
-	void FileVisitor::PrintFields(QuestionItem* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"item"));
-		Print(node->item.Obj());
-		EndField();
+		void FileVisitor::PrintFields(File* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"items"));
+			BeginArray();
+			for (auto&& listItem : node->items)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void FileVisitor::PrintFields(IntCommaItem* node)
+		{
+		}
+		void FileVisitor::PrintFields(IntDotItem* node)
+		{
+		}
+		void FileVisitor::PrintFields(IntItem* node)
+		{
+		}
+		void FileVisitor::PrintFields(IntQuestionItem* node)
+		{
+		}
+		void FileVisitor::PrintFields(Item* node)
+		{
+		}
+		void FileVisitor::PrintFields(ItemToResolve* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"candidates"));
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void FileVisitor::PrintFields(QuestionItem* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"item"));
+			Print(node->item.Obj());
+			EndField();
+		}
+
+		void FileVisitor::Visit(ItemToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ItemToResolve"), node);
+			PrintFields(static_cast<Item*>(node));
+			PrintFields(static_cast<ItemToResolve*>(node));
+			EndObject();
+		}
+
+		void FileVisitor::Visit(IntItem* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"IntItem"), node);
+			PrintFields(static_cast<Item*>(node));
+			PrintFields(static_cast<IntItem*>(node));
+			EndObject();
+		}
+
+		void FileVisitor::Visit(IntCommaItem* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"IntCommaItem"), node);
+			PrintFields(static_cast<Item*>(node));
+			PrintFields(static_cast<IntCommaItem*>(node));
+			EndObject();
+		}
+
+		void FileVisitor::Visit(IntDotItem* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"IntDotItem"), node);
+			PrintFields(static_cast<Item*>(node));
+			PrintFields(static_cast<IntDotItem*>(node));
+			EndObject();
+		}
+
+		void FileVisitor::Visit(IntQuestionItem* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"IntQuestionItem"), node);
+			PrintFields(static_cast<Item*>(node));
+			PrintFields(static_cast<IntQuestionItem*>(node));
+			EndObject();
+		}
+
+		void FileVisitor::Visit(ClassItem* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ClassItem"), node);
+			PrintFields(static_cast<Item*>(node));
+			PrintFields(static_cast<ClassItem*>(node));
+			EndObject();
+		}
+
+		void FileVisitor::Visit(ClassQuestionItem* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ClassQuestionItem"), node);
+			PrintFields(static_cast<Item*>(node));
+			PrintFields(static_cast<ClassQuestionItem*>(node));
+			EndObject();
+		}
+
+		void FileVisitor::Visit(QuestionItem* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"QuestionItem"), node);
+			PrintFields(static_cast<Item*>(node));
+			PrintFields(static_cast<QuestionItem*>(node));
+			EndObject();
+		}
+
+		FileVisitor::FileVisitor(vl::stream::StreamWriter& _writer)
+			: vl::glr::JsonVisitorBase(_writer)
+		{
+		}
+
+		void FileVisitor::Print(Item* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<Item::IVisitor*>(this));
+		}
+
+		void FileVisitor::Print(File* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"File"), node);
+			PrintFields(static_cast<File*>(node));
+			EndObject();
+		}
+
 	}
 
-	void FileVisitor::Visit(ItemToResolve* node)
+	namespace json_reader
 	{
-		if (!node)
+		FileVisitor::JsonObjectScope::JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json)
+			: jsonObjects(_jsonObjects)
 		{
-			WriteNull();
-			return;
+			jsonObjects.Add(json);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ItemToResolve"), node);
-		PrintFields(static_cast<Item*>(node));
-		PrintFields(static_cast<ItemToResolve*>(node));
-		EndObject();
-	}
 
-	void FileVisitor::Visit(IntItem* node)
-	{
-		if (!node)
+		FileVisitor::JsonObjectScope::~JsonObjectScope()
 		{
-			WriteNull();
-			return;
+			jsonObjects.RemoveAt(jsonObjects.Count() - 1);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"IntItem"), node);
-		PrintFields(static_cast<Item*>(node));
-		PrintFields(static_cast<IntItem*>(node));
-		EndObject();
-	}
 
-	void FileVisitor::Visit(IntCommaItem* node)
-	{
-		if (!node)
+		vl::glr::json::JsonObject* FileVisitor::CurrentObject()
 		{
-			WriteNull();
-			return;
+			return jsonObjects[jsonObjects.Count() - 1];
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"IntCommaItem"), node);
-		PrintFields(static_cast<Item*>(node));
-		PrintFields(static_cast<IntCommaItem*>(node));
-		EndObject();
-	}
 
-	void FileVisitor::Visit(IntDotItem* node)
-	{
-		if (!node)
+		vl::glr::json::JsonNode* FileVisitor::FindField(const vl::WString& name)
 		{
-			WriteNull();
-			return;
+			for (auto field : CurrentObject()->fields)
+			{
+				if (field && field->name.value == name) return field->value.Obj();
+			}
+			return nullptr;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"IntDotItem"), node);
-		PrintFields(static_cast<Item*>(node));
-		PrintFields(static_cast<IntDotItem*>(node));
-		EndObject();
-	}
 
-	void FileVisitor::Visit(IntQuestionItem* node)
-	{
-		if (!node)
+		bool FileVisitor::IsNull(vl::glr::json::JsonNode* value)
 		{
-			WriteNull();
-			return;
+			auto literal = dynamic_cast<vl::glr::json::JsonLiteral*>(value);
+			return literal && literal->value == vl::glr::json::JsonLiteralValue::Null;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"IntQuestionItem"), node);
-		PrintFields(static_cast<Item*>(node));
-		PrintFields(static_cast<IntQuestionItem*>(node));
-		EndObject();
-	}
 
-	void FileVisitor::Visit(ClassItem* node)
-	{
-		if (!node)
+		vl::WString FileVisitor::ReadType(vl::glr::json::JsonObject* json)
 		{
-			WriteNull();
-			return;
+			if (!json) throw vl::Exception(L"AST JSON object cannot be null.");
+			bool typeFound = false;
+			vl::WString typeName;
+			for (auto field : json->fields)
+			{
+				if (field && field->name.value == L"$ast")
+				{
+					if (typeFound) throw vl::Exception(L"AST JSON object contains duplicate \"$ast\" fields.");
+					typeFound = true;
+					auto jsonString = field->value.Cast<vl::glr::json::JsonString>();
+					if (!jsonString) throw vl::Exception(L"AST JSON field \"$ast\" must be a string.");
+					typeName = jsonString->content.value;
+				}
+			}
+			if (!typeFound) throw vl::Exception(L"AST JSON object is missing field \"$ast\".");
+			return typeName;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ClassItem"), node);
-		PrintFields(static_cast<Item*>(node));
-		PrintFields(static_cast<ClassItem*>(node));
-		EndObject();
-	}
 
-	void FileVisitor::Visit(ClassQuestionItem* node)
-	{
-		if (!node)
+		void FileVisitor::ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName)
 		{
-			WriteNull();
-			return;
+			vl::collections::List<vl::WString> fieldNames;
+			for (auto field : json->fields)
+			{
+				if (!field || !field->value) throw vl::Exception(L"AST JSON object contains an invalid field.");
+				auto name = field->name.value;
+				if (fieldNames.Contains(name)) throw vl::Exception(L"AST JSON object contains duplicate field \"" + name + L"\".");
+				fieldNames.Add(name);
+				bool fieldFound = name == L"$ast";
+				if (typeName == L"ItemToResolve")
+				{
+					fieldFound = fieldFound || name == L"candidates";
+				}
+				else if (typeName == L"IntItem")
+				{
+				}
+				else if (typeName == L"IntCommaItem")
+				{
+				}
+				else if (typeName == L"IntDotItem")
+				{
+				}
+				else if (typeName == L"IntQuestionItem")
+				{
+				}
+				else if (typeName == L"ClassItem")
+				{
+				}
+				else if (typeName == L"ClassQuestionItem")
+				{
+				}
+				else if (typeName == L"QuestionItem")
+				{
+					fieldFound = fieldFound || name == L"item";
+				}
+				else if (typeName == L"File")
+				{
+					fieldFound = fieldFound || name == L"items";
+				}
+				if (!fieldFound) throw vl::Exception(L"AST JSON object contains unknown field \"" + name + L"\" for type \"" + typeName + L"\".");
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ClassQuestionItem"), node);
-		PrintFields(static_cast<Item*>(node));
-		PrintFields(static_cast<ClassQuestionItem*>(node));
-		EndObject();
-	}
 
-	void FileVisitor::Visit(QuestionItem* node)
-	{
-		if (!node)
+		void FileVisitor::FillFields(ClassItem* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<Item*>(node));
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"QuestionItem"), node);
-		PrintFields(static_cast<Item*>(node));
-		PrintFields(static_cast<QuestionItem*>(node));
-		EndObject();
-	}
 
-	FileVisitor::FileVisitor(vl::stream::StreamWriter& _writer)
-		: vl::glr::JsonVisitorBase(_writer)
-	{
-	}
-
-	void FileVisitor::Print(Item* node)
-	{
-		if (!node)
+		void FileVisitor::FillFields(ClassQuestionItem* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<Item*>(node));
 		}
-		node->Accept(static_cast<Item::IVisitor*>(this));
-	}
 
-	void FileVisitor::Print(File* node)
-	{
-		if (!node)
+		void FileVisitor::FillFields(File* node)
 		{
-			WriteNull();
-			return;
+			if (auto value = FindField(vl::WString::Unmanaged(L"items")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"items\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->items.Add(vl::Ptr<Item>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<Item>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"items\" contains an incompatible AST type.");
+						node->items.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"items\" contains a non-object, non-null item.");
+				}
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"File"), node);
-		PrintFields(static_cast<File*>(node));
-		EndObject();
-	}
 
+		void FileVisitor::FillFields(IntCommaItem* node)
+		{
+			FillFields(static_cast<Item*>(node));
+		}
+
+		void FileVisitor::FillFields(IntDotItem* node)
+		{
+			FillFields(static_cast<Item*>(node));
+		}
+
+		void FileVisitor::FillFields(IntItem* node)
+		{
+			FillFields(static_cast<Item*>(node));
+		}
+
+		void FileVisitor::FillFields(IntQuestionItem* node)
+		{
+			FillFields(static_cast<Item*>(node));
+		}
+
+		void FileVisitor::FillFields(Item* node)
+		{
+		}
+
+		void FileVisitor::FillFields(ItemToResolve* node)
+		{
+			FillFields(static_cast<Item*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"candidates")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"candidates\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->candidates.Add(vl::Ptr<Item>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<Item>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"candidates\" contains an incompatible AST type.");
+						node->candidates.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"candidates\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void FileVisitor::FillFields(QuestionItem* node)
+		{
+			FillFields(static_cast<Item*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"item")))
+			{
+				if (IsNull(value))
+				{
+					node->item = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Item>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"item\" contains an incompatible AST type.");
+					node->item = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"item\" must be an object or null.");
+			}
+		}
+
+		void FileVisitor::Visit(ItemToResolve* node)
+		{
+			FillFields(node);
+		}
+
+		void FileVisitor::Visit(IntItem* node)
+		{
+			FillFields(node);
+		}
+
+		void FileVisitor::Visit(IntCommaItem* node)
+		{
+			FillFields(node);
+		}
+
+		void FileVisitor::Visit(IntDotItem* node)
+		{
+			FillFields(node);
+		}
+
+		void FileVisitor::Visit(IntQuestionItem* node)
+		{
+			FillFields(node);
+		}
+
+		void FileVisitor::Visit(ClassItem* node)
+		{
+			FillFields(node);
+		}
+
+		void FileVisitor::Visit(ClassQuestionItem* node)
+		{
+			FillFields(node);
+		}
+
+		void FileVisitor::Visit(QuestionItem* node)
+		{
+			FillFields(node);
+		}
+
+		vl::Ptr<vl::glr::ParsingAstBase> FileVisitor::ReadJson(vl::glr::json::JsonObject* json)
+		{
+			auto typeName = ReadType(json);
+			if (typeName == L"ItemToResolve")
+			{
+				auto node = vl::Ptr(new ItemToResolve);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Item*>(node.Obj())->Accept(static_cast<Item::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"IntItem")
+			{
+				auto node = vl::Ptr(new IntItem);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Item*>(node.Obj())->Accept(static_cast<Item::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"IntCommaItem")
+			{
+				auto node = vl::Ptr(new IntCommaItem);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Item*>(node.Obj())->Accept(static_cast<Item::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"IntDotItem")
+			{
+				auto node = vl::Ptr(new IntDotItem);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Item*>(node.Obj())->Accept(static_cast<Item::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"IntQuestionItem")
+			{
+				auto node = vl::Ptr(new IntQuestionItem);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Item*>(node.Obj())->Accept(static_cast<Item::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ClassItem")
+			{
+				auto node = vl::Ptr(new ClassItem);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Item*>(node.Obj())->Accept(static_cast<Item::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"ClassQuestionItem")
+			{
+				auto node = vl::Ptr(new ClassQuestionItem);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Item*>(node.Obj())->Accept(static_cast<Item::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"QuestionItem")
+			{
+				auto node = vl::Ptr(new QuestionItem);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Item*>(node.Obj())->Accept(static_cast<Item::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"File")
+			{
+				auto node = vl::Ptr(new File);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			throw vl::Exception(L"AST JSON field \"$ast\" contains an unknown or abstract type \"" + typeName + L"\".");
+		}
+	}
 }

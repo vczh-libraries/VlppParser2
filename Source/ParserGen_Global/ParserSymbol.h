@@ -189,6 +189,7 @@ ParserSymbolManager
 			public:
 				WString						name;
 				StringItems					astIncludes;
+				StringItems					jsonIncludes;
 				StringItems					syntaxIncludes;
 				StringItems					cppNss;
 				WString						headerGuard;

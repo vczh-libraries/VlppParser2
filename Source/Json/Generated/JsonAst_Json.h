@@ -4,39 +4,86 @@ From parser definition:Ast
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_BUILTIN_JSON_AST_AST_JSON_VISITOR
-#define VCZH_PARSER2_BUILTIN_JSON_AST_AST_JSON_VISITOR
+#ifndef VCZH_PARSER2_BUILTIN_JSON_AST_AST_JSON
+#define VCZH_PARSER2_BUILTIN_JSON_AST_AST_JSON
 
 #include "JsonAst.h"
 
-namespace vl::glr::json::json_visitor
+namespace vl::glr::json
 {
-	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-	class AstVisitor
-		: public vl::glr::JsonVisitorBase
-		, protected virtual JsonNode::IVisitor
+	namespace json_visitor
 	{
-	protected:
-		virtual void PrintFields(JsonArray* node);
-		virtual void PrintFields(JsonLiteral* node);
-		virtual void PrintFields(JsonNode* node);
-		virtual void PrintFields(JsonNumber* node);
-		virtual void PrintFields(JsonObject* node);
-		virtual void PrintFields(JsonObjectField* node);
-		virtual void PrintFields(JsonString* node);
+		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+		class AstVisitor
+			: public vl::glr::JsonVisitorBase
+			, protected virtual JsonNode::IVisitor
+		{
+		protected:
+			virtual void PrintFields(JsonArray* node);
+			virtual void PrintFields(JsonLiteral* node);
+			virtual void PrintFields(JsonNode* node);
+			virtual void PrintFields(JsonNumber* node);
+			virtual void PrintFields(JsonObject* node);
+			virtual void PrintFields(JsonObjectField* node);
+			virtual void PrintFields(JsonString* node);
 
-	protected:
-		void Visit(JsonLiteral* node) override;
-		void Visit(JsonString* node) override;
-		void Visit(JsonNumber* node) override;
-		void Visit(JsonArray* node) override;
-		void Visit(JsonObject* node) override;
+		protected:
+			void Visit(JsonLiteral* node) override;
+			void Visit(JsonString* node) override;
+			void Visit(JsonNumber* node) override;
+			void Visit(JsonArray* node) override;
+			void Visit(JsonObject* node) override;
 
-	public:
-		AstVisitor(vl::stream::StreamWriter& _writer);
+		public:
+			AstVisitor(vl::stream::StreamWriter& _writer);
 
-		void Print(JsonNode* node);
-		void Print(JsonObjectField* node);
-	};
+			void Print(JsonNode* node);
+			void Print(JsonObjectField* node);
+		};
+	}
+
+	namespace json_reader
+	{
+		/// <summary>A JSON reader, overriding all abstract methods with JSON to AST deserialization code.</summary>
+		class AstVisitor
+			: protected virtual JsonNode::IVisitor
+		{
+		protected:
+			class JsonObjectScope
+			{
+			protected:
+				vl::collections::List<vl::glr::json::JsonObject*>& jsonObjects;
+
+			public:
+				JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json);
+				~JsonObjectScope();
+			};
+
+			vl::collections::List<vl::glr::json::JsonObject*> jsonObjects;
+			vl::glr::json::JsonObject* CurrentObject();
+			vl::glr::json::JsonNode* FindField(const vl::WString& name);
+			bool IsNull(vl::glr::json::JsonNode* value);
+			vl::WString ReadType(vl::glr::json::JsonObject* json);
+			void ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName);
+
+			virtual void FillFields(JsonArray* node);
+			virtual void FillFields(JsonLiteral* node);
+			virtual void FillFields(JsonNode* node);
+			virtual void FillFields(JsonNumber* node);
+			virtual void FillFields(JsonObject* node);
+			virtual void FillFields(JsonObjectField* node);
+			virtual void FillFields(JsonString* node);
+
+		protected:
+			void Visit(JsonLiteral* node) override;
+			void Visit(JsonString* node) override;
+			void Visit(JsonNumber* node) override;
+			void Visit(JsonArray* node) override;
+			void Visit(JsonObject* node) override;
+
+		public:
+			vl::Ptr<vl::glr::ParsingAstBase> ReadJson(vl::glr::json::JsonObject* json);
+		};
+	}
 }
 #endif

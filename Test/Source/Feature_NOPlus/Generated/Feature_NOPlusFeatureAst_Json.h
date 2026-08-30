@@ -4,33 +4,75 @@ From parser definition:FeatureAst
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_UNITTEST_FEATURE_NOPLUS_FEATUREAST_AST_JSON_VISITOR
-#define VCZH_PARSER2_UNITTEST_FEATURE_NOPLUS_FEATUREAST_AST_JSON_VISITOR
+#ifndef VCZH_PARSER2_UNITTEST_FEATURE_NOPLUS_FEATUREAST_AST_JSON
+#define VCZH_PARSER2_UNITTEST_FEATURE_NOPLUS_FEATUREAST_AST_JSON
 
 #include "Feature_NOPlusFeatureAst.h"
+#include "../../../../Source/Json/Generated/JsonAst.h"
 
-namespace feature_noplus::json_visitor
+namespace feature_noplus
 {
-	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-	class FeatureAstVisitor
-		: public vl::glr::JsonVisitorBase
-		, protected virtual Feature::IVisitor
+	namespace json_visitor
 	{
-	protected:
-		virtual void PrintFields(Feature* node);
-		virtual void PrintFields(FeatureToResolve* node);
-		virtual void PrintFields(NestedOptionalFeature* node);
-		virtual void PrintFields(Plus* node);
+		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+		class FeatureAstVisitor
+			: public vl::glr::JsonVisitorBase
+			, protected virtual Feature::IVisitor
+		{
+		protected:
+			virtual void PrintFields(Feature* node);
+			virtual void PrintFields(FeatureToResolve* node);
+			virtual void PrintFields(NestedOptionalFeature* node);
+			virtual void PrintFields(Plus* node);
 
-	protected:
-		void Visit(FeatureToResolve* node) override;
-		void Visit(NestedOptionalFeature* node) override;
+		protected:
+			void Visit(FeatureToResolve* node) override;
+			void Visit(NestedOptionalFeature* node) override;
 
-	public:
-		FeatureAstVisitor(vl::stream::StreamWriter& _writer);
+		public:
+			FeatureAstVisitor(vl::stream::StreamWriter& _writer);
 
-		void Print(Feature* node);
-		void Print(Plus* node);
-	};
+			void Print(Feature* node);
+			void Print(Plus* node);
+		};
+	}
+
+	namespace json_reader
+	{
+		/// <summary>A JSON reader, overriding all abstract methods with JSON to AST deserialization code.</summary>
+		class FeatureAstVisitor
+			: protected virtual Feature::IVisitor
+		{
+		protected:
+			class JsonObjectScope
+			{
+			protected:
+				vl::collections::List<vl::glr::json::JsonObject*>& jsonObjects;
+
+			public:
+				JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json);
+				~JsonObjectScope();
+			};
+
+			vl::collections::List<vl::glr::json::JsonObject*> jsonObjects;
+			vl::glr::json::JsonObject* CurrentObject();
+			vl::glr::json::JsonNode* FindField(const vl::WString& name);
+			bool IsNull(vl::glr::json::JsonNode* value);
+			vl::WString ReadType(vl::glr::json::JsonObject* json);
+			void ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName);
+
+			virtual void FillFields(Feature* node);
+			virtual void FillFields(FeatureToResolve* node);
+			virtual void FillFields(NestedOptionalFeature* node);
+			virtual void FillFields(Plus* node);
+
+		protected:
+			void Visit(FeatureToResolve* node) override;
+			void Visit(NestedOptionalFeature* node) override;
+
+		public:
+			vl::Ptr<vl::glr::ParsingAstBase> ReadJson(vl::glr::json::JsonObject* json);
+		};
+	}
 }
 #endif

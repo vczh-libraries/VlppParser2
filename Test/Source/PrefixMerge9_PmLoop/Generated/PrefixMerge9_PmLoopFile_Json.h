@@ -4,45 +4,99 @@ From parser definition:File
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_UNITTEST_PREFIXMERGE9_PMLOOP_FILE_AST_JSON_VISITOR
-#define VCZH_PARSER2_UNITTEST_PREFIXMERGE9_PMLOOP_FILE_AST_JSON_VISITOR
+#ifndef VCZH_PARSER2_UNITTEST_PREFIXMERGE9_PMLOOP_FILE_AST_JSON
+#define VCZH_PARSER2_UNITTEST_PREFIXMERGE9_PMLOOP_FILE_AST_JSON
 
 #include "PrefixMerge9_PmLoopFile.h"
+#include "../../../../Source/Json/Generated/JsonAst.h"
 
-namespace prefixmerge9_pmloop::json_visitor
+namespace prefixmerge9_pmloop
 {
-	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-	class FileVisitor
-		: public vl::glr::JsonVisitorBase
-		, protected virtual Item::IVisitor
+	namespace json_visitor
 	{
-	protected:
-		virtual void PrintFields(ClassItem* node);
-		virtual void PrintFields(ClassQuestionItem* node);
-		virtual void PrintFields(File* node);
-		virtual void PrintFields(IntCommaItem* node);
-		virtual void PrintFields(IntDotItem* node);
-		virtual void PrintFields(IntItem* node);
-		virtual void PrintFields(IntQuestionItem* node);
-		virtual void PrintFields(Item* node);
-		virtual void PrintFields(ItemToResolve* node);
-		virtual void PrintFields(QuestionItem* node);
+		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+		class FileVisitor
+			: public vl::glr::JsonVisitorBase
+			, protected virtual Item::IVisitor
+		{
+		protected:
+			virtual void PrintFields(ClassItem* node);
+			virtual void PrintFields(ClassQuestionItem* node);
+			virtual void PrintFields(File* node);
+			virtual void PrintFields(IntCommaItem* node);
+			virtual void PrintFields(IntDotItem* node);
+			virtual void PrintFields(IntItem* node);
+			virtual void PrintFields(IntQuestionItem* node);
+			virtual void PrintFields(Item* node);
+			virtual void PrintFields(ItemToResolve* node);
+			virtual void PrintFields(QuestionItem* node);
 
-	protected:
-		void Visit(ItemToResolve* node) override;
-		void Visit(IntItem* node) override;
-		void Visit(IntCommaItem* node) override;
-		void Visit(IntDotItem* node) override;
-		void Visit(IntQuestionItem* node) override;
-		void Visit(ClassItem* node) override;
-		void Visit(ClassQuestionItem* node) override;
-		void Visit(QuestionItem* node) override;
+		protected:
+			void Visit(ItemToResolve* node) override;
+			void Visit(IntItem* node) override;
+			void Visit(IntCommaItem* node) override;
+			void Visit(IntDotItem* node) override;
+			void Visit(IntQuestionItem* node) override;
+			void Visit(ClassItem* node) override;
+			void Visit(ClassQuestionItem* node) override;
+			void Visit(QuestionItem* node) override;
 
-	public:
-		FileVisitor(vl::stream::StreamWriter& _writer);
+		public:
+			FileVisitor(vl::stream::StreamWriter& _writer);
 
-		void Print(Item* node);
-		void Print(File* node);
-	};
+			void Print(Item* node);
+			void Print(File* node);
+		};
+	}
+
+	namespace json_reader
+	{
+		/// <summary>A JSON reader, overriding all abstract methods with JSON to AST deserialization code.</summary>
+		class FileVisitor
+			: protected virtual Item::IVisitor
+		{
+		protected:
+			class JsonObjectScope
+			{
+			protected:
+				vl::collections::List<vl::glr::json::JsonObject*>& jsonObjects;
+
+			public:
+				JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json);
+				~JsonObjectScope();
+			};
+
+			vl::collections::List<vl::glr::json::JsonObject*> jsonObjects;
+			vl::glr::json::JsonObject* CurrentObject();
+			vl::glr::json::JsonNode* FindField(const vl::WString& name);
+			bool IsNull(vl::glr::json::JsonNode* value);
+			vl::WString ReadType(vl::glr::json::JsonObject* json);
+			void ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName);
+
+			virtual void FillFields(ClassItem* node);
+			virtual void FillFields(ClassQuestionItem* node);
+			virtual void FillFields(File* node);
+			virtual void FillFields(IntCommaItem* node);
+			virtual void FillFields(IntDotItem* node);
+			virtual void FillFields(IntItem* node);
+			virtual void FillFields(IntQuestionItem* node);
+			virtual void FillFields(Item* node);
+			virtual void FillFields(ItemToResolve* node);
+			virtual void FillFields(QuestionItem* node);
+
+		protected:
+			void Visit(ItemToResolve* node) override;
+			void Visit(IntItem* node) override;
+			void Visit(IntCommaItem* node) override;
+			void Visit(IntDotItem* node) override;
+			void Visit(IntQuestionItem* node) override;
+			void Visit(ClassItem* node) override;
+			void Visit(ClassQuestionItem* node) override;
+			void Visit(QuestionItem* node) override;
+
+		public:
+			vl::Ptr<vl::glr::ParsingAstBase> ReadJson(vl::glr::json::JsonObject* json);
+		};
+	}
 }
 #endif

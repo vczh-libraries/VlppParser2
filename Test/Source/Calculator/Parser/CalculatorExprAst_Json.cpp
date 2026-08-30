@@ -6,359 +6,944 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "CalculatorExprAst_Json.h"
 
-namespace calculator::json_visitor
+namespace calculator
 {
-	void ExprAstVisitor::PrintFields(Arg* node)
+	namespace json_visitor
 	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(Binary* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"left"));
-		Print(node->left.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"op"));
-		switch (node->op)
+		void ExprAstVisitor::PrintFields(Arg* node)
 		{
-		case calculator::BinaryOp::Add:
-			WriteString(vl::WString::Unmanaged(L"Add"));
-			break;
-		case calculator::BinaryOp::Divid:
-			WriteString(vl::WString::Unmanaged(L"Divid"));
-			break;
-		case calculator::BinaryOp::EQ:
-			WriteString(vl::WString::Unmanaged(L"EQ"));
-			break;
-		case calculator::BinaryOp::GE:
-			WriteString(vl::WString::Unmanaged(L"GE"));
-			break;
-		case calculator::BinaryOp::GT:
-			WriteString(vl::WString::Unmanaged(L"GT"));
-			break;
-		case calculator::BinaryOp::LE:
-			WriteString(vl::WString::Unmanaged(L"LE"));
-			break;
-		case calculator::BinaryOp::LT:
-			WriteString(vl::WString::Unmanaged(L"LT"));
-			break;
-		case calculator::BinaryOp::Minus:
-			WriteString(vl::WString::Unmanaged(L"Minus"));
-			break;
-		case calculator::BinaryOp::Multiply:
-			WriteString(vl::WString::Unmanaged(L"Multiply"));
-			break;
-		case calculator::BinaryOp::NE:
-			WriteString(vl::WString::Unmanaged(L"NE"));
-			break;
-		default:
-			WriteNull();
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
 		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"right"));
-		Print(node->right.Obj());
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(Call* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"args"));
-		BeginArray();
-		for (auto&& listItem : node->args)
+		void ExprAstVisitor::PrintFields(Binary* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"left"));
+			Print(node->left.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"op"));
+			switch (node->op)
+			{
+			case calculator::BinaryOp::Add:
+				WriteString(vl::WString::Unmanaged(L"Add"));
+				break;
+			case calculator::BinaryOp::Divid:
+				WriteString(vl::WString::Unmanaged(L"Divid"));
+				break;
+			case calculator::BinaryOp::EQ:
+				WriteString(vl::WString::Unmanaged(L"EQ"));
+				break;
+			case calculator::BinaryOp::GE:
+				WriteString(vl::WString::Unmanaged(L"GE"));
+				break;
+			case calculator::BinaryOp::GT:
+				WriteString(vl::WString::Unmanaged(L"GT"));
+				break;
+			case calculator::BinaryOp::LE:
+				WriteString(vl::WString::Unmanaged(L"LE"));
+				break;
+			case calculator::BinaryOp::LT:
+				WriteString(vl::WString::Unmanaged(L"LT"));
+				break;
+			case calculator::BinaryOp::Minus:
+				WriteString(vl::WString::Unmanaged(L"Minus"));
+				break;
+			case calculator::BinaryOp::Multiply:
+				WriteString(vl::WString::Unmanaged(L"Multiply"));
+				break;
+			case calculator::BinaryOp::NE:
+				WriteString(vl::WString::Unmanaged(L"NE"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"right"));
+			Print(node->right.Obj());
+			EndField();
 		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"func"));
-		Print(node->func.Obj());
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(Expandable* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"expanded"));
-		Print(node->expanded.Obj());
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(Expr* node)
-	{
-	}
-	void ExprAstVisitor::PrintFields(False* node)
-	{
-	}
-	void ExprAstVisitor::PrintFields(Func* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"args"));
-		BeginArray();
-		for (auto&& listItem : node->args)
+		void ExprAstVisitor::PrintFields(Call* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"args"));
+			BeginArray();
+			for (auto&& listItem : node->args)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"func"));
+			Print(node->func.Obj());
+			EndField();
 		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"value"));
-		Print(node->value.Obj());
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(Import* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(LetExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"result"));
-		Print(node->result.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"value"));
-		Print(node->value.Obj());
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(Module* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"exported"));
-		Print(node->exported.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"imports"));
-		BeginArray();
-		for (auto&& listItem : node->imports)
+		void ExprAstVisitor::PrintFields(Expandable* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"expanded"));
+			Print(node->expanded.Obj());
+			EndField();
 		}
-		EndArray();
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(NumExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"value"));
-		WriteToken(node->value);
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(Ref* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(True* node)
-	{
-	}
-	void ExprAstVisitor::PrintFields(Unary* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"op"));
-		switch (node->op)
+		void ExprAstVisitor::PrintFields(Expr* node)
 		{
-		case calculator::UnaryOp::Negative:
-			WriteString(vl::WString::Unmanaged(L"Negative"));
-			break;
-		case calculator::UnaryOp::Positive:
-			WriteString(vl::WString::Unmanaged(L"Positive"));
-			break;
-		default:
-			WriteNull();
 		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"operand"));
-		Print(node->operand.Obj());
-		EndField();
+		void ExprAstVisitor::PrintFields(False* node)
+		{
+		}
+		void ExprAstVisitor::PrintFields(Func* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"args"));
+			BeginArray();
+			for (auto&& listItem : node->args)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"value"));
+			Print(node->value.Obj());
+			EndField();
+		}
+		void ExprAstVisitor::PrintFields(Import* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+		void ExprAstVisitor::PrintFields(LetExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"result"));
+			Print(node->result.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"value"));
+			Print(node->value.Obj());
+			EndField();
+		}
+		void ExprAstVisitor::PrintFields(Module* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"exported"));
+			Print(node->exported.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"imports"));
+			BeginArray();
+			for (auto&& listItem : node->imports)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void ExprAstVisitor::PrintFields(NumExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"value"));
+			WriteToken(node->value);
+			EndField();
+		}
+		void ExprAstVisitor::PrintFields(Ref* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+		void ExprAstVisitor::PrintFields(True* node)
+		{
+		}
+		void ExprAstVisitor::PrintFields(Unary* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"op"));
+			switch (node->op)
+			{
+			case calculator::UnaryOp::Negative:
+				WriteString(vl::WString::Unmanaged(L"Negative"));
+				break;
+			case calculator::UnaryOp::Positive:
+				WriteString(vl::WString::Unmanaged(L"Positive"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"operand"));
+			Print(node->operand.Obj());
+			EndField();
+		}
+
+		void ExprAstVisitor::Visit(NumExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"NumExpr"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<NumExpr*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(Ref* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Ref"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<Ref*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(True* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"True"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<True*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(False* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"False"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<False*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(Func* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Func"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<Func*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(Call* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Call"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<Call*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(Expandable* node)
+		{
+			node->Accept(static_cast<Expandable::IVisitor*>(this));
+		}
+
+		void ExprAstVisitor::Visit(LetExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"LetExpr"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<Expandable*>(node));
+			PrintFields(static_cast<LetExpr*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(Unary* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Unary"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<Expandable*>(node));
+			PrintFields(static_cast<Unary*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(Binary* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Binary"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<Expandable*>(node));
+			PrintFields(static_cast<Binary*>(node));
+			EndObject();
+		}
+
+		ExprAstVisitor::ExprAstVisitor(vl::stream::StreamWriter& _writer)
+			: vl::glr::JsonVisitorBase(_writer)
+		{
+		}
+
+		void ExprAstVisitor::Print(Expr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<Expr::IVisitor*>(this));
+		}
+
+		void ExprAstVisitor::Print(Arg* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Arg"), node);
+			PrintFields(static_cast<Arg*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Print(Import* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Import"), node);
+			PrintFields(static_cast<Import*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Print(Module* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Module"), node);
+			PrintFields(static_cast<Module*>(node));
+			EndObject();
+		}
+
 	}
 
-	void ExprAstVisitor::Visit(NumExpr* node)
+	namespace json_reader
 	{
-		if (!node)
+		ExprAstVisitor::JsonObjectScope::JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json)
+			: jsonObjects(_jsonObjects)
 		{
-			WriteNull();
-			return;
+			jsonObjects.Add(json);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"NumExpr"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<NumExpr*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(Ref* node)
-	{
-		if (!node)
+		ExprAstVisitor::JsonObjectScope::~JsonObjectScope()
 		{
-			WriteNull();
-			return;
+			jsonObjects.RemoveAt(jsonObjects.Count() - 1);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Ref"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<Ref*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(True* node)
-	{
-		if (!node)
+		vl::glr::json::JsonObject* ExprAstVisitor::CurrentObject()
 		{
-			WriteNull();
-			return;
+			return jsonObjects[jsonObjects.Count() - 1];
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"True"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<True*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(False* node)
-	{
-		if (!node)
+		vl::glr::json::JsonNode* ExprAstVisitor::FindField(const vl::WString& name)
 		{
-			WriteNull();
-			return;
+			for (auto field : CurrentObject()->fields)
+			{
+				if (field && field->name.value == name) return field->value.Obj();
+			}
+			return nullptr;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"False"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<False*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(Func* node)
-	{
-		if (!node)
+		bool ExprAstVisitor::IsNull(vl::glr::json::JsonNode* value)
 		{
-			WriteNull();
-			return;
+			auto literal = dynamic_cast<vl::glr::json::JsonLiteral*>(value);
+			return literal && literal->value == vl::glr::json::JsonLiteralValue::Null;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Func"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<Func*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(Call* node)
-	{
-		if (!node)
+		vl::WString ExprAstVisitor::ReadType(vl::glr::json::JsonObject* json)
 		{
-			WriteNull();
-			return;
+			if (!json) throw vl::Exception(L"AST JSON object cannot be null.");
+			bool typeFound = false;
+			vl::WString typeName;
+			for (auto field : json->fields)
+			{
+				if (field && field->name.value == L"$ast")
+				{
+					if (typeFound) throw vl::Exception(L"AST JSON object contains duplicate \"$ast\" fields.");
+					typeFound = true;
+					auto jsonString = field->value.Cast<vl::glr::json::JsonString>();
+					if (!jsonString) throw vl::Exception(L"AST JSON field \"$ast\" must be a string.");
+					typeName = jsonString->content.value;
+				}
+			}
+			if (!typeFound) throw vl::Exception(L"AST JSON object is missing field \"$ast\".");
+			return typeName;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Call"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<Call*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(Expandable* node)
-	{
-		node->Accept(static_cast<Expandable::IVisitor*>(this));
-	}
-
-	void ExprAstVisitor::Visit(LetExpr* node)
-	{
-		if (!node)
+		void ExprAstVisitor::ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName)
 		{
-			WriteNull();
-			return;
+			vl::collections::List<vl::WString> fieldNames;
+			for (auto field : json->fields)
+			{
+				if (!field || !field->value) throw vl::Exception(L"AST JSON object contains an invalid field.");
+				auto name = field->name.value;
+				if (fieldNames.Contains(name)) throw vl::Exception(L"AST JSON object contains duplicate field \"" + name + L"\".");
+				fieldNames.Add(name);
+				bool fieldFound = name == L"$ast";
+				if (typeName == L"NumExpr")
+				{
+					fieldFound = fieldFound || name == L"value";
+				}
+				else if (typeName == L"Ref")
+				{
+					fieldFound = fieldFound || name == L"name";
+				}
+				else if (typeName == L"True")
+				{
+				}
+				else if (typeName == L"False")
+				{
+				}
+				else if (typeName == L"Arg")
+				{
+					fieldFound = fieldFound || name == L"name";
+				}
+				else if (typeName == L"Func")
+				{
+					fieldFound = fieldFound || name == L"args";
+					fieldFound = fieldFound || name == L"value";
+				}
+				else if (typeName == L"Call")
+				{
+					fieldFound = fieldFound || name == L"func";
+					fieldFound = fieldFound || name == L"args";
+				}
+				else if (typeName == L"LetExpr")
+				{
+					fieldFound = fieldFound || name == L"expanded";
+					fieldFound = fieldFound || name == L"name";
+					fieldFound = fieldFound || name == L"value";
+					fieldFound = fieldFound || name == L"result";
+				}
+				else if (typeName == L"Unary")
+				{
+					fieldFound = fieldFound || name == L"expanded";
+					fieldFound = fieldFound || name == L"op";
+					fieldFound = fieldFound || name == L"operand";
+				}
+				else if (typeName == L"Binary")
+				{
+					fieldFound = fieldFound || name == L"expanded";
+					fieldFound = fieldFound || name == L"op";
+					fieldFound = fieldFound || name == L"left";
+					fieldFound = fieldFound || name == L"right";
+				}
+				else if (typeName == L"Import")
+				{
+					fieldFound = fieldFound || name == L"name";
+				}
+				else if (typeName == L"Module")
+				{
+					fieldFound = fieldFound || name == L"imports";
+					fieldFound = fieldFound || name == L"exported";
+				}
+				if (!fieldFound) throw vl::Exception(L"AST JSON object contains unknown field \"" + name + L"\" for type \"" + typeName + L"\".");
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"LetExpr"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<Expandable*>(node));
-		PrintFields(static_cast<LetExpr*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(Unary* node)
-	{
-		if (!node)
+		void ExprAstVisitor::FillFields(Arg* node)
 		{
-			WriteNull();
-			return;
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Unary"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<Expandable*>(node));
-		PrintFields(static_cast<Unary*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(Binary* node)
-	{
-		if (!node)
+		void ExprAstVisitor::FillFields(Binary* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<Expandable*>(node));
+			node->op = BinaryOp::Add;
+			if (auto value = FindField(vl::WString::Unmanaged(L"op")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"op\" must be a string.");
+				if (jsonString->content.value == L"Add") node->op = BinaryOp::Add;
+				else if (jsonString->content.value == L"Minus") node->op = BinaryOp::Minus;
+				else if (jsonString->content.value == L"Multiply") node->op = BinaryOp::Multiply;
+				else if (jsonString->content.value == L"Divid") node->op = BinaryOp::Divid;
+				else if (jsonString->content.value == L"GT") node->op = BinaryOp::GT;
+				else if (jsonString->content.value == L"GE") node->op = BinaryOp::GE;
+				else if (jsonString->content.value == L"LT") node->op = BinaryOp::LT;
+				else if (jsonString->content.value == L"LE") node->op = BinaryOp::LE;
+				else if (jsonString->content.value == L"EQ") node->op = BinaryOp::EQ;
+				else if (jsonString->content.value == L"NE") node->op = BinaryOp::NE;
+				else throw vl::Exception(L"AST JSON field \"op\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"left")))
+			{
+				if (IsNull(value))
+				{
+					node->left = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"left\" contains an incompatible AST type.");
+					node->left = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"left\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"right")))
+			{
+				if (IsNull(value))
+				{
+					node->right = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"right\" contains an incompatible AST type.");
+					node->right = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"right\" must be an object or null.");
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Binary"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<Expandable*>(node));
-		PrintFields(static_cast<Binary*>(node));
-		EndObject();
-	}
 
-	ExprAstVisitor::ExprAstVisitor(vl::stream::StreamWriter& _writer)
-		: vl::glr::JsonVisitorBase(_writer)
-	{
-	}
-
-	void ExprAstVisitor::Print(Expr* node)
-	{
-		if (!node)
+		void ExprAstVisitor::FillFields(Call* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<Expr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"func")))
+			{
+				if (IsNull(value))
+				{
+					node->func = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"func\" contains an incompatible AST type.");
+					node->func = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"func\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"args")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"args\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->args.Add(vl::Ptr<Expr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<Expr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"args\" contains an incompatible AST type.");
+						node->args.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"args\" contains a non-object, non-null item.");
+				}
+			}
 		}
-		node->Accept(static_cast<Expr::IVisitor*>(this));
-	}
 
-	void ExprAstVisitor::Print(Arg* node)
-	{
-		if (!node)
+		void ExprAstVisitor::FillFields(Expandable* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<Expr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"expanded")))
+			{
+				if (IsNull(value))
+				{
+					node->expanded = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expanded\" contains an incompatible AST type.");
+					node->expanded = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expanded\" must be an object or null.");
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Arg"), node);
-		PrintFields(static_cast<Arg*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Print(Import* node)
-	{
-		if (!node)
+		void ExprAstVisitor::FillFields(Expr* node)
 		{
-			WriteNull();
-			return;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Import"), node);
-		PrintFields(static_cast<Import*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Print(Module* node)
-	{
-		if (!node)
+		void ExprAstVisitor::FillFields(False* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<Expr*>(node));
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Module"), node);
-		PrintFields(static_cast<Module*>(node));
-		EndObject();
-	}
 
+		void ExprAstVisitor::FillFields(Func* node)
+		{
+			FillFields(static_cast<Expr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"args")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"args\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->args.Add(vl::Ptr<Arg>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<Arg>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"args\" contains an incompatible AST type.");
+						node->args.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"args\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"value")))
+			{
+				if (IsNull(value))
+				{
+					node->value = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"value\" contains an incompatible AST type.");
+					node->value = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"value\" must be an object or null.");
+			}
+		}
+
+		void ExprAstVisitor::FillFields(Import* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+		}
+
+		void ExprAstVisitor::FillFields(LetExpr* node)
+		{
+			FillFields(static_cast<Expandable*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"value")))
+			{
+				if (IsNull(value))
+				{
+					node->value = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"value\" contains an incompatible AST type.");
+					node->value = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"value\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"result")))
+			{
+				if (IsNull(value))
+				{
+					node->result = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"result\" contains an incompatible AST type.");
+					node->result = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"result\" must be an object or null.");
+			}
+		}
+
+		void ExprAstVisitor::FillFields(Module* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"imports")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"imports\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->imports.Add(vl::Ptr<Import>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<Import>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"imports\" contains an incompatible AST type.");
+						node->imports.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"imports\" contains a non-object, non-null item.");
+				}
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"exported")))
+			{
+				if (IsNull(value))
+				{
+					node->exported = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"exported\" contains an incompatible AST type.");
+					node->exported = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"exported\" must be an object or null.");
+			}
+		}
+
+		void ExprAstVisitor::FillFields(NumExpr* node)
+		{
+			FillFields(static_cast<Expr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"value")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"value\" must be a string.");
+				node->value.value = jsonString->content.value;
+			}
+		}
+
+		void ExprAstVisitor::FillFields(Ref* node)
+		{
+			FillFields(static_cast<Expr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+		}
+
+		void ExprAstVisitor::FillFields(True* node)
+		{
+			FillFields(static_cast<Expr*>(node));
+		}
+
+		void ExprAstVisitor::FillFields(Unary* node)
+		{
+			FillFields(static_cast<Expandable*>(node));
+			node->op = UnaryOp::Positive;
+			if (auto value = FindField(vl::WString::Unmanaged(L"op")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"op\" must be a string.");
+				if (jsonString->content.value == L"Positive") node->op = UnaryOp::Positive;
+				else if (jsonString->content.value == L"Negative") node->op = UnaryOp::Negative;
+				else throw vl::Exception(L"AST JSON field \"op\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"operand")))
+			{
+				if (IsNull(value))
+				{
+					node->operand = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"operand\" contains an incompatible AST type.");
+					node->operand = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"operand\" must be an object or null.");
+			}
+		}
+
+		void ExprAstVisitor::Visit(NumExpr* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(Ref* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(True* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(False* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(Func* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(Call* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(Expandable* node)
+		{
+			node->Accept(static_cast<Expandable::IVisitor*>(this));
+		}
+
+		void ExprAstVisitor::Visit(LetExpr* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(Unary* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(Binary* node)
+		{
+			FillFields(node);
+		}
+
+		vl::Ptr<vl::glr::ParsingAstBase> ExprAstVisitor::ReadJson(vl::glr::json::JsonObject* json)
+		{
+			auto typeName = ReadType(json);
+			if (typeName == L"NumExpr")
+			{
+				auto node = vl::Ptr(new NumExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Ref")
+			{
+				auto node = vl::Ptr(new Ref);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"True")
+			{
+				auto node = vl::Ptr(new True);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"False")
+			{
+				auto node = vl::Ptr(new False);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Arg")
+			{
+				auto node = vl::Ptr(new Arg);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Func")
+			{
+				auto node = vl::Ptr(new Func);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Call")
+			{
+				auto node = vl::Ptr(new Call);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"LetExpr")
+			{
+				auto node = vl::Ptr(new LetExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Unary")
+			{
+				auto node = vl::Ptr(new Unary);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Binary")
+			{
+				auto node = vl::Ptr(new Binary);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Import")
+			{
+				auto node = vl::Ptr(new Import);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Module")
+			{
+				auto node = vl::Ptr(new Module);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			throw vl::Exception(L"AST JSON field \"$ast\" contains an unknown or abstract type \"" + typeName + L"\".");
+		}
+	}
 }

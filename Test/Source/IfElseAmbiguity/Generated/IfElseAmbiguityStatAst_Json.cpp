@@ -6,171 +6,476 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "IfElseAmbiguityStatAst_Json.h"
 
-namespace ifelseambiguity::json_visitor
+namespace ifelseambiguity
 {
-	void StatAstVisitor::PrintFields(BlockStat* node)
+	namespace json_visitor
 	{
-		BeginField(vl::WString::Unmanaged(L"stats"));
-		BeginArray();
-		for (auto&& listItem : node->stats)
+		void StatAstVisitor::PrintFields(BlockStat* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"stats"));
+			BeginArray();
+			for (auto&& listItem : node->stats)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
 		}
-		EndArray();
-		EndField();
-	}
-	void StatAstVisitor::PrintFields(DoStat* node)
-	{
-	}
-	void StatAstVisitor::PrintFields(IfContent* node)
-	{
-	}
-	void StatAstVisitor::PrintFields(IfContentCandidate* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"elseBranch"));
-		Print(node->elseBranch.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"thenBranch"));
-		Print(node->thenBranch.Obj());
-		EndField();
-	}
-	void StatAstVisitor::PrintFields(IfContentToResolve* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"candidates"));
-		BeginArray();
-		for (auto&& listItem : node->candidates)
+		void StatAstVisitor::PrintFields(DoStat* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
 		}
-		EndArray();
-		EndField();
-	}
-	void StatAstVisitor::PrintFields(IfStat* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"content"));
-		Print(node->content.Obj());
-		EndField();
-	}
-	void StatAstVisitor::PrintFields(Module* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"stat"));
-		Print(node->stat.Obj());
-		EndField();
-	}
-	void StatAstVisitor::PrintFields(Stat* node)
-	{
+		void StatAstVisitor::PrintFields(IfContent* node)
+		{
+		}
+		void StatAstVisitor::PrintFields(IfContentCandidate* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"elseBranch"));
+			Print(node->elseBranch.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"thenBranch"));
+			Print(node->thenBranch.Obj());
+			EndField();
+		}
+		void StatAstVisitor::PrintFields(IfContentToResolve* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"candidates"));
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+		}
+		void StatAstVisitor::PrintFields(IfStat* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"content"));
+			Print(node->content.Obj());
+			EndField();
+		}
+		void StatAstVisitor::PrintFields(Module* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"stat"));
+			Print(node->stat.Obj());
+			EndField();
+		}
+		void StatAstVisitor::PrintFields(Stat* node)
+		{
+		}
+
+		void StatAstVisitor::Visit(DoStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DoStat"), node);
+			PrintFields(static_cast<Stat*>(node));
+			PrintFields(static_cast<DoStat*>(node));
+			EndObject();
+		}
+
+		void StatAstVisitor::Visit(IfStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"IfStat"), node);
+			PrintFields(static_cast<Stat*>(node));
+			PrintFields(static_cast<IfStat*>(node));
+			EndObject();
+		}
+
+		void StatAstVisitor::Visit(BlockStat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"BlockStat"), node);
+			PrintFields(static_cast<Stat*>(node));
+			PrintFields(static_cast<BlockStat*>(node));
+			EndObject();
+		}
+
+		void StatAstVisitor::Visit(IfContentToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"IfContentToResolve"), node);
+			PrintFields(static_cast<IfContent*>(node));
+			PrintFields(static_cast<IfContentToResolve*>(node));
+			EndObject();
+		}
+
+		void StatAstVisitor::Visit(IfContentCandidate* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"IfContentCandidate"), node);
+			PrintFields(static_cast<IfContent*>(node));
+			PrintFields(static_cast<IfContentCandidate*>(node));
+			EndObject();
+		}
+
+		StatAstVisitor::StatAstVisitor(vl::stream::StreamWriter& _writer)
+			: vl::glr::JsonVisitorBase(_writer)
+		{
+		}
+
+		void StatAstVisitor::Print(Stat* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<Stat::IVisitor*>(this));
+		}
+
+		void StatAstVisitor::Print(IfContent* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<IfContent::IVisitor*>(this));
+		}
+
+		void StatAstVisitor::Print(Module* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Module"), node);
+			PrintFields(static_cast<Module*>(node));
+			EndObject();
+		}
+
 	}
 
-	void StatAstVisitor::Visit(DoStat* node)
+	namespace json_reader
 	{
-		if (!node)
+		StatAstVisitor::JsonObjectScope::JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json)
+			: jsonObjects(_jsonObjects)
 		{
-			WriteNull();
-			return;
+			jsonObjects.Add(json);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DoStat"), node);
-		PrintFields(static_cast<Stat*>(node));
-		PrintFields(static_cast<DoStat*>(node));
-		EndObject();
-	}
 
-	void StatAstVisitor::Visit(IfStat* node)
-	{
-		if (!node)
+		StatAstVisitor::JsonObjectScope::~JsonObjectScope()
 		{
-			WriteNull();
-			return;
+			jsonObjects.RemoveAt(jsonObjects.Count() - 1);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"IfStat"), node);
-		PrintFields(static_cast<Stat*>(node));
-		PrintFields(static_cast<IfStat*>(node));
-		EndObject();
-	}
 
-	void StatAstVisitor::Visit(BlockStat* node)
-	{
-		if (!node)
+		vl::glr::json::JsonObject* StatAstVisitor::CurrentObject()
 		{
-			WriteNull();
-			return;
+			return jsonObjects[jsonObjects.Count() - 1];
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"BlockStat"), node);
-		PrintFields(static_cast<Stat*>(node));
-		PrintFields(static_cast<BlockStat*>(node));
-		EndObject();
-	}
 
-	void StatAstVisitor::Visit(IfContentToResolve* node)
-	{
-		if (!node)
+		vl::glr::json::JsonNode* StatAstVisitor::FindField(const vl::WString& name)
 		{
-			WriteNull();
-			return;
+			for (auto field : CurrentObject()->fields)
+			{
+				if (field && field->name.value == name) return field->value.Obj();
+			}
+			return nullptr;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"IfContentToResolve"), node);
-		PrintFields(static_cast<IfContent*>(node));
-		PrintFields(static_cast<IfContentToResolve*>(node));
-		EndObject();
-	}
 
-	void StatAstVisitor::Visit(IfContentCandidate* node)
-	{
-		if (!node)
+		bool StatAstVisitor::IsNull(vl::glr::json::JsonNode* value)
 		{
-			WriteNull();
-			return;
+			auto literal = dynamic_cast<vl::glr::json::JsonLiteral*>(value);
+			return literal && literal->value == vl::glr::json::JsonLiteralValue::Null;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"IfContentCandidate"), node);
-		PrintFields(static_cast<IfContent*>(node));
-		PrintFields(static_cast<IfContentCandidate*>(node));
-		EndObject();
-	}
 
-	StatAstVisitor::StatAstVisitor(vl::stream::StreamWriter& _writer)
-		: vl::glr::JsonVisitorBase(_writer)
-	{
-	}
-
-	void StatAstVisitor::Print(Stat* node)
-	{
-		if (!node)
+		vl::WString StatAstVisitor::ReadType(vl::glr::json::JsonObject* json)
 		{
-			WriteNull();
-			return;
+			if (!json) throw vl::Exception(L"AST JSON object cannot be null.");
+			bool typeFound = false;
+			vl::WString typeName;
+			for (auto field : json->fields)
+			{
+				if (field && field->name.value == L"$ast")
+				{
+					if (typeFound) throw vl::Exception(L"AST JSON object contains duplicate \"$ast\" fields.");
+					typeFound = true;
+					auto jsonString = field->value.Cast<vl::glr::json::JsonString>();
+					if (!jsonString) throw vl::Exception(L"AST JSON field \"$ast\" must be a string.");
+					typeName = jsonString->content.value;
+				}
+			}
+			if (!typeFound) throw vl::Exception(L"AST JSON object is missing field \"$ast\".");
+			return typeName;
 		}
-		node->Accept(static_cast<Stat::IVisitor*>(this));
-	}
 
-	void StatAstVisitor::Print(IfContent* node)
-	{
-		if (!node)
+		void StatAstVisitor::ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName)
 		{
-			WriteNull();
-			return;
+			vl::collections::List<vl::WString> fieldNames;
+			for (auto field : json->fields)
+			{
+				if (!field || !field->value) throw vl::Exception(L"AST JSON object contains an invalid field.");
+				auto name = field->name.value;
+				if (fieldNames.Contains(name)) throw vl::Exception(L"AST JSON object contains duplicate field \"" + name + L"\".");
+				fieldNames.Add(name);
+				bool fieldFound = name == L"$ast";
+				if (typeName == L"DoStat")
+				{
+				}
+				else if (typeName == L"IfContentToResolve")
+				{
+					fieldFound = fieldFound || name == L"candidates";
+				}
+				else if (typeName == L"IfContentCandidate")
+				{
+					fieldFound = fieldFound || name == L"thenBranch";
+					fieldFound = fieldFound || name == L"elseBranch";
+				}
+				else if (typeName == L"IfStat")
+				{
+					fieldFound = fieldFound || name == L"content";
+				}
+				else if (typeName == L"BlockStat")
+				{
+					fieldFound = fieldFound || name == L"stats";
+				}
+				else if (typeName == L"Module")
+				{
+					fieldFound = fieldFound || name == L"stat";
+				}
+				if (!fieldFound) throw vl::Exception(L"AST JSON object contains unknown field \"" + name + L"\" for type \"" + typeName + L"\".");
+			}
 		}
-		node->Accept(static_cast<IfContent::IVisitor*>(this));
-	}
 
-	void StatAstVisitor::Print(Module* node)
-	{
-		if (!node)
+		void StatAstVisitor::FillFields(BlockStat* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<Stat*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"stats")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"stats\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->stats.Add(vl::Ptr<Stat>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<Stat>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"stats\" contains an incompatible AST type.");
+						node->stats.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"stats\" contains a non-object, non-null item.");
+				}
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Module"), node);
-		PrintFields(static_cast<Module*>(node));
-		EndObject();
-	}
 
+		void StatAstVisitor::FillFields(DoStat* node)
+		{
+			FillFields(static_cast<Stat*>(node));
+		}
+
+		void StatAstVisitor::FillFields(IfContent* node)
+		{
+		}
+
+		void StatAstVisitor::FillFields(IfContentCandidate* node)
+		{
+			FillFields(static_cast<IfContent*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"thenBranch")))
+			{
+				if (IsNull(value))
+				{
+					node->thenBranch = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Stat>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"thenBranch\" contains an incompatible AST type.");
+					node->thenBranch = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"thenBranch\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"elseBranch")))
+			{
+				if (IsNull(value))
+				{
+					node->elseBranch = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Stat>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"elseBranch\" contains an incompatible AST type.");
+					node->elseBranch = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"elseBranch\" must be an object or null.");
+			}
+		}
+
+		void StatAstVisitor::FillFields(IfContentToResolve* node)
+		{
+			FillFields(static_cast<IfContent*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"candidates")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"candidates\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->candidates.Add(vl::Ptr<IfContent>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<IfContent>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"candidates\" contains an incompatible AST type.");
+						node->candidates.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"candidates\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void StatAstVisitor::FillFields(IfStat* node)
+		{
+			FillFields(static_cast<Stat*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"content")))
+			{
+				if (IsNull(value))
+				{
+					node->content = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<IfContent>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"content\" contains an incompatible AST type.");
+					node->content = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"content\" must be an object or null.");
+			}
+		}
+
+		void StatAstVisitor::FillFields(Module* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"stat")))
+			{
+				if (IsNull(value))
+				{
+					node->stat = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Stat>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"stat\" contains an incompatible AST type.");
+					node->stat = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"stat\" must be an object or null.");
+			}
+		}
+
+		void StatAstVisitor::FillFields(Stat* node)
+		{
+		}
+
+		void StatAstVisitor::Visit(DoStat* node)
+		{
+			FillFields(node);
+		}
+
+		void StatAstVisitor::Visit(IfStat* node)
+		{
+			FillFields(node);
+		}
+
+		void StatAstVisitor::Visit(BlockStat* node)
+		{
+			FillFields(node);
+		}
+
+		void StatAstVisitor::Visit(IfContentToResolve* node)
+		{
+			FillFields(node);
+		}
+
+		void StatAstVisitor::Visit(IfContentCandidate* node)
+		{
+			FillFields(node);
+		}
+
+		vl::Ptr<vl::glr::ParsingAstBase> StatAstVisitor::ReadJson(vl::glr::json::JsonObject* json)
+		{
+			auto typeName = ReadType(json);
+			if (typeName == L"DoStat")
+			{
+				auto node = vl::Ptr(new DoStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Stat*>(node.Obj())->Accept(static_cast<Stat::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"IfContentToResolve")
+			{
+				auto node = vl::Ptr(new IfContentToResolve);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<IfContent*>(node.Obj())->Accept(static_cast<IfContent::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"IfContentCandidate")
+			{
+				auto node = vl::Ptr(new IfContentCandidate);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<IfContent*>(node.Obj())->Accept(static_cast<IfContent::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"IfStat")
+			{
+				auto node = vl::Ptr(new IfStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Stat*>(node.Obj())->Accept(static_cast<Stat::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"BlockStat")
+			{
+				auto node = vl::Ptr(new BlockStat);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Stat*>(node.Obj())->Accept(static_cast<Stat::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Module")
+			{
+				auto node = vl::Ptr(new Module);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			throw vl::Exception(L"AST JSON field \"$ast\" contains an unknown or abstract type \"" + typeName + L"\".");
+		}
+	}
 }

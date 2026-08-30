@@ -158,7 +158,9 @@ WriteAstUtilityHeaderFile
 			void WriteAstUtilityHeaderFile(
 				AstDefFileGroup* group,
 				Ptr<CppAstGenOutput> output,
-				const WString& extraNss,
+				const WString& guardPostfix,
+				const List<WString>& extraIncludes,
+				const List<WString>& extraNss,
 				stream::StreamWriter& writer,
 				Func<void(const WString&)> callback
 			)
@@ -168,9 +170,9 @@ WriteAstUtilityHeaderFile
 				if (headerGuard != L"")
 				{
 					writer.WriteString(L"#ifndef ");
-					writer.WriteLine(headerGuard + L"_" + wupper(group->Name()) + L"_AST_" + wupper(extraNss));
+					writer.WriteLine(headerGuard + L"_" + wupper(group->Name()) + L"_AST_" + wupper(guardPostfix));
 					writer.WriteString(L"#define ");
-					writer.WriteLine(headerGuard + L"_" + wupper(group->Name()) + L"_AST_" + wupper(extraNss));
+					writer.WriteLine(headerGuard + L"_" + wupper(group->Name()) + L"_AST_" + wupper(guardPostfix));
 				}
 				else
 				{
@@ -178,11 +180,22 @@ WriteAstUtilityHeaderFile
 				}
 				writer.WriteLine(L"");
 				writer.WriteLine(L"#include \"" + output->astH + L"\"");
+				for (auto include : extraIncludes)
+				{
+					if (include.Length() > 0 && include[0] == L'<')
+					{
+						writer.WriteLine(L"#include " + include);
+					}
+					else
+					{
+						writer.WriteLine(L"#include \"" + include + L"\"");
+					}
+				}
 				writer.WriteLine(L"");
 				{
 					List<WString> cppNss;
 					CopyFrom(cppNss, group->cppNss);
-					cppNss.Add(extraNss);
+					CopyFrom(cppNss, extraNss, true);
 					WString prefix = WriteNssBegin(cppNss, writer);
 					callback(prefix);
 					WriteNssEnd(cppNss, writer);
@@ -193,6 +206,20 @@ WriteAstUtilityHeaderFile
 				}
 			}
 
+			void WriteAstUtilityHeaderFile(
+				AstDefFileGroup* group,
+				Ptr<CppAstGenOutput> output,
+				const WString& extraNss,
+				stream::StreamWriter& writer,
+				Func<void(const WString&)> callback
+			)
+			{
+				List<WString> extraIncludes;
+				List<WString> extraNssItems;
+				extraNssItems.Add(extraNss);
+				WriteAstUtilityHeaderFile(group, output, extraNss, extraIncludes, extraNssItems, writer, callback);
+			}
+
 /***********************************************************************
 WriteAstUtilityCppFile
 ***********************************************************************/
@@ -200,7 +227,7 @@ WriteAstUtilityCppFile
 			void WriteAstUtilityCppFile(
 				AstDefFileGroup* group,
 				const WString& utilityHeaderFile,
-				const WString& extraNss,
+				const List<WString>& extraNss,
 				stream::StreamWriter& writer,
 				Func<void(const WString&)> callback
 			)
@@ -211,11 +238,24 @@ WriteAstUtilityCppFile
 				{
 					List<WString> cppNss;
 					CopyFrom(cppNss, group->cppNss);
-					cppNss.Add(extraNss);
+					CopyFrom(cppNss, extraNss, true);
 					WString prefix = WriteNssBegin(cppNss, writer);
 					callback(prefix);
 					WriteNssEnd(cppNss, writer);
 				}
+			}
+
+			void WriteAstUtilityCppFile(
+				AstDefFileGroup* group,
+				const WString& utilityHeaderFile,
+				const WString& extraNss,
+				stream::StreamWriter& writer,
+				Func<void(const WString&)> callback
+			)
+			{
+				List<WString> extraNssItems;
+				extraNssItems.Add(extraNss);
+				WriteAstUtilityCppFile(group, utilityHeaderFile, extraNssItems, writer, callback);
 			}
 
 /***********************************************************************

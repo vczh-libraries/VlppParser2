@@ -36,6 +36,7 @@ TEST_FILE
 
 	global.name = L"Cpp";
 	Fill(global.astIncludes, L"../../../../Source/AstBase.h");
+	Fill(global.jsonIncludes, L"../../../../Source/Json/Generated/JsonAst.h");
 	Fill(global.syntaxIncludes, L"../../../../Source/SyntaxBase.h");
 	Fill(global.cppNss, L"cpp_parser");
 	global.headerGuard = L"VCZH_PARSER2_BUILTIN_CPP";

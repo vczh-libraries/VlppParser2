@@ -4,31 +4,72 @@ From parser definition:ExprAst
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_UNITTEST_BINARYOP_EXPRAST_AST_JSON_VISITOR
-#define VCZH_PARSER2_UNITTEST_BINARYOP_EXPRAST_AST_JSON_VISITOR
+#ifndef VCZH_PARSER2_UNITTEST_BINARYOP_EXPRAST_AST_JSON
+#define VCZH_PARSER2_UNITTEST_BINARYOP_EXPRAST_AST_JSON
 
 #include "BinaryOpExprAst.h"
+#include "../../../../Source/Json/Generated/JsonAst.h"
 
-namespace binaryop::json_visitor
+namespace binaryop
 {
-	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-	class ExprAstVisitor
-		: public vl::glr::JsonVisitorBase
-		, protected virtual Expr::IVisitor
+	namespace json_visitor
 	{
-	protected:
-		virtual void PrintFields(BinaryExpr* node);
-		virtual void PrintFields(Expr* node);
-		virtual void PrintFields(RefExpr* node);
+		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+		class ExprAstVisitor
+			: public vl::glr::JsonVisitorBase
+			, protected virtual Expr::IVisitor
+		{
+		protected:
+			virtual void PrintFields(BinaryExpr* node);
+			virtual void PrintFields(Expr* node);
+			virtual void PrintFields(RefExpr* node);
 
-	protected:
-		void Visit(RefExpr* node) override;
-		void Visit(BinaryExpr* node) override;
+		protected:
+			void Visit(RefExpr* node) override;
+			void Visit(BinaryExpr* node) override;
 
-	public:
-		ExprAstVisitor(vl::stream::StreamWriter& _writer);
+		public:
+			ExprAstVisitor(vl::stream::StreamWriter& _writer);
 
-		void Print(Expr* node);
-	};
+			void Print(Expr* node);
+		};
+	}
+
+	namespace json_reader
+	{
+		/// <summary>A JSON reader, overriding all abstract methods with JSON to AST deserialization code.</summary>
+		class ExprAstVisitor
+			: protected virtual Expr::IVisitor
+		{
+		protected:
+			class JsonObjectScope
+			{
+			protected:
+				vl::collections::List<vl::glr::json::JsonObject*>& jsonObjects;
+
+			public:
+				JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json);
+				~JsonObjectScope();
+			};
+
+			vl::collections::List<vl::glr::json::JsonObject*> jsonObjects;
+			vl::glr::json::JsonObject* CurrentObject();
+			vl::glr::json::JsonNode* FindField(const vl::WString& name);
+			bool IsNull(vl::glr::json::JsonNode* value);
+			vl::WString ReadType(vl::glr::json::JsonObject* json);
+			void ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName);
+
+			virtual void FillFields(BinaryExpr* node);
+			virtual void FillFields(Expr* node);
+			virtual void FillFields(RefExpr* node);
+
+		protected:
+			void Visit(RefExpr* node) override;
+			void Visit(BinaryExpr* node) override;
+
+		public:
+			vl::Ptr<vl::glr::ParsingAstBase> ReadJson(vl::glr::json::JsonObject* json);
+		};
+	}
 }
 #endif

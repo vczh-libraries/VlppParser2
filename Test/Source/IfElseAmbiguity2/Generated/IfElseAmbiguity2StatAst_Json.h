@@ -4,43 +4,94 @@ From parser definition:StatAst
 Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
-#ifndef VCZH_PARSER2_UNITTEST_IFELSEAMBIGUITY2_STATAST_AST_JSON_VISITOR
-#define VCZH_PARSER2_UNITTEST_IFELSEAMBIGUITY2_STATAST_AST_JSON_VISITOR
+#ifndef VCZH_PARSER2_UNITTEST_IFELSEAMBIGUITY2_STATAST_AST_JSON
+#define VCZH_PARSER2_UNITTEST_IFELSEAMBIGUITY2_STATAST_AST_JSON
 
 #include "IfElseAmbiguity2StatAst.h"
+#include "../../../../Source/Json/Generated/JsonAst.h"
 
-namespace ifelseambiguity2::json_visitor
+namespace ifelseambiguity2
 {
-	/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
-	class StatAstVisitor
-		: public vl::glr::JsonVisitorBase
-		, protected virtual Stat::IVisitor
-		, protected virtual IfContent::IVisitor
+	namespace json_visitor
 	{
-	protected:
-		virtual void PrintFields(BlockStat* node);
-		virtual void PrintFields(DoStat* node);
-		virtual void PrintFields(IfContent* node);
-		virtual void PrintFields(IfContentCandidate* node);
-		virtual void PrintFields(IfContentToResolve* node);
-		virtual void PrintFields(IfStat* node);
-		virtual void PrintFields(Module* node);
-		virtual void PrintFields(Stat* node);
+		/// <summary>A JSON visitor, overriding all abstract methods with AST to JSON serialization code.</summary>
+		class StatAstVisitor
+			: public vl::glr::JsonVisitorBase
+			, protected virtual Stat::IVisitor
+			, protected virtual IfContent::IVisitor
+		{
+		protected:
+			virtual void PrintFields(BlockStat* node);
+			virtual void PrintFields(DoStat* node);
+			virtual void PrintFields(IfContent* node);
+			virtual void PrintFields(IfContentCandidate* node);
+			virtual void PrintFields(IfContentToResolve* node);
+			virtual void PrintFields(IfStat* node);
+			virtual void PrintFields(Module* node);
+			virtual void PrintFields(Stat* node);
 
-	protected:
-		void Visit(DoStat* node) override;
-		void Visit(IfStat* node) override;
-		void Visit(BlockStat* node) override;
+		protected:
+			void Visit(DoStat* node) override;
+			void Visit(IfStat* node) override;
+			void Visit(BlockStat* node) override;
 
-		void Visit(IfContentToResolve* node) override;
-		void Visit(IfContentCandidate* node) override;
+			void Visit(IfContentToResolve* node) override;
+			void Visit(IfContentCandidate* node) override;
 
-	public:
-		StatAstVisitor(vl::stream::StreamWriter& _writer);
+		public:
+			StatAstVisitor(vl::stream::StreamWriter& _writer);
 
-		void Print(Stat* node);
-		void Print(IfContent* node);
-		void Print(Module* node);
-	};
+			void Print(Stat* node);
+			void Print(IfContent* node);
+			void Print(Module* node);
+		};
+	}
+
+	namespace json_reader
+	{
+		/// <summary>A JSON reader, overriding all abstract methods with JSON to AST deserialization code.</summary>
+		class StatAstVisitor
+			: protected virtual Stat::IVisitor
+			, protected virtual IfContent::IVisitor
+		{
+		protected:
+			class JsonObjectScope
+			{
+			protected:
+				vl::collections::List<vl::glr::json::JsonObject*>& jsonObjects;
+
+			public:
+				JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json);
+				~JsonObjectScope();
+			};
+
+			vl::collections::List<vl::glr::json::JsonObject*> jsonObjects;
+			vl::glr::json::JsonObject* CurrentObject();
+			vl::glr::json::JsonNode* FindField(const vl::WString& name);
+			bool IsNull(vl::glr::json::JsonNode* value);
+			vl::WString ReadType(vl::glr::json::JsonObject* json);
+			void ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName);
+
+			virtual void FillFields(BlockStat* node);
+			virtual void FillFields(DoStat* node);
+			virtual void FillFields(IfContent* node);
+			virtual void FillFields(IfContentCandidate* node);
+			virtual void FillFields(IfContentToResolve* node);
+			virtual void FillFields(IfStat* node);
+			virtual void FillFields(Module* node);
+			virtual void FillFields(Stat* node);
+
+		protected:
+			void Visit(DoStat* node) override;
+			void Visit(IfStat* node) override;
+			void Visit(BlockStat* node) override;
+
+			void Visit(IfContentToResolve* node) override;
+			void Visit(IfContentCandidate* node) override;
+
+		public:
+			vl::Ptr<vl::glr::ParsingAstBase> ReadJson(vl::glr::json::JsonObject* json);
+		};
+	}
 }
 #endif

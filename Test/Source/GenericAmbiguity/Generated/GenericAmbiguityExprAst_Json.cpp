@@ -6,243 +6,671 @@ Licensed under https://github.com/vczh-libraries/License
 
 #include "GenericAmbiguityExprAst_Json.h"
 
-namespace genericambiguity::json_visitor
+namespace genericambiguity
 {
-	void ExprAstVisitor::PrintFields(BinaryExpr* node)
+	namespace json_visitor
 	{
-		BeginField(vl::WString::Unmanaged(L"left"));
-		Print(node->left.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"op"));
-		switch (node->op)
+		void ExprAstVisitor::PrintFields(BinaryExpr* node)
 		{
-		case genericambiguity::BinaryOp::GT:
-			WriteString(vl::WString::Unmanaged(L"GT"));
-			break;
-		case genericambiguity::BinaryOp::LT:
-			WriteString(vl::WString::Unmanaged(L"LT"));
-			break;
-		default:
-			WriteNull();
+			BeginField(vl::WString::Unmanaged(L"left"));
+			Print(node->left.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"op"));
+			switch (node->op)
+			{
+			case genericambiguity::BinaryOp::GT:
+				WriteString(vl::WString::Unmanaged(L"GT"));
+				break;
+			case genericambiguity::BinaryOp::LT:
+				WriteString(vl::WString::Unmanaged(L"LT"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"right"));
+			Print(node->right.Obj());
+			EndField();
 		}
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"right"));
-		Print(node->right.Obj());
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(CallExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"args"));
-		BeginArray();
-		for (auto&& listItem : node->args)
+		void ExprAstVisitor::PrintFields(CallExpr* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"args"));
+			BeginArray();
+			for (auto&& listItem : node->args)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"func"));
+			Print(node->func.Obj());
+			EndField();
 		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"func"));
-		Print(node->func.Obj());
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(DecrementExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"expr"));
-		Print(node->expr.Obj());
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(Expr* node)
-	{
-	}
-	void ExprAstVisitor::PrintFields(ExprToResolve* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"candidates"));
-		BeginArray();
-		for (auto&& listItem : node->candidates)
+		void ExprAstVisitor::PrintFields(DecrementExpr* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
+			BeginField(vl::WString::Unmanaged(L"expr"));
+			Print(node->expr.Obj());
+			EndField();
 		}
-		EndArray();
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(GenericExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"args"));
-		BeginArray();
-		for (auto&& listItem : node->args)
+		void ExprAstVisitor::PrintFields(Expr* node)
 		{
-			BeginArrayItem();
-			Print(listItem.Obj());
-			EndArrayItem();
 		}
-		EndArray();
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(Module* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"expr"));
-		Print(node->expr.Obj());
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(PostfixExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"expr"));
-		Print(node->expr.Obj());
-		EndField();
-		BeginField(vl::WString::Unmanaged(L"op"));
-		switch (node->op)
+		void ExprAstVisitor::PrintFields(ExprToResolve* node)
 		{
-		case genericambiguity::PostfixOp::Add:
-			WriteString(vl::WString::Unmanaged(L"Add"));
-			break;
-		case genericambiguity::PostfixOp::Increment:
-			WriteString(vl::WString::Unmanaged(L"Increment"));
-			break;
-		case genericambiguity::PostfixOp::Sub:
-			WriteString(vl::WString::Unmanaged(L"Sub"));
-			break;
-		default:
-			WriteNull();
+			BeginField(vl::WString::Unmanaged(L"candidates"));
+			BeginArray();
+			for (auto&& listItem : node->candidates)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
 		}
-		EndField();
-	}
-	void ExprAstVisitor::PrintFields(RefExpr* node)
-	{
-		BeginField(vl::WString::Unmanaged(L"name"));
-		WriteToken(node->name);
-		EndField();
+		void ExprAstVisitor::PrintFields(GenericExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"args"));
+			BeginArray();
+			for (auto&& listItem : node->args)
+			{
+				BeginArrayItem();
+				Print(listItem.Obj());
+				EndArrayItem();
+			}
+			EndArray();
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+		void ExprAstVisitor::PrintFields(Module* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"expr"));
+			Print(node->expr.Obj());
+			EndField();
+		}
+		void ExprAstVisitor::PrintFields(PostfixExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"expr"));
+			Print(node->expr.Obj());
+			EndField();
+			BeginField(vl::WString::Unmanaged(L"op"));
+			switch (node->op)
+			{
+			case genericambiguity::PostfixOp::Add:
+				WriteString(vl::WString::Unmanaged(L"Add"));
+				break;
+			case genericambiguity::PostfixOp::Increment:
+				WriteString(vl::WString::Unmanaged(L"Increment"));
+				break;
+			case genericambiguity::PostfixOp::Sub:
+				WriteString(vl::WString::Unmanaged(L"Sub"));
+				break;
+			default:
+				WriteNull();
+			}
+			EndField();
+		}
+		void ExprAstVisitor::PrintFields(RefExpr* node)
+		{
+			BeginField(vl::WString::Unmanaged(L"name"));
+			WriteToken(node->name);
+			EndField();
+		}
+
+		void ExprAstVisitor::Visit(ExprToResolve* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"ExprToResolve"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<ExprToResolve*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(RefExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"RefExpr"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<RefExpr*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(GenericExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"GenericExpr"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<GenericExpr*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(CallExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"CallExpr"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<CallExpr*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(PostfixExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"PostfixExpr"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<PostfixExpr*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(DecrementExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"DecrementExpr"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<DecrementExpr*>(node));
+			EndObject();
+		}
+
+		void ExprAstVisitor::Visit(BinaryExpr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"BinaryExpr"), node);
+			PrintFields(static_cast<Expr*>(node));
+			PrintFields(static_cast<BinaryExpr*>(node));
+			EndObject();
+		}
+
+		ExprAstVisitor::ExprAstVisitor(vl::stream::StreamWriter& _writer)
+			: vl::glr::JsonVisitorBase(_writer)
+		{
+		}
+
+		void ExprAstVisitor::Print(Expr* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			node->Accept(static_cast<Expr::IVisitor*>(this));
+		}
+
+		void ExprAstVisitor::Print(Module* node)
+		{
+			if (!node)
+			{
+				WriteNull();
+				return;
+			}
+			BeginObject();
+			WriteType(vl::WString::Unmanaged(L"Module"), node);
+			PrintFields(static_cast<Module*>(node));
+			EndObject();
+		}
+
 	}
 
-	void ExprAstVisitor::Visit(ExprToResolve* node)
+	namespace json_reader
 	{
-		if (!node)
+		ExprAstVisitor::JsonObjectScope::JsonObjectScope(vl::collections::List<vl::glr::json::JsonObject*>& _jsonObjects, vl::glr::json::JsonObject* json)
+			: jsonObjects(_jsonObjects)
 		{
-			WriteNull();
-			return;
+			jsonObjects.Add(json);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"ExprToResolve"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<ExprToResolve*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(RefExpr* node)
-	{
-		if (!node)
+		ExprAstVisitor::JsonObjectScope::~JsonObjectScope()
 		{
-			WriteNull();
-			return;
+			jsonObjects.RemoveAt(jsonObjects.Count() - 1);
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"RefExpr"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<RefExpr*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(GenericExpr* node)
-	{
-		if (!node)
+		vl::glr::json::JsonObject* ExprAstVisitor::CurrentObject()
 		{
-			WriteNull();
-			return;
+			return jsonObjects[jsonObjects.Count() - 1];
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"GenericExpr"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<GenericExpr*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(CallExpr* node)
-	{
-		if (!node)
+		vl::glr::json::JsonNode* ExprAstVisitor::FindField(const vl::WString& name)
 		{
-			WriteNull();
-			return;
+			for (auto field : CurrentObject()->fields)
+			{
+				if (field && field->name.value == name) return field->value.Obj();
+			}
+			return nullptr;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"CallExpr"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<CallExpr*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(PostfixExpr* node)
-	{
-		if (!node)
+		bool ExprAstVisitor::IsNull(vl::glr::json::JsonNode* value)
 		{
-			WriteNull();
-			return;
+			auto literal = dynamic_cast<vl::glr::json::JsonLiteral*>(value);
+			return literal && literal->value == vl::glr::json::JsonLiteralValue::Null;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"PostfixExpr"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<PostfixExpr*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(DecrementExpr* node)
-	{
-		if (!node)
+		vl::WString ExprAstVisitor::ReadType(vl::glr::json::JsonObject* json)
 		{
-			WriteNull();
-			return;
+			if (!json) throw vl::Exception(L"AST JSON object cannot be null.");
+			bool typeFound = false;
+			vl::WString typeName;
+			for (auto field : json->fields)
+			{
+				if (field && field->name.value == L"$ast")
+				{
+					if (typeFound) throw vl::Exception(L"AST JSON object contains duplicate \"$ast\" fields.");
+					typeFound = true;
+					auto jsonString = field->value.Cast<vl::glr::json::JsonString>();
+					if (!jsonString) throw vl::Exception(L"AST JSON field \"$ast\" must be a string.");
+					typeName = jsonString->content.value;
+				}
+			}
+			if (!typeFound) throw vl::Exception(L"AST JSON object is missing field \"$ast\".");
+			return typeName;
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"DecrementExpr"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<DecrementExpr*>(node));
-		EndObject();
-	}
 
-	void ExprAstVisitor::Visit(BinaryExpr* node)
-	{
-		if (!node)
+		void ExprAstVisitor::ValidateFields(vl::glr::json::JsonObject* json, const vl::WString& typeName)
 		{
-			WriteNull();
-			return;
+			vl::collections::List<vl::WString> fieldNames;
+			for (auto field : json->fields)
+			{
+				if (!field || !field->value) throw vl::Exception(L"AST JSON object contains an invalid field.");
+				auto name = field->name.value;
+				if (fieldNames.Contains(name)) throw vl::Exception(L"AST JSON object contains duplicate field \"" + name + L"\".");
+				fieldNames.Add(name);
+				bool fieldFound = name == L"$ast";
+				if (typeName == L"ExprToResolve")
+				{
+					fieldFound = fieldFound || name == L"candidates";
+				}
+				else if (typeName == L"RefExpr")
+				{
+					fieldFound = fieldFound || name == L"name";
+				}
+				else if (typeName == L"GenericExpr")
+				{
+					fieldFound = fieldFound || name == L"name";
+					fieldFound = fieldFound || name == L"args";
+				}
+				else if (typeName == L"CallExpr")
+				{
+					fieldFound = fieldFound || name == L"func";
+					fieldFound = fieldFound || name == L"args";
+				}
+				else if (typeName == L"PostfixExpr")
+				{
+					fieldFound = fieldFound || name == L"op";
+					fieldFound = fieldFound || name == L"expr";
+				}
+				else if (typeName == L"DecrementExpr")
+				{
+					fieldFound = fieldFound || name == L"expr";
+				}
+				else if (typeName == L"BinaryExpr")
+				{
+					fieldFound = fieldFound || name == L"op";
+					fieldFound = fieldFound || name == L"left";
+					fieldFound = fieldFound || name == L"right";
+				}
+				else if (typeName == L"Module")
+				{
+					fieldFound = fieldFound || name == L"expr";
+				}
+				if (!fieldFound) throw vl::Exception(L"AST JSON object contains unknown field \"" + name + L"\" for type \"" + typeName + L"\".");
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"BinaryExpr"), node);
-		PrintFields(static_cast<Expr*>(node));
-		PrintFields(static_cast<BinaryExpr*>(node));
-		EndObject();
-	}
 
-	ExprAstVisitor::ExprAstVisitor(vl::stream::StreamWriter& _writer)
-		: vl::glr::JsonVisitorBase(_writer)
-	{
-	}
-
-	void ExprAstVisitor::Print(Expr* node)
-	{
-		if (!node)
+		void ExprAstVisitor::FillFields(BinaryExpr* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<Expr*>(node));
+			node->op = BinaryOp::LT;
+			if (auto value = FindField(vl::WString::Unmanaged(L"op")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"op\" must be a string.");
+				if (jsonString->content.value == L"LT") node->op = BinaryOp::LT;
+				else if (jsonString->content.value == L"GT") node->op = BinaryOp::GT;
+				else throw vl::Exception(L"AST JSON field \"op\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"left")))
+			{
+				if (IsNull(value))
+				{
+					node->left = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"left\" contains an incompatible AST type.");
+					node->left = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"left\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"right")))
+			{
+				if (IsNull(value))
+				{
+					node->right = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"right\" contains an incompatible AST type.");
+					node->right = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"right\" must be an object or null.");
+			}
 		}
-		node->Accept(static_cast<Expr::IVisitor*>(this));
-	}
 
-	void ExprAstVisitor::Print(Module* node)
-	{
-		if (!node)
+		void ExprAstVisitor::FillFields(CallExpr* node)
 		{
-			WriteNull();
-			return;
+			FillFields(static_cast<Expr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"func")))
+			{
+				if (IsNull(value))
+				{
+					node->func = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"func\" contains an incompatible AST type.");
+					node->func = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"func\" must be an object or null.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"args")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"args\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->args.Add(vl::Ptr<Expr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<Expr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"args\" contains an incompatible AST type.");
+						node->args.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"args\" contains a non-object, non-null item.");
+				}
+			}
 		}
-		BeginObject();
-		WriteType(vl::WString::Unmanaged(L"Module"), node);
-		PrintFields(static_cast<Module*>(node));
-		EndObject();
-	}
 
+		void ExprAstVisitor::FillFields(DecrementExpr* node)
+		{
+			FillFields(static_cast<Expr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"expr")))
+			{
+				if (IsNull(value))
+				{
+					node->expr = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expr\" contains an incompatible AST type.");
+					node->expr = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expr\" must be an object or null.");
+			}
+		}
+
+		void ExprAstVisitor::FillFields(Expr* node)
+		{
+		}
+
+		void ExprAstVisitor::FillFields(ExprToResolve* node)
+		{
+			FillFields(static_cast<Expr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"candidates")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"candidates\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->candidates.Add(vl::Ptr<Expr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<Expr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"candidates\" contains an incompatible AST type.");
+						node->candidates.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"candidates\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void ExprAstVisitor::FillFields(GenericExpr* node)
+		{
+			FillFields(static_cast<Expr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"args")))
+			{
+				auto jsonArray = dynamic_cast<vl::glr::json::JsonArray*>(value);
+				if (!jsonArray) throw vl::Exception(L"AST JSON field \"args\" must be an array.");
+				for (auto item : jsonArray->items)
+				{
+					if (IsNull(item.Obj()))
+					{
+						node->args.Add(vl::Ptr<Expr>());
+					}
+					else if (auto jsonObject = item.Cast<vl::glr::json::JsonObject>())
+					{
+						auto ast = ReadJson(jsonObject.Obj()).Cast<Expr>();
+						if (!ast) throw vl::Exception(L"AST JSON field \"args\" contains an incompatible AST type.");
+						node->args.Add(ast);
+					}
+					else throw vl::Exception(L"AST JSON field \"args\" contains a non-object, non-null item.");
+				}
+			}
+		}
+
+		void ExprAstVisitor::FillFields(Module* node)
+		{
+			if (auto value = FindField(vl::WString::Unmanaged(L"expr")))
+			{
+				if (IsNull(value))
+				{
+					node->expr = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expr\" contains an incompatible AST type.");
+					node->expr = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expr\" must be an object or null.");
+			}
+		}
+
+		void ExprAstVisitor::FillFields(PostfixExpr* node)
+		{
+			FillFields(static_cast<Expr*>(node));
+			node->op = PostfixOp::Add;
+			if (auto value = FindField(vl::WString::Unmanaged(L"op")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"op\" must be a string.");
+				if (jsonString->content.value == L"Add") node->op = PostfixOp::Add;
+				else if (jsonString->content.value == L"Sub") node->op = PostfixOp::Sub;
+				else if (jsonString->content.value == L"Increment") node->op = PostfixOp::Increment;
+				else throw vl::Exception(L"AST JSON field \"op\" contains an unknown enum item.");
+			}
+			if (auto value = FindField(vl::WString::Unmanaged(L"expr")))
+			{
+				if (IsNull(value))
+				{
+					node->expr = nullptr;
+				}
+				else if (auto jsonObject = dynamic_cast<vl::glr::json::JsonObject*>(value))
+				{
+					auto ast = ReadJson(jsonObject).Cast<Expr>();
+					if (!ast) throw vl::Exception(L"AST JSON field \"expr\" contains an incompatible AST type.");
+					node->expr = ast;
+				}
+				else throw vl::Exception(L"AST JSON field \"expr\" must be an object or null.");
+			}
+		}
+
+		void ExprAstVisitor::FillFields(RefExpr* node)
+		{
+			FillFields(static_cast<Expr*>(node));
+			if (auto value = FindField(vl::WString::Unmanaged(L"name")))
+			{
+				auto jsonString = dynamic_cast<vl::glr::json::JsonString*>(value);
+				if (!jsonString) throw vl::Exception(L"AST JSON field \"name\" must be a string.");
+				node->name.value = jsonString->content.value;
+			}
+		}
+
+		void ExprAstVisitor::Visit(ExprToResolve* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(RefExpr* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(GenericExpr* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(CallExpr* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(PostfixExpr* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(DecrementExpr* node)
+		{
+			FillFields(node);
+		}
+
+		void ExprAstVisitor::Visit(BinaryExpr* node)
+		{
+			FillFields(node);
+		}
+
+		vl::Ptr<vl::glr::ParsingAstBase> ExprAstVisitor::ReadJson(vl::glr::json::JsonObject* json)
+		{
+			auto typeName = ReadType(json);
+			if (typeName == L"ExprToResolve")
+			{
+				auto node = vl::Ptr(new ExprToResolve);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"RefExpr")
+			{
+				auto node = vl::Ptr(new RefExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"GenericExpr")
+			{
+				auto node = vl::Ptr(new GenericExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"CallExpr")
+			{
+				auto node = vl::Ptr(new CallExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"PostfixExpr")
+			{
+				auto node = vl::Ptr(new PostfixExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"DecrementExpr")
+			{
+				auto node = vl::Ptr(new DecrementExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"BinaryExpr")
+			{
+				auto node = vl::Ptr(new BinaryExpr);
+				JsonObjectScope scope(jsonObjects, json);
+				static_cast<Expr*>(node.Obj())->Accept(static_cast<Expr::IVisitor*>(this));
+				ValidateFields(json, typeName);
+				return node;
+			}
+			if (typeName == L"Module")
+			{
+				auto node = vl::Ptr(new Module);
+				JsonObjectScope scope(jsonObjects, json);
+				FillFields(node.Obj());
+				ValidateFields(json, typeName);
+				return node;
+			}
+			throw vl::Exception(L"AST JSON field \"$ast\" contains an unknown or abstract type \"" + typeName + L"\".");
+		}
+	}
 }
