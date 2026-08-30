@@ -148,6 +148,444 @@
             }],
             "kind": "Interface"
         }]
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "MakeValue",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "SharedPointerType",
+            "element": {
+                "$ast": "ReferenceType",
+                "name": "IValue"
+            }
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "NewInterfaceExpression",
+                    "declarations": [{
+                        "$ast": "FunctionDeclaration",
+                        "attributes": [],
+                        "name": "GetValue",
+                        "anonymity": "Named",
+                        "arguments": [],
+                        "functionKind": "Override",
+                        "returnType": {
+                            "$ast": "PredefinedType",
+                            "name": "String"
+                        },
+                        "statement": {
+                            "$ast": "BlockStatement",
+                            "endLabel": "",
+                            "statements": [{
+                                "$ast": "ReturnStatement",
+                                "expression": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "value"
+                                }
+                            }]
+                        }
+                    }],
+                    "type": {
+                        "$ast": "SharedPointerType",
+                        "element": {
+                            "$ast": "ReferenceType",
+                            "name": "IValue"
+                        }
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "CheckValue",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "SharedPointerType",
+                "element": {
+                    "$ast": "ReferenceType",
+                    "name": "IValue"
+                }
+            }
+        }, {
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "shouldBeWrapper",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Bool"
+            }
+        }, {
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "name",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Void"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "valueObj",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "value"
+                    },
+                    "type": {
+                        "$ast": "PredefinedType",
+                        "name": "Object"
+                    }
+                }
+            }, {
+                "$ast": "IfStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "shouldBeWrapper"
+                },
+                "falseBranch": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "IfStatement",
+                        "expression": {
+                            "$ast": "TypeTestingExpression",
+                            "expression": {
+                                "$ast": "TypeCastingExpression",
+                                "expression": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "valueObj"
+                                },
+                                "strategy": "Weak",
+                                "type": {
+                                    "$ast": "SharedPointerType",
+                                    "element": {
+                                        "$ast": "ChildType",
+                                        "name": "IRpcWrapperBase",
+                                        "parent": {
+                                            "$ast": "ReferenceType",
+                                            "name": "system"
+                                        }
+                                    }
+                                }
+                            },
+                            "test": "IsNotNull",
+                            "type": null
+                        },
+                        "falseBranch": null,
+                        "name": "",
+                        "trueBranch": {
+                            "$ast": "BlockStatement",
+                            "endLabel": "",
+                            "statements": [{
+                                "$ast": "RaiseExceptionStatement",
+                                "expression": {
+                                    "$ast": "FormatExpression",
+                                    "expandedExpression": null,
+                                    "value": "$\"$(name) should be a local object\""
+                                }
+                            }]
+                        },
+                        "type": null
+                    }]
+                },
+                "name": "",
+                "trueBranch": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "IfStatement",
+                        "expression": {
+                            "$ast": "TypeTestingExpression",
+                            "expression": {
+                                "$ast": "TypeCastingExpression",
+                                "expression": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "valueObj"
+                                },
+                                "strategy": "Weak",
+                                "type": {
+                                    "$ast": "SharedPointerType",
+                                    "element": {
+                                        "$ast": "ChildType",
+                                        "name": "IRpcWrapperBase",
+                                        "parent": {
+                                            "$ast": "ReferenceType",
+                                            "name": "system"
+                                        }
+                                    }
+                                }
+                            },
+                            "test": "IsNull",
+                            "type": null
+                        },
+                        "falseBranch": null,
+                        "name": "",
+                        "trueBranch": {
+                            "$ast": "BlockStatement",
+                            "endLabel": "",
+                            "statements": [{
+                                "$ast": "RaiseExceptionStatement",
+                                "expression": {
+                                    "$ast": "FormatExpression",
+                                    "expandedExpression": null,
+                                    "value": "$\"$(name) should be a wrapper object\""
+                                }
+                            }]
+                        },
+                        "type": null
+                    }]
+                },
+                "type": null
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "CheckList",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "xs",
+            "type": {
+                "$ast": "MapType",
+                "key": null,
+                "value": {
+                    "$ast": "SharedPointerType",
+                    "element": {
+                        "$ast": "ReferenceType",
+                        "name": "IValue"
+                    }
+                },
+                "writability": "Writable"
+            }
+        }, {
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "shouldBeWrapper",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Bool"
+            }
+        }, {
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "name",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Void"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "xsObj",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "xs"
+                    },
+                    "type": {
+                        "$ast": "PredefinedType",
+                        "name": "Object"
+                    }
+                }
+            }, {
+                "$ast": "IfStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "shouldBeWrapper"
+                },
+                "falseBranch": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "IfStatement",
+                        "expression": {
+                            "$ast": "TypeTestingExpression",
+                            "expression": {
+                                "$ast": "TypeCastingExpression",
+                                "expression": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "xsObj"
+                                },
+                                "strategy": "Weak",
+                                "type": {
+                                    "$ast": "SharedPointerType",
+                                    "element": {
+                                        "$ast": "ChildType",
+                                        "name": "IRpcWrapperBase",
+                                        "parent": {
+                                            "$ast": "ReferenceType",
+                                            "name": "system"
+                                        }
+                                    }
+                                }
+                            },
+                            "test": "IsNotNull",
+                            "type": null
+                        },
+                        "falseBranch": null,
+                        "name": "",
+                        "trueBranch": {
+                            "$ast": "BlockStatement",
+                            "endLabel": "",
+                            "statements": [{
+                                "$ast": "RaiseExceptionStatement",
+                                "expression": {
+                                    "$ast": "FormatExpression",
+                                    "expandedExpression": null,
+                                    "value": "$\"$(name) should be a local object\""
+                                }
+                            }]
+                        },
+                        "type": null
+                    }]
+                },
+                "name": "",
+                "trueBranch": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "IfStatement",
+                        "expression": {
+                            "$ast": "TypeTestingExpression",
+                            "expression": {
+                                "$ast": "TypeCastingExpression",
+                                "expression": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "xsObj"
+                                },
+                                "strategy": "Weak",
+                                "type": {
+                                    "$ast": "SharedPointerType",
+                                    "element": {
+                                        "$ast": "ChildType",
+                                        "name": "IRpcWrapperBase",
+                                        "parent": {
+                                            "$ast": "ReferenceType",
+                                            "name": "system"
+                                        }
+                                    }
+                                }
+                            },
+                            "test": "IsNull",
+                            "type": null
+                        },
+                        "falseBranch": null,
+                        "name": "",
+                        "trueBranch": {
+                            "$ast": "BlockStatement",
+                            "endLabel": "",
+                            "statements": [{
+                                "$ast": "RaiseExceptionStatement",
+                                "expression": {
+                                    "$ast": "FormatExpression",
+                                    "expandedExpression": null,
+                                    "value": "$\"$(name) should be a wrapper object\""
+                                }
+                            }]
+                        },
+                        "type": null
+                    }]
+                },
+                "type": null
+            }, {
+                "$ast": "ForEachStatement",
+                "expandedStatement": null,
+                "collection": {
+                    "$ast": "RangeExpression",
+                    "begin": {
+                        "$ast": "IntegerExpression",
+                        "value": "0"
+                    },
+                    "beginBoundary": "Inclusive",
+                    "end": {
+                        "$ast": "MemberExpression",
+                        "name": "Count",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "xs"
+                        }
+                    },
+                    "endBoundary": "Exclusive"
+                },
+                "direction": "Normal",
+                "name": "i",
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "ExpressionStatement",
+                        "expression": {
+                            "$ast": "CallExpression",
+                            "arguments": [{
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "xs"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "i"
+                                }
+                            }, {
+                                "$ast": "ReferenceExpression",
+                                "name": "shouldBeWrapper"
+                            }, {
+                                "$ast": "FormatExpression",
+                                "expandedExpression": null,
+                                "value": "$\"$(name)[$(i)]\""
+                            }],
+                            "function": {
+                                "$ast": "ReferenceExpression",
+                                "name": "CheckValue"
+                            }
+                        }
+                    }]
+                }
+            }]
+        }
     }],
     "moduleType": "Module",
     "name": "Rpc",
