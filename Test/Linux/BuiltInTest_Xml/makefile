@@ -18,7 +18,7 @@ clean:
 
 all:pre-build ./Bin/UnitTest
 
-./Bin/UnitTest:./Obj/Vlpp.o ./Obj/Vlpp.Linux.o ./Obj/VlppOS.o ./Obj/VlppOS.Linux.o ./Obj/VlppReflection.o ./Obj/VlppRegex.o ./Obj/AstBase.o ./Obj/AstPrint.o ./Obj/Executable.o ./Obj/SyntaxBase.o ./Obj/TmPtr_AllocateExecutionData.o ./Obj/TmPtr_BuildAmbiguityStructures.o ./Obj/TmPtr_PartialExecuteTraces.o ./Obj/TmPtr_PartialExecuteTraces_SummarizeInstructionRange.o ./Obj/TmPtr_PartialExecuteTraces_EnsureInsExecContextCompatible.o ./Obj/TmPtr_PartialExecuteTraces_MergeInsExecContext.o ./Obj/TmPtr_PartialExecuteTraces_PartialExecuteOrdinaryTrace.o ./Obj/TmRa.o ./Obj/TmRa_BuildExecutionOrder.o ./Obj/TmRa_CheckMergeTraces.o ./Obj/TraceManager.o ./Obj/TraceManager_Common.o ./Obj/TraceManager_ExecuteTrace.o ./Obj/TmInput.o ./Obj/TmInput_Ambiguity.o ./Obj/TmInput_Competition.o ./Obj/TmInput_ReturnStack.o ./Obj/TmInput_Walk.o ./Obj/TmPtr.o ./Obj/XmlAst.o ./Obj/XmlAst_Builder.o ./Obj/XmlAst_Copy.o ./Obj/XmlAst_Empty.o ./Obj/XmlAst_Json.o ./Obj/XmlAst_Traverse.o ./Obj/XmlParser.o ./Obj/Xml_Assembler.o ./Obj/Xml_Lexer.o ./Obj/GlrXml.o ./Obj/LogAutomaton.o ./Obj/LogTrace.o ./Obj/CommonMain.o ./Obj/TestAPI.o ./Obj/TestParser.o
+./Bin/UnitTest:./Obj/Vlpp.o ./Obj/Vlpp.Linux.o ./Obj/VlppOS.o ./Obj/VlppOS.Linux.o ./Obj/VlppReflection.o ./Obj/VlppRegex.o ./Obj/AstBase.o ./Obj/AstPrint.o ./Obj/Executable.o ./Obj/SyntaxBase.o ./Obj/TmPtr_AllocateExecutionData.o ./Obj/TmPtr_BuildAmbiguityStructures.o ./Obj/TmPtr_PartialExecuteTraces.o ./Obj/TmPtr_PartialExecuteTraces_SummarizeInstructionRange.o ./Obj/TmPtr_PartialExecuteTraces_EnsureInsExecContextCompatible.o ./Obj/TmPtr_PartialExecuteTraces_MergeInsExecContext.o ./Obj/TmPtr_PartialExecuteTraces_PartialExecuteOrdinaryTrace.o ./Obj/TmRa.o ./Obj/TmRa_BuildExecutionOrder.o ./Obj/TmRa_CheckMergeTraces.o ./Obj/TraceManager.o ./Obj/TraceManager_Common.o ./Obj/TraceManager_ExecuteTrace.o ./Obj/TmInput.o ./Obj/TmInput_Ambiguity.o ./Obj/TmInput_Competition.o ./Obj/TmInput_ReturnStack.o ./Obj/TmInput_Walk.o ./Obj/TmPtr.o ./Obj/JsonAst.o ./Obj/JsonAst_Builder.o ./Obj/JsonAst_Copy.o ./Obj/JsonAst_Empty.o ./Obj/JsonAst_Json.o ./Obj/JsonAst_Traverse.o ./Obj/JsonParser.o ./Obj/Json_Assembler.o ./Obj/Json_Lexer.o ./Obj/GlrJson.o ./Obj/XmlAst.o ./Obj/XmlAst_Builder.o ./Obj/XmlAst_Copy.o ./Obj/XmlAst_Empty.o ./Obj/XmlAst_Json.o ./Obj/XmlAst_Traverse.o ./Obj/XmlParser.o ./Obj/Xml_Assembler.o ./Obj/Xml_Lexer.o ./Obj/GlrXml.o ./Obj/LogAutomaton.o ./Obj/LogTrace.o ./Obj/CommonMain.o ./Obj/TestAPI.o ./Obj/TestParser.o
 	$(CPP_LINK)
 
 ./Obj/Vlpp.o: ../../../Import/Vlpp.cpp
@@ -106,6 +106,36 @@ all:pre-build ./Bin/UnitTest
 	$(CPP_COMPILE)
 
 ./Obj/TmPtr.o: ../../../Source/TraceManager/TmPtr.cpp
+	$(CPP_COMPILE)
+
+./Obj/JsonAst.o: ../../../Source/Json/Generated/JsonAst.cpp
+	$(CPP_COMPILE)
+
+./Obj/JsonAst_Builder.o: ../../../Source/Json/Generated/JsonAst_Builder.cpp
+	$(CPP_COMPILE)
+
+./Obj/JsonAst_Copy.o: ../../../Source/Json/Generated/JsonAst_Copy.cpp
+	$(CPP_COMPILE)
+
+./Obj/JsonAst_Empty.o: ../../../Source/Json/Generated/JsonAst_Empty.cpp
+	$(CPP_COMPILE)
+
+./Obj/JsonAst_Json.o: ../../../Source/Json/Generated/JsonAst_Json.cpp
+	$(CPP_COMPILE)
+
+./Obj/JsonAst_Traverse.o: ../../../Source/Json/Generated/JsonAst_Traverse.cpp
+	$(CPP_COMPILE)
+
+./Obj/JsonParser.o: ../../../Source/Json/Generated/JsonParser.cpp
+	$(CPP_COMPILE)
+
+./Obj/Json_Assembler.o: ../../../Source/Json/Generated/Json_Assembler.cpp
+	$(CPP_COMPILE)
+
+./Obj/Json_Lexer.o: ../../../Source/Json/Generated/Json_Lexer.cpp
+	$(CPP_COMPILE)
+
+./Obj/GlrJson.o: ../../../Source/Json/GlrJson.cpp
 	$(CPP_COMPILE)
 
 ./Obj/XmlAst.o: ../../../Source/Xml/Generated/XmlAst.cpp
