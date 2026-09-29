@@ -81,3 +81,8 @@ Linux supports only the five configurations listed above and does not provide th
 You need to build, test and debug in that specific folder, otherwise the unit test will not function properly.
 On Linux, only configuration "debug x64" is available, no need to build or run projects with other configurations.
 Unlike Windows, building have to be done in each folder separately.
+
+## WebAssembly
+
+The following unit test projects could be built to web assembly and run with a browser:
+- `REPO-ROOT/Test/Linux/ParserTest_ParserGen_Generated`

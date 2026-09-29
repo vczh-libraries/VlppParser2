@@ -305,7 +305,7 @@ namespace TestParser_Generated_TestObjects
 			{
 				args.throwError = true;
 
-				TraceProcessingArgs tpArgs(args.tokens, args.executable, args.executor, false, TraceProcessingPhase::EndOfInput);
+				TraceProcessingArgs tpArgs{ args.tokens, args.executable, args.executor, false, TraceProcessingPhase::EndOfInput };
 				parser.OnTraceProcessing(tpArgs);
 			});
 
