@@ -17,22 +17,30 @@ JsonUnescapeVisitor
 			class JsonUnescapeVisitor : public traverse_visitor::AstVisitor
 			{
 			protected:
+				WString Unescape(const WString& token)
+				{
+					for (vint i = 1; i < token.Length() - 1; i++)
+					{
+						if (token[i] < 0x20) throw Exception(L"Unescaped control character in JSON string.");
+					}
+					MemoryStream stream;
+					StreamWriter writer(stream);
+					JsonUnescapeString(token.Sub(1, token.Length() - 2), writer);
+					Array<wchar_t> buffer(static_cast<vint>(stream.Size() / sizeof(wchar_t)));
+					if (!buffer.Count()) return {};
+					stream.SeekFromBegin(0);
+					stream.Read(&buffer[0], static_cast<vint>(stream.Size()));
+					return WString::CopyFrom(&buffer[0], buffer.Count());
+				}
+
 				void Traverse(JsonObjectField* node) override
 				{
-					node->name.value = GenerateToStream(
-						[node](TextWriter& writer)
-						{
-							JsonUnescapeString(node->name.value.Sub(1, node->name.value.Length() - 2), writer);
-						});
+					node->name.value = Unescape(node->name.value);
 				}
 
 				void Traverse(JsonString* node) override
 				{
-					node->content.value = GenerateToStream(
-						[node](TextWriter& writer)
-						{
-							JsonUnescapeString(node->content.value.Sub(1, node->content.value.Length() - 2), writer);
-						});
+					node->content.value = Unescape(node->content.value);
 				}
 			};
 

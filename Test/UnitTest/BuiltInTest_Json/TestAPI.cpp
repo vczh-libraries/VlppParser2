@@ -6,6 +6,27 @@ using namespace vl::glr::json;
 
 TEST_FILE
 {
+	TEST_CASE(L"JSON strings preserve embedded NUL and every control character")
+	{
+		wchar_t characters[34];
+		for (vint i = 0; i < 32; i++) characters[i] = static_cast<wchar_t>(i);
+		characters[32] = L'\u4e2d';
+		characters[33] = L'z';
+		auto value = Ptr(new JsonString);
+		value->content.value = WString::CopyFrom(characters, 34);
+		auto serialized = JsonToString(value);
+		TEST_ASSERT(serialized.Left(7) == L"\"\\u0000");
+		for (vint i = 0; i < serialized.Length(); i++) TEST_ASSERT(serialized[i] >= 0x20);
+		Parser parser;
+		auto restored = JsonParse(L"[" + serialized + L"]", parser).Cast<JsonArray>()->items[0].Cast<JsonString>();
+		TEST_ASSERT(restored);
+		TEST_ASSERT(restored->content.value.Length() == 34);
+		for (vint i = 0; i < 34; i++)
+		{
+			TEST_ASSERT(restored->content.value[i] == value->content.value[i]);
+		}
+	});
+
 	TEST_CATEGORY(L"Test Json API")
 	{
 		const wchar_t* inputs[] =

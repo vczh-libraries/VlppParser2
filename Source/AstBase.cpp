@@ -168,9 +168,9 @@ Json Printing
 
 		void JsonEscapeString(const WString& text, stream::TextWriter& writer)
 		{
-			const wchar_t* reading = text.Buffer();
-			while (wchar_t c = *reading++)
+			for (vint i = 0; i < text.Length(); i++)
 			{
+				auto c = text[i];
 				switch (c)
 				{
 				case L'\"': writer.WriteString(L"\\\""); break;
@@ -181,7 +181,18 @@ Json Printing
 				case L'\n': writer.WriteString(L"\\n"); break;
 				case L'\r': writer.WriteString(L"\\r"); break;
 				case L'\t': writer.WriteString(L"\\t"); break;
-				default: writer.WriteChar(c);
+				default:
+					if (c < 0x20)
+					{
+						const wchar_t* digits = L"0123456789abcdef";
+						writer.WriteString(L"\\u00");
+						writer.WriteChar(digits[(c >> 4) & 15]);
+						writer.WriteChar(digits[c & 15]);
+					}
+					else
+					{
+						writer.WriteChar(c);
+					}
 				}
 			}
 		}
@@ -194,11 +205,11 @@ Json Printing
 			}
 			else if (L'A' <= c && c <= L'F')
 			{
-				return c - L'A';
+				return c - L'A' + 10;
 			}
 			else if (L'a' <= c && c <= L'f')
 			{
-				return c - L'a';
+				return c - L'a' + 10;
 			}
 			else
 			{

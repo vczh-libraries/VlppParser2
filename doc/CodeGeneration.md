@@ -413,6 +413,7 @@ They generate literals, strings, numbers, arrays, object fields, and objects. `J
 - `JsonParse` calls the generated `Parser::ParseJRoot` and post-processes the tree.
 - `JsonPrintVisitor` escapes strings and supports spaces after colons/commas, CRLF formatting, indentation, and optional compact formatting for flat containers.
 - `JsonPrint` and `JsonToString` expose serialization.
+- String serialization visits the complete `WString` length, preserving embedded NUL and escaping every C0 control character. Unicode escapes accept all hexadecimal digits; escaped punctuation is limited to JSON escapes, and numeric integer parts reject leading zeroes.
 - `JsonNodeListSerializer` wraps a list in a `JsonArray` for channel-style serialization.
 
 Generated code owns recognition and the typed tree shape. The handwritten wrapper owns JSON value normalization and presentation policy.
