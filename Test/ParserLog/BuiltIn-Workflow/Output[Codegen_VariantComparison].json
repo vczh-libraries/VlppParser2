@@ -1,0 +1,1047 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "checks",
+        "expression": {
+            "$ast": "IntegerExpression",
+            "value": "0"
+        },
+        "type": {
+            "$ast": "PredefinedType",
+            "name": "Int"
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "Check",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Bool"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Void"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "IfStatement",
+                "expression": {
+                    "$ast": "UnaryExpression",
+                    "op": "Not",
+                    "operand": {
+                        "$ast": "ReferenceExpression",
+                        "name": "value"
+                    }
+                },
+                "falseBranch": null,
+                "name": "",
+                "trueBranch": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "RaiseExceptionStatement",
+                        "expression": {
+                            "$ast": "StringExpression",
+                            "value": "\"Variant comparison assertion failed.\""
+                        }
+                    }]
+                },
+                "type": null
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "ReferenceExpression",
+                        "name": "checks"
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "checks"
+                        },
+                        "op": "Add",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        }
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "a",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "IntegerExpression",
+                            "value": "3"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "b",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "FloatingExpression",
+                            "value": "3.0"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Double"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "Bool"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "b"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "a"
+                            },
+                            "op": "NE",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "b"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "LE",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "b"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "GE",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "b"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "a"
+                            },
+                            "op": "LT",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "b"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "a"
+                            },
+                            "op": "GT",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "b"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "FloatingExpression",
+                            "value": "3.0"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "FloatingExpression",
+                            "value": "3.0"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "LT",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "4"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "IntegerExpression",
+                            "value": "2"
+                        },
+                        "op": "LT",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "GT",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "2"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "IntegerExpression",
+                            "value": "4"
+                        },
+                        "op": "GT",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "LE",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "3"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "IntegerExpression",
+                            "value": "3"
+                        },
+                        "op": "GE",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "NE",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "4"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "text",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "StringExpression",
+                            "value": "\"three\""
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "NE",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "text"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "a"
+                            },
+                            "op": "LT",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "text"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "a"
+                            },
+                            "op": "GT",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "text"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "a"
+                            },
+                            "op": "LE",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "text"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "a"
+                            },
+                            "op": "GE",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "text"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nullValue",
+                    "expression": {
+                        "$ast": "LiteralExpression",
+                        "value": "Null"
+                    },
+                    "type": {
+                        "$ast": "NullableType",
+                        "element": {
+                            "$ast": "PredefinedType",
+                            "name": "Int"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "empty",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nullValue"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "NullableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "empty"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nullValue"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nullValue"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "empty"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "empty"
+                        },
+                        "op": "NE",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "escaped",
+                    "expression": {
+                        "$ast": "TypeCastingExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "strategy": "Strong",
+                        "type": {
+                            "$ast": "PredefinedType",
+                            "name": "Object"
+                        }
+                    },
+                    "type": {
+                        "$ast": "PredefinedType",
+                        "name": "Object"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "NE",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "escaped"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "escaped"
+                        },
+                        "op": "NE",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "zero",
+                    "expression": {
+                        "$ast": "FloatingExpression",
+                        "value": "0.0"
+                    },
+                    "type": {
+                        "$ast": "PredefinedType",
+                        "name": "Double"
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nan",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "zero"
+                            },
+                            "op": "Div",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "zero"
+                            }
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Double"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nan"
+                            },
+                            "op": "EQ",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nan"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nan"
+                        },
+                        "op": "NE",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nan"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nan"
+                            },
+                            "op": "LT",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nan"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nan"
+                            },
+                            "op": "GT",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nan"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nan"
+                            },
+                            "op": "LE",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nan"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nan"
+                            },
+                            "op": "GE",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nan"
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "checks"
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

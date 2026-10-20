@@ -1,0 +1,1159 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "StructDeclaration",
+        "attributes": [],
+        "name": "Payload",
+        "members": [{
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }]
+    }, {
+        "$ast": "StructDeclaration",
+        "attributes": [],
+        "name": "VariantFields",
+        "members": [{
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "number",
+            "type": {
+                "$ast": "VariantType",
+                "arguments": [{
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }, {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                }]
+            }
+        }, {
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "optional",
+            "type": {
+                "$ast": "VariantType",
+                "arguments": [{
+                    "$ast": "NullableType",
+                    "element": {
+                        "$ast": "PredefinedType",
+                        "name": "Int"
+                    }
+                }, {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                }]
+            }
+        }, {
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "objectValue",
+            "type": {
+                "$ast": "VariantType",
+                "arguments": [{
+                    "$ast": "PredefinedType",
+                    "name": "Object"
+                }, {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                }]
+            }
+        }, {
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "nested",
+            "type": {
+                "$ast": "VariantType",
+                "arguments": [{
+                    "$ast": "ReferenceType",
+                    "name": "Payload"
+                }, {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                }]
+            }
+        }]
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "VariantHolder",
+        "baseTypes": [],
+        "constructorType": "Undefined",
+        "declarations": [{
+            "$ast": "VariableDeclaration",
+            "attributes": [],
+            "name": "data",
+            "expression": {
+                "$ast": "InferExpression",
+                "expression": {
+                    "$ast": "IntegerExpression",
+                    "value": "0"
+                },
+                "type": {
+                    "$ast": "VariantType",
+                    "arguments": [{
+                        "$ast": "PredefinedType",
+                        "name": "Int"
+                    }, {
+                        "$ast": "PredefinedType",
+                        "name": "String"
+                    }]
+                }
+            },
+            "type": {
+                "$ast": "VariantType",
+                "arguments": [{
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }, {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                }]
+            }
+        }, {
+            "$ast": "ConstructorDeclaration",
+            "attributes": [],
+            "name": "",
+            "arguments": [],
+            "baseConstructorCalls": [],
+            "constructorType": "SharedPtr",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": []
+            }
+        }],
+        "kind": "Class"
+    }, {
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "checks",
+        "expression": {
+            "$ast": "IntegerExpression",
+            "value": "0"
+        },
+        "type": {
+            "$ast": "PredefinedType",
+            "name": "Int"
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "Check",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Bool"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Void"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "IfStatement",
+                "expression": {
+                    "$ast": "UnaryExpression",
+                    "op": "Not",
+                    "operand": {
+                        "$ast": "ReferenceExpression",
+                        "name": "value"
+                    }
+                },
+                "falseBranch": null,
+                "name": "",
+                "trueBranch": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "RaiseExceptionStatement",
+                        "expression": {
+                            "$ast": "StringExpression",
+                            "value": "\"Variant storage assertion failed.\""
+                        }
+                    }]
+                },
+                "type": null
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "ReferenceExpression",
+                        "name": "checks"
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "checks"
+                        },
+                        "op": "Add",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        }
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "a",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ConstructorExpression",
+                            "arguments": []
+                        },
+                        "type": {
+                            "$ast": "ReferenceType",
+                            "name": "VariantFields"
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "b",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ConstructorExpression",
+                            "arguments": []
+                        },
+                        "type": {
+                            "$ast": "ReferenceType",
+                            "name": "VariantFields"
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "TypeCastingExpression",
+                            "expression": {
+                                "$ast": "MemberExpression",
+                                "name": "number",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "a"
+                                }
+                            },
+                            "strategy": "Strong",
+                            "type": {
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "0"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "TypeTestingExpression",
+                        "expression": {
+                            "$ast": "TypeCastingExpression",
+                            "expression": {
+                                "$ast": "MemberExpression",
+                                "name": "optional",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "a"
+                                }
+                            },
+                            "strategy": "Strong",
+                            "type": {
+                                "$ast": "NullableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }
+                        },
+                        "test": "IsNull",
+                        "type": null
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "TypeTestingExpression",
+                        "expression": {
+                            "$ast": "TypeCastingExpression",
+                            "expression": {
+                                "$ast": "MemberExpression",
+                                "name": "objectValue",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "a"
+                                }
+                            },
+                            "strategy": "Strong",
+                            "type": {
+                                "$ast": "PredefinedType",
+                                "name": "Object"
+                            }
+                        },
+                        "test": "IsNull",
+                        "type": null
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "MemberExpression",
+                            "name": "value",
+                            "parent": {
+                                "$ast": "TypeCastingExpression",
+                                "expression": {
+                                    "$ast": "MemberExpression",
+                                    "name": "nested",
+                                    "parent": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "a"
+                                    }
+                                },
+                                "strategy": "Strong",
+                                "type": {
+                                    "$ast": "ReferenceType",
+                                    "name": "Payload"
+                                }
+                            }
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "0"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "b"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "ReferenceExpression",
+                        "name": "a"
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ConstructorExpression",
+                            "arguments": [{
+                                "$ast": "ConstructorArgument",
+                                "key": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "number"
+                                },
+                                "value": {
+                                    "$ast": "InferExpression",
+                                    "expression": {
+                                        "$ast": "IntegerExpression",
+                                        "value": "5"
+                                    },
+                                    "type": {
+                                        "$ast": "VariantType",
+                                        "arguments": [{
+                                            "$ast": "PredefinedType",
+                                            "name": "Int"
+                                        }, {
+                                            "$ast": "PredefinedType",
+                                            "name": "String"
+                                        }]
+                                    }
+                                }
+                            }]
+                        },
+                        "type": {
+                            "$ast": "ReferenceType",
+                            "name": "VariantFields"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "NE",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "b"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "ReferenceExpression",
+                        "name": "b"
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ConstructorExpression",
+                            "arguments": [{
+                                "$ast": "ConstructorArgument",
+                                "key": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "number"
+                                },
+                                "value": {
+                                    "$ast": "InferExpression",
+                                    "expression": {
+                                        "$ast": "IntegerExpression",
+                                        "value": "5"
+                                    },
+                                    "type": {
+                                        "$ast": "VariantType",
+                                        "arguments": [{
+                                            "$ast": "PredefinedType",
+                                            "name": "Int"
+                                        }, {
+                                            "$ast": "PredefinedType",
+                                            "name": "String"
+                                        }]
+                                    }
+                                }
+                            }]
+                        },
+                        "type": {
+                            "$ast": "ReferenceType",
+                            "name": "VariantFields"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "b"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "ReferenceExpression",
+                        "name": "a"
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ConstructorExpression",
+                            "arguments": [{
+                                "$ast": "ConstructorArgument",
+                                "key": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "number"
+                                },
+                                "value": {
+                                    "$ast": "MemberExpression",
+                                    "name": "number",
+                                    "parent": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "a"
+                                    }
+                                }
+                            }, {
+                                "$ast": "ConstructorArgument",
+                                "key": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "optional"
+                                },
+                                "value": {
+                                    "$ast": "InferExpression",
+                                    "expression": {
+                                        "$ast": "InferExpression",
+                                        "expression": {
+                                            "$ast": "IntegerExpression",
+                                            "value": "1"
+                                        },
+                                        "type": {
+                                            "$ast": "NullableType",
+                                            "element": {
+                                                "$ast": "PredefinedType",
+                                                "name": "Int"
+                                            }
+                                        }
+                                    },
+                                    "type": {
+                                        "$ast": "VariantType",
+                                        "arguments": [{
+                                            "$ast": "NullableType",
+                                            "element": {
+                                                "$ast": "PredefinedType",
+                                                "name": "Int"
+                                            }
+                                        }, {
+                                            "$ast": "PredefinedType",
+                                            "name": "String"
+                                        }]
+                                    }
+                                }
+                            }]
+                        },
+                        "type": {
+                            "$ast": "ReferenceType",
+                            "name": "VariantFields"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "a"
+                        },
+                        "op": "NE",
+                        "second": {
+                            "$ast": "ReferenceExpression",
+                            "name": "b"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "copy",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "a"
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "ReferenceExpression",
+                        "name": "a"
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ConstructorExpression",
+                            "arguments": [{
+                                "$ast": "ConstructorArgument",
+                                "key": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "number"
+                                },
+                                "value": {
+                                    "$ast": "InferExpression",
+                                    "expression": {
+                                        "$ast": "StringExpression",
+                                        "value": "\"changed\""
+                                    },
+                                    "type": {
+                                        "$ast": "VariantType",
+                                        "arguments": [{
+                                            "$ast": "PredefinedType",
+                                            "name": "Int"
+                                        }, {
+                                            "$ast": "PredefinedType",
+                                            "name": "String"
+                                        }]
+                                    }
+                                }
+                            }]
+                        },
+                        "type": {
+                            "$ast": "ReferenceType",
+                            "name": "VariantFields"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "TypeCastingExpression",
+                            "expression": {
+                                "$ast": "MemberExpression",
+                                "name": "number",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "copy"
+                                }
+                            },
+                            "strategy": "Strong",
+                            "type": {
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "5"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "holder",
+                    "expression": {
+                        "$ast": "NewClassExpression",
+                        "arguments": [],
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "VariantHolder"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "MemberExpression",
+                        "name": "data",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "holder"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "MemberExpression",
+                        "name": "number",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "copy"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "TypeCastingExpression",
+                            "expression": {
+                                "$ast": "MemberExpression",
+                                "name": "data",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "holder"
+                                }
+                            },
+                            "strategy": "Strong",
+                            "type": {
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "5"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "values",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "MemberExpression",
+                                "name": "number",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "copy"
+                                }
+                            },
+                            "value": null
+                        }, {
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "MemberExpression",
+                                "name": "data",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "holder"
+                                }
+                            },
+                            "value": null
+                        }]
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        },
+                        "writability": "Writable"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "TypeCastingExpression",
+                            "expression": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "values"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                }
+                            },
+                            "strategy": "Strong",
+                            "type": {
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "5"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "values"
+                        },
+                        "op": "Index",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "StringExpression",
+                            "value": "\"second\""
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "TypeCastingExpression",
+                            "expression": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "values"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "1"
+                                }
+                            },
+                            "strategy": "Strong",
+                            "type": {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "StringExpression",
+                            "value": "\"second\""
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "dictionary",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "StringExpression",
+                                "value": "\"one\""
+                            },
+                            "value": {
+                                "$ast": "MemberExpression",
+                                "name": "number",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "copy"
+                                }
+                            }
+                        }]
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": {
+                            "$ast": "PredefinedType",
+                            "name": "String"
+                        },
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        },
+                        "writability": "Writable"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "TypeCastingExpression",
+                            "expression": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "dictionary"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "StringExpression",
+                                    "value": "\"one\""
+                                }
+                            },
+                            "strategy": "Strong",
+                            "type": {
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "5"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "captured",
+                    "expression": {
+                        "$ast": "FunctionExpression",
+                        "function": {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "",
+                            "anonymity": "Anonymous",
+                            "arguments": [],
+                            "functionKind": "Normal",
+                            "returnType": {
+                                "$ast": "VariantType",
+                                "arguments": [{
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }, {
+                                    "$ast": "PredefinedType",
+                                    "name": "String"
+                                }]
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ReturnStatement",
+                                    "expression": {
+                                        "$ast": "MemberExpression",
+                                        "name": "number",
+                                        "parent": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "copy"
+                                        }
+                                    }
+                                }]
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "TypeCastingExpression",
+                            "expression": {
+                                "$ast": "CallExpression",
+                                "arguments": [],
+                                "function": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "captured"
+                                },
+                                "typedResult": null
+                            },
+                            "strategy": "Strong",
+                            "type": {
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "5"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "checks"
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

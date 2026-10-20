@@ -1,0 +1,88 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "StructDeclaration",
+        "attributes": [],
+        "name": "PlainRecord",
+        "members": [{
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }]
+    }, {
+        "$ast": "StructDeclaration",
+        "attributes": [],
+        "name": "VariantEnvelope",
+        "members": [{
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "first",
+            "type": {
+                "$ast": "ReferenceType",
+                "name": "PlainRecord"
+            }
+        }, {
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "second",
+            "type": {
+                "$ast": "ReferenceType",
+                "name": "PlainRecord"
+            }
+        }, {
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "payload",
+            "type": {
+                "$ast": "VariantType",
+                "arguments": [{
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }, {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                }]
+            }
+        }]
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [{
+            "$ast": "Attribute",
+            "category": "rpc",
+            "name": "Interface",
+            "value": null
+        }],
+        "name": "IVariantService",
+        "baseTypes": [],
+        "constructorType": "SharedPtr",
+        "declarations": [{
+            "$ast": "FunctionDeclaration",
+            "attributes": [],
+            "name": "Send",
+            "anonymity": "Named",
+            "arguments": [{
+                "$ast": "FunctionArgument",
+                "attributes": [],
+                "name": "value",
+                "type": {
+                    "$ast": "ReferenceType",
+                    "name": "VariantEnvelope"
+                }
+            }],
+            "functionKind": "Normal",
+            "returnType": {
+                "$ast": "PredefinedType",
+                "name": "Void"
+            },
+            "statement": null
+        }],
+        "kind": "Interface"
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": []
+}

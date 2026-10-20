@@ -1,0 +1,144 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "NamespaceDeclaration",
+        "attributes": [],
+        "name": "RpcStructTraversal",
+        "declarations": [{
+            "$ast": "StructDeclaration",
+            "attributes": [],
+            "name": "Leaf",
+            "members": [{
+                "$ast": "StructMember",
+                "attributes": [],
+                "name": "value",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }]
+        }, {
+            "$ast": "StructDeclaration",
+            "attributes": [],
+            "name": "Node",
+            "members": [{
+                "$ast": "StructMember",
+                "attributes": [],
+                "name": "first",
+                "type": {
+                    "$ast": "ReferenceType",
+                    "name": "Leaf"
+                }
+            }, {
+                "$ast": "StructMember",
+                "attributes": [],
+                "name": "second",
+                "type": {
+                    "$ast": "ReferenceType",
+                    "name": "Leaf"
+                }
+            }, {
+                "$ast": "StructMember",
+                "attributes": [],
+                "name": "optional",
+                "type": {
+                    "$ast": "NullableType",
+                    "element": {
+                        "$ast": "ReferenceType",
+                        "name": "Leaf"
+                    }
+                }
+            }, {
+                "$ast": "StructMember",
+                "attributes": [],
+                "name": "children",
+                "type": {
+                    "$ast": "MapType",
+                    "key": null,
+                    "value": {
+                        "$ast": "ReferenceType",
+                        "name": "Node"
+                    },
+                    "writability": "Writable"
+                }
+            }, {
+                "$ast": "StructMember",
+                "attributes": [],
+                "name": "lookup",
+                "type": {
+                    "$ast": "MapType",
+                    "key": {
+                        "$ast": "PredefinedType",
+                        "name": "String"
+                    },
+                    "value": {
+                        "$ast": "ReferenceType",
+                        "name": "Leaf"
+                    },
+                    "writability": "Writable"
+                }
+            }]
+        }, {
+            "$ast": "ClassDeclaration",
+            "attributes": [{
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Interface",
+                "value": null
+            }, {
+                "$ast": "Attribute",
+                "category": "rpc",
+                "name": "Ctor",
+                "value": null
+            }],
+            "name": "IService",
+            "baseTypes": [],
+            "constructorType": "SharedPtr",
+            "declarations": [{
+                "$ast": "FunctionDeclaration",
+                "attributes": [],
+                "name": "Echo",
+                "anonymity": "Named",
+                "arguments": [{
+                    "$ast": "FunctionArgument",
+                    "attributes": [],
+                    "name": "value",
+                    "type": {
+                        "$ast": "NullableType",
+                        "element": {
+                            "$ast": "ReferenceType",
+                            "name": "Node"
+                        }
+                    }
+                }],
+                "functionKind": "Normal",
+                "returnType": {
+                    "$ast": "NullableType",
+                    "element": {
+                        "$ast": "ReferenceType",
+                        "name": "Node"
+                    }
+                },
+                "statement": null
+            }],
+            "kind": "Interface"
+        }]
+    }],
+    "moduleType": "Module",
+    "name": "Rpc",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

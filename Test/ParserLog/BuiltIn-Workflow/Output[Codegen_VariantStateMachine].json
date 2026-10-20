@@ -1,0 +1,294 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "VariantMachine",
+        "baseTypes": [{
+            "$ast": "ReferenceType",
+            "name": "StateMachine"
+        }],
+        "constructorType": "Undefined",
+        "declarations": [{
+            "$ast": "VariableDeclaration",
+            "attributes": [],
+            "name": "output",
+            "expression": {
+                "$ast": "StringExpression",
+                "value": "\"\""
+            },
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "String"
+            }
+        }, {
+            "$ast": "StateMachineDeclaration",
+            "attributes": [],
+            "name": "",
+            "expandedDeclarations": [],
+            "inputs": [{
+                "$ast": "StateInput",
+                "arguments": [{
+                    "$ast": "FunctionArgument",
+                    "attributes": [],
+                    "name": "value",
+                    "type": {
+                        "$ast": "VariantType",
+                        "arguments": [{
+                            "$ast": "PredefinedType",
+                            "name": "Int"
+                        }, {
+                            "$ast": "PredefinedType",
+                            "name": "String"
+                        }]
+                    }
+                }],
+                "name": "Store"
+            }],
+            "states": [{
+                "$ast": "StateDeclaration",
+                "arguments": [],
+                "name": "",
+                "statement": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "VariableStatement",
+                        "variable": {
+                            "$ast": "VariableDeclaration",
+                            "attributes": [],
+                            "name": "stored",
+                            "expression": {
+                                "$ast": "InferExpression",
+                                "expression": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                },
+                                "type": {
+                                    "$ast": "VariantType",
+                                    "arguments": [{
+                                        "$ast": "PredefinedType",
+                                        "name": "Int"
+                                    }, {
+                                        "$ast": "PredefinedType",
+                                        "name": "String"
+                                    }]
+                                }
+                            },
+                            "type": null
+                        }
+                    }, {
+                        "$ast": "StateSwitchStatement",
+                        "caseBranches": [{
+                            "$ast": "StateSwitchCase",
+                            "arguments": [{
+                                "$ast": "StateSwitchArgument",
+                                "name": "first"
+                            }],
+                            "name": "Store",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "stored"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "first"
+                                        }
+                                    }
+                                }]
+                            }
+                        }],
+                        "type": "Ignore"
+                    }, {
+                        "$ast": "StateSwitchStatement",
+                        "caseBranches": [{
+                            "$ast": "StateSwitchCase",
+                            "arguments": [{
+                                "$ast": "StateSwitchArgument",
+                                "name": "second"
+                            }],
+                            "name": "Store",
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "output"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "BinaryExpression",
+                                            "first": {
+                                                "$ast": "TypeCastingExpression",
+                                                "expression": {
+                                                    "$ast": "ReferenceExpression",
+                                                    "name": "stored"
+                                                },
+                                                "strategy": "Strong",
+                                                "type": {
+                                                    "$ast": "PredefinedType",
+                                                    "name": "Int"
+                                                }
+                                            },
+                                            "op": "FlagAnd",
+                                            "second": {
+                                                "$ast": "TypeCastingExpression",
+                                                "expression": {
+                                                    "$ast": "ReferenceExpression",
+                                                    "name": "second"
+                                                },
+                                                "strategy": "Strong",
+                                                "type": {
+                                                    "$ast": "PredefinedType",
+                                                    "name": "String"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }]
+                            }
+                        }],
+                        "type": "Ignore"
+                    }]
+                }
+            }]
+        }],
+        "kind": "Class"
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "machine",
+                    "expression": {
+                        "$ast": "NewClassExpression",
+                        "arguments": [],
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "VariantMachine"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "IntegerExpression",
+                            "value": "7"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Store",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "machine"
+                        }
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "StringExpression",
+                            "value": "\"done\""
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    }],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Store",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "machine"
+                        }
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "MemberExpression",
+                    "name": "output",
+                    "parent": {
+                        "$ast": "ReferenceExpression",
+                        "name": "machine"
+                    }
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

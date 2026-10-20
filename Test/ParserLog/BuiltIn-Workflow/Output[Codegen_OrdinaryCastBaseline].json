@@ -1,0 +1,571 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "OrdinaryCastBase",
+        "baseTypes": [],
+        "constructorType": "Undefined",
+        "declarations": [{
+            "$ast": "ConstructorDeclaration",
+            "attributes": [],
+            "name": "",
+            "arguments": [],
+            "baseConstructorCalls": [],
+            "constructorType": "SharedPtr",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": []
+            }
+        }],
+        "kind": "Class"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "OrdinaryCastDerived",
+        "baseTypes": [{
+            "$ast": "ReferenceType",
+            "name": "OrdinaryCastBase"
+        }],
+        "constructorType": "Undefined",
+        "declarations": [{
+            "$ast": "ConstructorDeclaration",
+            "attributes": [],
+            "name": "",
+            "arguments": [],
+            "baseConstructorCalls": [],
+            "constructorType": "SharedPtr",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": []
+            }
+        }],
+        "kind": "Class"
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "StrongRawNull",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Bool"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "value",
+                    "expression": {
+                        "$ast": "LiteralExpression",
+                        "value": "Null"
+                    },
+                    "type": {
+                        "$ast": "RawPointerType",
+                        "element": {
+                            "$ast": "ReferenceType",
+                            "name": "OrdinaryCastBase"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "TypeTestingExpression",
+                    "expression": {
+                        "$ast": "TypeCastingExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "value"
+                        },
+                        "strategy": "Strong",
+                        "type": {
+                            "$ast": "RawPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "OrdinaryCastDerived"
+                            }
+                        }
+                    },
+                    "test": "IsNull",
+                    "type": null
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "StrongSharedNull",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Bool"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "value",
+                    "expression": {
+                        "$ast": "LiteralExpression",
+                        "value": "Null"
+                    },
+                    "type": {
+                        "$ast": "SharedPointerType",
+                        "element": {
+                            "$ast": "ReferenceType",
+                            "name": "OrdinaryCastBase"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "TypeTestingExpression",
+                    "expression": {
+                        "$ast": "TypeCastingExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "value"
+                        },
+                        "strategy": "Strong",
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "OrdinaryCastDerived"
+                            }
+                        }
+                    },
+                    "test": "IsNull",
+                    "type": null
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "StrongNullableNull",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Bool"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "value",
+                    "expression": {
+                        "$ast": "LiteralExpression",
+                        "value": "Null"
+                    },
+                    "type": {
+                        "$ast": "NullableType",
+                        "element": {
+                            "$ast": "PredefinedType",
+                            "name": "Int"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "TypeTestingExpression",
+                    "expression": {
+                        "$ast": "TypeCastingExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "value"
+                        },
+                        "strategy": "Strong",
+                        "type": {
+                            "$ast": "NullableType",
+                            "element": {
+                                "$ast": "PredefinedType",
+                                "name": "Double"
+                            }
+                        }
+                    },
+                    "test": "IsNull",
+                    "type": null
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "WeakNullableNull",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Bool"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "value",
+                    "expression": {
+                        "$ast": "LiteralExpression",
+                        "value": "Null"
+                    },
+                    "type": {
+                        "$ast": "NullableType",
+                        "element": {
+                            "$ast": "PredefinedType",
+                            "name": "Int"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "TypeTestingExpression",
+                    "expression": {
+                        "$ast": "TypeCastingExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "value"
+                        },
+                        "strategy": "Weak",
+                        "type": {
+                            "$ast": "NullableType",
+                            "element": {
+                                "$ast": "PredefinedType",
+                                "name": "Double"
+                            }
+                        }
+                    },
+                    "test": "IsNull",
+                    "type": null
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "raw",
+                    "expression": {
+                        "$ast": "LiteralExpression",
+                        "value": "Null"
+                    },
+                    "type": {
+                        "$ast": "RawPointerType",
+                        "element": {
+                            "$ast": "ReferenceType",
+                            "name": "OrdinaryCastBase"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "shared",
+                    "expression": {
+                        "$ast": "LiteralExpression",
+                        "value": "Null"
+                    },
+                    "type": {
+                        "$ast": "SharedPointerType",
+                        "element": {
+                            "$ast": "ReferenceType",
+                            "name": "OrdinaryCastBase"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "pointer",
+                    "expression": {
+                        "$ast": "NewClassExpression",
+                        "arguments": [],
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "OrdinaryCastDerived"
+                            }
+                        }
+                    },
+                    "type": {
+                        "$ast": "SharedPointerType",
+                        "element": {
+                            "$ast": "ReferenceType",
+                            "name": "OrdinaryCastBase"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "value",
+                    "expression": {
+                        "$ast": "IntegerExpression",
+                        "value": "42"
+                    },
+                    "type": {
+                        "$ast": "NullableType",
+                        "element": {
+                            "$ast": "PredefinedType",
+                            "name": "Int"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "BinaryExpression",
+                                    "first": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "BinaryExpression",
+                                            "first": {
+                                                "$ast": "BinaryExpression",
+                                                "first": {
+                                                    "$ast": "BinaryExpression",
+                                                    "first": {
+                                                        "$ast": "BinaryExpression",
+                                                        "first": {
+                                                            "$ast": "TypeTestingExpression",
+                                                            "expression": {
+                                                                "$ast": "TypeCastingExpression",
+                                                                "expression": {
+                                                                    "$ast": "ReferenceExpression",
+                                                                    "name": "raw"
+                                                                },
+                                                                "strategy": "Weak",
+                                                                "type": {
+                                                                    "$ast": "RawPointerType",
+                                                                    "element": {
+                                                                        "$ast": "ReferenceType",
+                                                                        "name": "OrdinaryCastDerived"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "test": "IsNull",
+                                                            "type": null
+                                                        },
+                                                        "op": "FlagAnd",
+                                                        "second": {
+                                                            "$ast": "StringExpression",
+                                                            "value": "\", \""
+                                                        }
+                                                    },
+                                                    "op": "FlagAnd",
+                                                    "second": {
+                                                        "$ast": "TypeTestingExpression",
+                                                        "expression": {
+                                                            "$ast": "TypeCastingExpression",
+                                                            "expression": {
+                                                                "$ast": "ReferenceExpression",
+                                                                "name": "shared"
+                                                            },
+                                                            "strategy": "Weak",
+                                                            "type": {
+                                                                "$ast": "SharedPointerType",
+                                                                "element": {
+                                                                    "$ast": "ReferenceType",
+                                                                    "name": "OrdinaryCastDerived"
+                                                                }
+                                                            }
+                                                        },
+                                                        "test": "IsNull",
+                                                        "type": null
+                                                    }
+                                                },
+                                                "op": "FlagAnd",
+                                                "second": {
+                                                    "$ast": "StringExpression",
+                                                    "value": "\", \""
+                                                }
+                                            },
+                                            "op": "FlagAnd",
+                                            "second": {
+                                                "$ast": "CallExpression",
+                                                "arguments": [],
+                                                "function": {
+                                                    "$ast": "ReferenceExpression",
+                                                    "name": "WeakNullableNull"
+                                                },
+                                                "typedResult": null
+                                            }
+                                        },
+                                        "op": "FlagAnd",
+                                        "second": {
+                                            "$ast": "StringExpression",
+                                            "value": "\", \""
+                                        }
+                                    },
+                                    "op": "FlagAnd",
+                                    "second": {
+                                        "$ast": "TypeTestingExpression",
+                                        "expression": {
+                                            "$ast": "TypeCastingExpression",
+                                            "expression": {
+                                                "$ast": "ReferenceExpression",
+                                                "name": "pointer"
+                                            },
+                                            "strategy": "Strong",
+                                            "type": {
+                                                "$ast": "RawPointerType",
+                                                "element": {
+                                                    "$ast": "ReferenceType",
+                                                    "name": "OrdinaryCastDerived"
+                                                }
+                                            }
+                                        },
+                                        "test": "IsNotNull",
+                                        "type": null
+                                    }
+                                },
+                                "op": "FlagAnd",
+                                "second": {
+                                    "$ast": "StringExpression",
+                                    "value": "\", \""
+                                }
+                            },
+                            "op": "FlagAnd",
+                            "second": {
+                                "$ast": "TypeTestingExpression",
+                                "expression": {
+                                    "$ast": "TypeCastingExpression",
+                                    "expression": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "pointer"
+                                    },
+                                    "strategy": "Strong",
+                                    "type": {
+                                        "$ast": "SharedPointerType",
+                                        "element": {
+                                            "$ast": "ReferenceType",
+                                            "name": "OrdinaryCastDerived"
+                                        }
+                                    }
+                                },
+                                "test": "IsNotNull",
+                                "type": null
+                            }
+                        },
+                        "op": "FlagAnd",
+                        "second": {
+                            "$ast": "StringExpression",
+                            "value": "\", \""
+                        }
+                    },
+                    "op": "FlagAnd",
+                    "second": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "TypeCastingExpression",
+                            "expression": {
+                                "$ast": "ReferenceExpression",
+                                "name": "value"
+                            },
+                            "strategy": "Strong",
+                            "type": {
+                                "$ast": "NullableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Double"
+                                }
+                            }
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "FloatingExpression",
+                            "value": "42.0"
+                        }
+                    }
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

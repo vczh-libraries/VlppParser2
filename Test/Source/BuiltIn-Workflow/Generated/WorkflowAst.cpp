@@ -62,6 +62,11 @@ Visitor Pattern Implementation
 		visitor->Visit(this);
 	}
 
+	void WfVariantType::Accept(WfType::IVisitor* visitor)
+	{
+		visitor->Visit(this);
+	}
+
 	void WfChildType::Accept(WfType::IVisitor* visitor)
 	{
 		visitor->Visit(this);
@@ -483,6 +488,7 @@ namespace vl::reflection::description
 	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfMapType, system::workflow::WfMapType)
 	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfObservableListType, system::workflow::WfObservableListType)
 	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionType, system::workflow::WfFunctionType)
+	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfVariantType, system::workflow::WfVariantType)
 	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfChildType, system::workflow::WfChildType)
 	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfNamespaceDeclaration, system::workflow::WfNamespaceDeclaration)
 	IMPL_TYPE_INFO_RENAME(vl::glr::workflow::WfFunctionArgument, system::workflow::WfFunctionArgument)
@@ -749,6 +755,14 @@ namespace vl::reflection::description
 		CLASS_MEMBER_FIELD(result)
 		CLASS_MEMBER_FIELD(arguments)
 	END_CLASS_MEMBER(vl::glr::workflow::WfFunctionType)
+
+	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfVariantType)
+		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
+
+		CLASS_MEMBER_CONSTRUCTOR(vl::Ptr<vl::glr::workflow::WfVariantType>(), NO_PARAMETER)
+
+		CLASS_MEMBER_FIELD(arguments)
+	END_CLASS_MEMBER(vl::glr::workflow::WfVariantType)
 
 	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfChildType)
 		CLASS_MEMBER_BASE(vl::glr::workflow::WfType)
@@ -1577,6 +1591,7 @@ namespace vl::reflection::description
 
 		CLASS_MEMBER_FIELD(function)
 		CLASS_MEMBER_FIELD(arguments)
+		CLASS_MEMBER_FIELD(typedResult)
 	END_CLASS_MEMBER(vl::glr::workflow::WfCallExpression)
 
 	BEGIN_CLASS_MEMBER(vl::glr::workflow::WfFunctionExpression)
@@ -1732,6 +1747,7 @@ namespace vl::reflection::description
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfMapType* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfObservableListType* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfFunctionType* node))
+		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfVariantType* node))
 		CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(vl::glr::workflow::WfType::IVisitor::*)(vl::glr::workflow::WfChildType* node))
 	END_INTERFACE_MEMBER(vl::glr::workflow::WfType)
 
@@ -1876,6 +1892,7 @@ namespace vl::reflection::description
 			ADD_TYPE_INFO(vl::glr::workflow::WfMapType)
 			ADD_TYPE_INFO(vl::glr::workflow::WfObservableListType)
 			ADD_TYPE_INFO(vl::glr::workflow::WfFunctionType)
+			ADD_TYPE_INFO(vl::glr::workflow::WfVariantType)
 			ADD_TYPE_INFO(vl::glr::workflow::WfChildType)
 			ADD_TYPE_INFO(vl::glr::workflow::WfNamespaceDeclaration)
 			ADD_TYPE_INFO(vl::glr::workflow::WfFunctionArgument)

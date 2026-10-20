@@ -1,0 +1,151 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "pointer",
+                    "expression": {
+                        "$ast": "LiteralExpression",
+                        "value": "Null"
+                    },
+                    "type": {
+                        "$ast": "RawPointerType",
+                        "element": {
+                            "$ast": "ReferenceType",
+                            "name": "ObservableValue"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "boxed",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "pointer"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "RawPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "ObservableValue"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "narrowed",
+                    "expression": {
+                        "$ast": "TypeCastingExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "boxed"
+                        },
+                        "strategy": "Strong",
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "RawPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "PointClass"
+                                }
+                            }, {
+                                "$ast": "RawPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "ObservableValue"
+                                }
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "TypeTestingExpression",
+                    "expression": {
+                        "$ast": "TypeCastingExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "narrowed"
+                        },
+                        "strategy": "Strong",
+                        "type": {
+                            "$ast": "RawPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "ObservableValue"
+                            }
+                        }
+                    },
+                    "test": "IsNull",
+                    "type": null
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

@@ -1,0 +1,120 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "Base",
+        "baseTypes": [],
+        "constructorType": "Undefined",
+        "declarations": [{
+            "$ast": "ConstructorDeclaration",
+            "attributes": [],
+            "name": "",
+            "arguments": [],
+            "baseConstructorCalls": [],
+            "constructorType": "SharedPtr",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": []
+            }
+        }],
+        "kind": "Class"
+    }, {
+        "$ast": "ClassDeclaration",
+        "attributes": [],
+        "name": "Derived",
+        "baseTypes": [{
+            "$ast": "ReferenceType",
+            "name": "Base"
+        }],
+        "constructorType": "Undefined",
+        "declarations": [{
+            "$ast": "ConstructorDeclaration",
+            "attributes": [],
+            "name": "",
+            "arguments": [],
+            "baseConstructorCalls": [],
+            "constructorType": "SharedPtr",
+            "statement": {
+                "$ast": "BlockStatement",
+                "endLabel": "",
+                "statements": []
+            }
+        }],
+        "kind": "Class"
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "f",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "x",
+            "type": {
+                "$ast": "RawPointerType",
+                "element": {
+                    "$ast": "ReferenceType",
+                    "name": "Base"
+                }
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Void"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "y",
+                    "expression": {
+                        "$ast": "TypeCastingExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "x"
+                        },
+                        "strategy": "Strong",
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "RawPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "Derived"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}
