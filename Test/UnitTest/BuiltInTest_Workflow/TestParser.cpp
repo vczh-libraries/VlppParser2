@@ -94,7 +94,15 @@ TEST_FILE
 							writer.WriteLine(line);
 						}
 					});
-					if (indexName == L"Declaration")
+					if (indexName == L"InvalidType")
+					{
+						List<ParsingError> errors;
+						auto handler = InstallDefaultErrorMessageGenerator(parser, errors);
+						parser.Parse_Type(inputCode);
+						parser.OnError.Remove(handler);
+						TEST_ASSERT(errors.Count() > 0);
+					}
+					else if (indexName == L"Declaration")
 					{
 						auto ast = parser.Parse_Declaration(inputCode);
 						auto astJson = PrintAstJson<json_visitor::AstVisitor>(ast);

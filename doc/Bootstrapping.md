@@ -285,6 +285,8 @@ Runs the generated XML parser and its handwritten text-recovery/integration laye
 
 Runs the generated Workflow parser against examples in the sibling Workflow repository.
 
+The built-in grammar mirrors the authored lexer, AST and syntax definitions in `<Workflow repo>/Source/Parser/Syntax`, while retaining its own generator configuration and namespace. `variant<T1, T2, ...>` produces a `WfVariantType` with ordered type arguments. Arity, duplicate options and conversion rules belong to Workflow analysis, so syntactically valid semantic-error samples must still parse and round-trip through AST JSON. The `InvalidType` fixture index instead requires parser errors.
+
 ### 12. `BuiltInTest_Cpp`
 
 Runs the generated C++ parser against real-world inputs.
