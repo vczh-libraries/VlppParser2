@@ -1,0 +1,354 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "log",
+        "expression": {
+            "$ast": "StringExpression",
+            "value": "\"\""
+        },
+        "type": null
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "provider",
+                    "expression": {
+                        "$ast": "NewClassExpression",
+                        "arguments": [],
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "VariantProvider"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "subscription",
+                    "expression": {
+                        "$ast": "BindExpression",
+                        "expandedExpression": null,
+                        "expression": {
+                            "$ast": "UnaryExpression",
+                            "op": "VariantExtract",
+                            "operand": {
+                                "$ast": "MemberExpression",
+                                "name": "Value",
+                                "parent": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "provider"
+                                }
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Open",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "subscription"
+                        }
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "AttachEventExpression",
+                    "event": {
+                        "$ast": "MemberExpression",
+                        "name": "ValueChanged",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "subscription"
+                        }
+                    },
+                    "function": {
+                        "$ast": "FunctionExpression",
+                        "function": {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "",
+                            "anonymity": "Anonymous",
+                            "arguments": [{
+                                "$ast": "FunctionArgument",
+                                "attributes": [],
+                                "name": "value",
+                                "type": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Object"
+                                }
+                            }],
+                            "functionKind": "Normal",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Void"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ExpressionStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "log"
+                                        },
+                                        "op": "Assign",
+                                        "second": {
+                                            "$ast": "BinaryExpression",
+                                            "first": {
+                                                "$ast": "BinaryExpression",
+                                                "first": {
+                                                    "$ast": "BinaryExpression",
+                                                    "first": {
+                                                        "$ast": "ReferenceExpression",
+                                                        "name": "log"
+                                                    },
+                                                    "op": "FlagAnd",
+                                                    "second": {
+                                                        "$ast": "StringExpression",
+                                                        "value": "\"[\""
+                                                    }
+                                                },
+                                                "op": "FlagAnd",
+                                                "second": {
+                                                    "$ast": "IfExpression",
+                                                    "condition": {
+                                                        "$ast": "TypeTestingExpression",
+                                                        "expression": {
+                                                            "$ast": "ReferenceExpression",
+                                                            "name": "value"
+                                                        },
+                                                        "test": "IsType",
+                                                        "type": {
+                                                            "$ast": "PredefinedType",
+                                                            "name": "Int"
+                                                        }
+                                                    },
+                                                    "falseBranch": {
+                                                        "$ast": "TypeCastingExpression",
+                                                        "expression": {
+                                                            "$ast": "ReferenceExpression",
+                                                            "name": "value"
+                                                        },
+                                                        "strategy": "Strong",
+                                                        "type": {
+                                                            "$ast": "PredefinedType",
+                                                            "name": "String"
+                                                        }
+                                                    },
+                                                    "trueBranch": {
+                                                        "$ast": "TypeCastingExpression",
+                                                        "expression": {
+                                                            "$ast": "TypeCastingExpression",
+                                                            "expression": {
+                                                                "$ast": "ReferenceExpression",
+                                                                "name": "value"
+                                                            },
+                                                            "strategy": "Strong",
+                                                            "type": {
+                                                                "$ast": "PredefinedType",
+                                                                "name": "Int"
+                                                            }
+                                                        },
+                                                        "strategy": "Strong",
+                                                        "type": {
+                                                            "$ast": "PredefinedType",
+                                                            "name": "String"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "op": "FlagAnd",
+                                            "second": {
+                                                "$ast": "StringExpression",
+                                                "value": "\"]\""
+                                            }
+                                        }
+                                    }
+                                }]
+                            }
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "MemberExpression",
+                        "name": "Value",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "provider"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "MemberExpression",
+                        "name": "Value",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "provider"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "StringExpression",
+                            "value": "\"text\""
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [],
+                    "function": {
+                        "$ast": "MemberExpression",
+                        "name": "Close",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "subscription"
+                        }
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "MemberExpression",
+                        "name": "Value",
+                        "parent": {
+                            "$ast": "ReferenceExpression",
+                            "name": "provider"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "IntegerExpression",
+                            "value": "3"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "log"
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

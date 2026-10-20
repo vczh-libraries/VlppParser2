@@ -758,16 +758,20 @@
                     "attributes": [],
                     "name": "escaped",
                     "expression": {
-                        "$ast": "TypeCastingExpression",
-                        "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [{
                             "$ast": "ReferenceExpression",
                             "name": "a"
+                        }],
+                        "function": {
+                            "$ast": "ChildExpression",
+                            "name": "Boxed",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "VariantProvider"
+                            }
                         },
-                        "strategy": "Strong",
-                        "type": {
-                            "$ast": "PredefinedType",
-                            "name": "Object"
-                        }
+                        "typedResult": null
                     },
                     "type": {
                         "$ast": "PredefinedType",
@@ -1036,6 +1040,20 @@
             "fragments": [{
                 "$ast": "ModuleUsingNameFragment",
                 "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
             }]
         }, {
             "$ast": "ModuleUsingItem",
