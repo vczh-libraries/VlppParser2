@@ -20,6 +20,19 @@
         }, {
             "$ast": "StructDeclaration",
             "attributes": [],
+            "name": "OptionalLeaf",
+            "members": [{
+                "$ast": "StructMember",
+                "attributes": [],
+                "name": "value",
+                "type": {
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }
+            }]
+        }, {
+            "$ast": "StructDeclaration",
+            "attributes": [],
             "name": "Node",
             "members": [{
                 "$ast": "StructMember",
@@ -45,37 +58,8 @@
                     "$ast": "NullableType",
                     "element": {
                         "$ast": "ReferenceType",
-                        "name": "Leaf"
+                        "name": "OptionalLeaf"
                     }
-                }
-            }, {
-                "$ast": "StructMember",
-                "attributes": [],
-                "name": "children",
-                "type": {
-                    "$ast": "MapType",
-                    "key": null,
-                    "value": {
-                        "$ast": "ReferenceType",
-                        "name": "Node"
-                    },
-                    "writability": "Writable"
-                }
-            }, {
-                "$ast": "StructMember",
-                "attributes": [],
-                "name": "lookup",
-                "type": {
-                    "$ast": "MapType",
-                    "key": {
-                        "$ast": "PredefinedType",
-                        "name": "String"
-                    },
-                    "value": {
-                        "$ast": "ReferenceType",
-                        "name": "Leaf"
-                    },
-                    "writability": "Writable"
                 }
             }]
         }, {
@@ -118,6 +102,72 @@
                         "$ast": "ReferenceType",
                         "name": "Node"
                     }
+                },
+                "statement": null
+            }, {
+                "$ast": "FunctionDeclaration",
+                "attributes": [],
+                "name": "EchoList",
+                "anonymity": "Named",
+                "arguments": [{
+                    "$ast": "FunctionArgument",
+                    "attributes": [],
+                    "name": "values",
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "ReferenceType",
+                            "name": "Node"
+                        },
+                        "writability": "Writable"
+                    }
+                }],
+                "functionKind": "Normal",
+                "returnType": {
+                    "$ast": "MapType",
+                    "key": null,
+                    "value": {
+                        "$ast": "ReferenceType",
+                        "name": "Node"
+                    },
+                    "writability": "Writable"
+                },
+                "statement": null
+            }, {
+                "$ast": "FunctionDeclaration",
+                "attributes": [],
+                "name": "EchoMap",
+                "anonymity": "Named",
+                "arguments": [{
+                    "$ast": "FunctionArgument",
+                    "attributes": [],
+                    "name": "values",
+                    "type": {
+                        "$ast": "MapType",
+                        "key": {
+                            "$ast": "PredefinedType",
+                            "name": "String"
+                        },
+                        "value": {
+                            "$ast": "ReferenceType",
+                            "name": "Node"
+                        },
+                        "writability": "Writable"
+                    }
+                }],
+                "functionKind": "Normal",
+                "returnType": {
+                    "$ast": "MapType",
+                    "key": {
+                        "$ast": "PredefinedType",
+                        "name": "String"
+                    },
+                    "value": {
+                        "$ast": "ReferenceType",
+                        "name": "Node"
+                    },
+                    "writability": "Writable"
                 },
                 "statement": null
             }],
