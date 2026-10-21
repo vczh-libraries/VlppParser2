@@ -1,0 +1,3649 @@
+﻿{
+    "$ast": "Module",
+    "declarations": [{
+        "$ast": "StructDeclaration",
+        "attributes": [],
+        "name": "MembershipPayload",
+        "members": [{
+            "$ast": "StructMember",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }
+        }]
+    }, {
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "checks",
+        "expression": {
+            "$ast": "IntegerExpression",
+            "value": "0"
+        },
+        "type": {
+            "$ast": "PredefinedType",
+            "name": "Int"
+        }
+    }, {
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "elementEvaluations",
+        "expression": {
+            "$ast": "IntegerExpression",
+            "value": "0"
+        },
+        "type": {
+            "$ast": "PredefinedType",
+            "name": "Int"
+        }
+    }, {
+        "$ast": "VariableDeclaration",
+        "attributes": [],
+        "name": "collectionEvaluations",
+        "expression": {
+            "$ast": "IntegerExpression",
+            "value": "0"
+        },
+        "type": {
+            "$ast": "PredefinedType",
+            "name": "Int"
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "Check",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "PredefinedType",
+                "name": "Bool"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Void"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "IfStatement",
+                "expression": {
+                    "$ast": "UnaryExpression",
+                    "op": "Not",
+                    "operand": {
+                        "$ast": "ReferenceExpression",
+                        "name": "value"
+                    }
+                },
+                "falseBranch": null,
+                "name": "",
+                "trueBranch": {
+                    "$ast": "BlockStatement",
+                    "endLabel": "",
+                    "statements": [{
+                        "$ast": "RaiseExceptionStatement",
+                        "expression": {
+                            "$ast": "StringExpression",
+                            "value": "\"Variant set membership assertion failed.\""
+                        }
+                    }]
+                },
+                "type": null
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "ReferenceExpression",
+                        "name": "checks"
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "checks"
+                        },
+                        "op": "Add",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        }
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "OriginalCase",
+        "anonymity": "Named",
+        "arguments": [{
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "value",
+            "type": {
+                "$ast": "VariantType",
+                "arguments": [{
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }, {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                }]
+            }
+        }, {
+            "$ast": "FunctionArgument",
+            "attributes": [],
+            "name": "values",
+            "type": {
+                "$ast": "MapType",
+                "key": null,
+                "value": {
+                    "$ast": "VariantType",
+                    "arguments": [{
+                        "$ast": "PredefinedType",
+                        "name": "Int"
+                    }, {
+                        "$ast": "PredefinedType",
+                        "name": "String"
+                    }]
+                },
+                "writability": "Writable"
+            }
+        }],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "Bool"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "result",
+                    "expression": {
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "values"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "value"
+                        },
+                        "test": "In"
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "result"
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "NextElement",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "VariantType",
+            "arguments": [{
+                "$ast": "PredefinedType",
+                "name": "Int"
+            }, {
+                "$ast": "PredefinedType",
+                "name": "String"
+            }]
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "ReferenceExpression",
+                        "name": "elementEvaluations"
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "elementEvaluations"
+                        },
+                        "op": "Add",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "InferExpression",
+                    "expression": {
+                        "$ast": "IntegerExpression",
+                        "value": "7"
+                    },
+                    "type": {
+                        "$ast": "VariantType",
+                        "arguments": [{
+                            "$ast": "PredefinedType",
+                            "name": "Int"
+                        }, {
+                            "$ast": "PredefinedType",
+                            "name": "String"
+                        }]
+                    }
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "NextCollection",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "MapType",
+            "key": null,
+            "value": {
+                "$ast": "VariantType",
+                "arguments": [{
+                    "$ast": "PredefinedType",
+                    "name": "Int"
+                }, {
+                    "$ast": "PredefinedType",
+                    "name": "String"
+                }]
+            },
+            "writability": "Writable"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "ReferenceExpression",
+                        "name": "collectionEvaluations"
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "collectionEvaluations"
+                        },
+                        "op": "Add",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ConstructorExpression",
+                    "arguments": [{
+                        "$ast": "ConstructorArgument",
+                        "key": {
+                            "$ast": "InferExpression",
+                            "expression": {
+                                "$ast": "IntegerExpression",
+                                "value": "7"
+                            },
+                            "type": {
+                                "$ast": "VariantType",
+                                "arguments": [{
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }, {
+                                    "$ast": "PredefinedType",
+                                    "name": "String"
+                                }]
+                            }
+                        },
+                        "value": null
+                    }]
+                }
+            }]
+        }
+    }, {
+        "$ast": "FunctionDeclaration",
+        "attributes": [],
+        "name": "main",
+        "anonymity": "Named",
+        "arguments": [],
+        "functionKind": "Normal",
+        "returnType": {
+            "$ast": "PredefinedType",
+            "name": "String"
+        },
+        "statement": {
+            "$ast": "BlockStatement",
+            "endLabel": "",
+            "statements": [{
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "number",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "IntegerExpression",
+                            "value": "7"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "text",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "StringExpression",
+                            "value": "\"seven\""
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "missing",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "IntegerExpression",
+                            "value": "8"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "values",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "number"
+                            },
+                            "value": null
+                        }, {
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "text"
+                            },
+                            "value": null
+                        }]
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        },
+                        "writability": "Writable"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "CallExpression",
+                        "arguments": [{
+                            "$ast": "ReferenceExpression",
+                            "name": "number"
+                        }, {
+                            "$ast": "ReferenceExpression",
+                            "name": "values"
+                        }],
+                        "function": {
+                            "$ast": "ReferenceExpression",
+                            "name": "OriginalCase"
+                        },
+                        "typedResult": null
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "values"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "number"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "values"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "text"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "values"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "missing"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "values"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "number"
+                            },
+                            "test": "NotIn"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "values"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "missing"
+                            },
+                            "test": "In"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "values"
+                        },
+                        "element": {
+                            "$ast": "InferExpression",
+                            "expression": {
+                                "$ast": "StringExpression",
+                                "value": "\"missing\""
+                            },
+                            "type": {
+                                "$ast": "VariantType",
+                                "arguments": [{
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }, {
+                                    "$ast": "PredefinedType",
+                                    "name": "String"
+                                }]
+                            }
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "readonlyValues",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "values"
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        },
+                        "writability": "Readonly"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "readonlyValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "number"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "readonlyValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "text"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "readonlyValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "missing"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "observableValues",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "number"
+                            },
+                            "value": null
+                        }, {
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "text"
+                            },
+                            "value": null
+                        }]
+                    },
+                    "type": {
+                        "$ast": "ObservableListType",
+                        "element": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "observableValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "number"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "observableValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "text"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "observableValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "missing"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "enumerableValues",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "values"
+                    },
+                    "type": {
+                        "$ast": "EnumerableType",
+                        "element": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "enumerableValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "number"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "enumerableValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "text"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "enumerableValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "missing"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nativeEnumerable",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [{
+                            "$ast": "ReferenceExpression",
+                            "name": "values"
+                        }],
+                        "function": {
+                            "$ast": "ChildExpression",
+                            "name": "Items",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "VariantProvider"
+                            }
+                        },
+                        "typedResult": null
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nativeEnumerable"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "number"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nativeEnumerable"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "text"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nativeEnumerable"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "missing"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "provider",
+                    "expression": {
+                        "$ast": "NewClassExpression",
+                        "arguments": [],
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "VariantProvider"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "array",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [{
+                            "$ast": "ReferenceExpression",
+                            "name": "values"
+                        }],
+                        "function": {
+                            "$ast": "MemberExpression",
+                            "name": "ArrayItems",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "provider"
+                            }
+                        },
+                        "typedResult": null
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "array"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "number"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "array"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "text"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "array"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "missing"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "empty",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": []
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        },
+                        "writability": "Writable"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "empty"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "number"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "empty"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "number"
+                            },
+                            "test": "In"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "emptyEnumerable",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "empty"
+                    },
+                    "type": {
+                        "$ast": "EnumerableType",
+                        "element": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "emptyEnumerable"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "number"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "emptyArray",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [{
+                            "$ast": "ReferenceExpression",
+                            "name": "empty"
+                        }],
+                        "function": {
+                            "$ast": "MemberExpression",
+                            "name": "ArrayItems",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "provider"
+                            }
+                        },
+                        "typedResult": null
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "emptyArray"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "number"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "integer",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "IntegerExpression",
+                            "value": "7"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "Double"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "real",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "FloatingExpression",
+                            "value": "7.0"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "Double"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "numericValues",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "integer"
+                            },
+                            "value": null
+                        }]
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "Double"
+                            }]
+                        },
+                        "writability": "Writable"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "numericValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "real"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "numericValues"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "real"
+                            },
+                            "test": "NotIn"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "numericValues"
+                        },
+                        "op": "Index",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "0"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "ReferenceExpression",
+                        "name": "real"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "numericValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "integer"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "numericEnumerable",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "numericValues"
+                    },
+                    "type": {
+                        "$ast": "EnumerableType",
+                        "element": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "Double"
+                            }]
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "numericEnumerable"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "integer"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "zero",
+                    "expression": {
+                        "$ast": "FloatingExpression",
+                        "value": "0.0"
+                    },
+                    "type": {
+                        "$ast": "PredefinedType",
+                        "name": "Double"
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nan",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "zero"
+                            },
+                            "op": "Div",
+                            "second": {
+                                "$ast": "ReferenceExpression",
+                                "name": "zero"
+                            }
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "Double"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "BinaryExpression",
+                    "first": {
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "numericValues"
+                        },
+                        "op": "Index",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "0"
+                        }
+                    },
+                    "op": "Assign",
+                    "second": {
+                        "$ast": "ReferenceExpression",
+                        "name": "nan"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "numericValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nan"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "numericValues"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nan"
+                            },
+                            "test": "In"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "numericValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "integer"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "numericEnumerable"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nan"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nullNumber",
+                    "expression": {
+                        "$ast": "LiteralExpression",
+                        "value": "Null"
+                    },
+                    "type": {
+                        "$ast": "NullableType",
+                        "element": {
+                            "$ast": "PredefinedType",
+                            "name": "Int"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nullText",
+                    "expression": {
+                        "$ast": "LiteralExpression",
+                        "value": "Null"
+                    },
+                    "type": {
+                        "$ast": "NullableType",
+                        "element": {
+                            "$ast": "PredefinedType",
+                            "name": "String"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "firstNull",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nullNumber"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "NullableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "NullableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "String"
+                                }
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "secondNull",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nullText"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "NullableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "NullableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "String"
+                                }
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nullValues",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "firstNull"
+                            },
+                            "value": null
+                        }]
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "NullableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "NullableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "String"
+                                }
+                            }]
+                        },
+                        "writability": "Writable"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nullValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "firstNull"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nullValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "secondNull"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "presentNumber",
+                    "expression": {
+                        "$ast": "IntegerExpression",
+                        "value": "1"
+                    },
+                    "type": {
+                        "$ast": "NullableType",
+                        "element": {
+                            "$ast": "PredefinedType",
+                            "name": "Int"
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nullValues"
+                        },
+                        "element": {
+                            "$ast": "InferExpression",
+                            "expression": {
+                                "$ast": "ReferenceExpression",
+                                "name": "presentNumber"
+                            },
+                            "type": {
+                                "$ast": "VariantType",
+                                "arguments": [{
+                                    "$ast": "NullableType",
+                                    "element": {
+                                        "$ast": "PredefinedType",
+                                        "name": "Int"
+                                    }
+                                }, {
+                                    "$ast": "NullableType",
+                                    "element": {
+                                        "$ast": "PredefinedType",
+                                        "name": "String"
+                                    }
+                                }]
+                            }
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "other",
+                    "expression": {
+                        "$ast": "NewClassExpression",
+                        "arguments": [],
+                        "type": {
+                            "$ast": "SharedPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "VariantProvider"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "raw",
+                    "expression": {
+                        "$ast": "TypeCastingExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "provider"
+                        },
+                        "strategy": "Strong",
+                        "type": {
+                            "$ast": "RawPointerType",
+                            "element": {
+                                "$ast": "ReferenceType",
+                                "name": "VariantProvider"
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "sharedOption",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "provider"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "RawPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "VariantProvider"
+                                }
+                            }, {
+                                "$ast": "SharedPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "VariantProvider"
+                                }
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "rawOption",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "raw"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "RawPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "VariantProvider"
+                                }
+                            }, {
+                                "$ast": "SharedPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "VariantProvider"
+                                }
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "pointerValues",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "sharedOption"
+                            },
+                            "value": null
+                        }]
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "RawPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "VariantProvider"
+                                }
+                            }, {
+                                "$ast": "SharedPointerType",
+                                "element": {
+                                    "$ast": "ReferenceType",
+                                    "name": "VariantProvider"
+                                }
+                            }]
+                        },
+                        "writability": "Writable"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "pointerValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "rawOption"
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "pointerValues"
+                        },
+                        "element": {
+                            "$ast": "InferExpression",
+                            "expression": {
+                                "$ast": "ReferenceExpression",
+                                "name": "other"
+                            },
+                            "type": {
+                                "$ast": "VariantType",
+                                "arguments": [{
+                                    "$ast": "RawPointerType",
+                                    "element": {
+                                        "$ast": "ReferenceType",
+                                        "name": "VariantProvider"
+                                    }
+                                }, {
+                                    "$ast": "SharedPointerType",
+                                    "element": {
+                                        "$ast": "ReferenceType",
+                                        "name": "VariantProvider"
+                                    }
+                                }]
+                            }
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "structure",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "InferExpression",
+                            "expression": {
+                                "$ast": "ConstructorExpression",
+                                "arguments": [{
+                                    "$ast": "ConstructorArgument",
+                                    "key": {
+                                        "$ast": "ReferenceExpression",
+                                        "name": "value"
+                                    },
+                                    "value": {
+                                        "$ast": "IntegerExpression",
+                                        "value": "12"
+                                    }
+                                }]
+                            },
+                            "type": {
+                                "$ast": "ReferenceType",
+                                "name": "MembershipPayload"
+                            }
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "ReferenceType",
+                                "name": "MembershipPayload"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "structValues",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "structure"
+                            },
+                            "value": null
+                        }]
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "ReferenceType",
+                                "name": "MembershipPayload"
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        },
+                        "writability": "Writable"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "structValues"
+                        },
+                        "element": {
+                            "$ast": "InferExpression",
+                            "expression": {
+                                "$ast": "InferExpression",
+                                "expression": {
+                                    "$ast": "ConstructorExpression",
+                                    "arguments": [{
+                                        "$ast": "ConstructorArgument",
+                                        "key": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "value"
+                                        },
+                                        "value": {
+                                            "$ast": "IntegerExpression",
+                                            "value": "12"
+                                        }
+                                    }]
+                                },
+                                "type": {
+                                    "$ast": "ReferenceType",
+                                    "name": "MembershipPayload"
+                                }
+                            },
+                            "type": {
+                                "$ast": "VariantType",
+                                "arguments": [{
+                                    "$ast": "ReferenceType",
+                                    "name": "MembershipPayload"
+                                }, {
+                                    "$ast": "PredefinedType",
+                                    "name": "String"
+                                }]
+                            }
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "structValues"
+                        },
+                        "element": {
+                            "$ast": "InferExpression",
+                            "expression": {
+                                "$ast": "InferExpression",
+                                "expression": {
+                                    "$ast": "ConstructorExpression",
+                                    "arguments": [{
+                                        "$ast": "ConstructorArgument",
+                                        "key": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "value"
+                                        },
+                                        "value": {
+                                            "$ast": "IntegerExpression",
+                                            "value": "13"
+                                        }
+                                    }]
+                                },
+                                "type": {
+                                    "$ast": "ReferenceType",
+                                    "name": "MembershipPayload"
+                                }
+                            },
+                            "type": {
+                                "$ast": "VariantType",
+                                "arguments": [{
+                                    "$ast": "ReferenceType",
+                                    "name": "MembershipPayload"
+                                }, {
+                                    "$ast": "PredefinedType",
+                                    "name": "String"
+                                }]
+                            }
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "function",
+                    "expression": {
+                        "$ast": "FunctionExpression",
+                        "function": {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "",
+                            "anonymity": "Anonymous",
+                            "arguments": [{
+                                "$ast": "FunctionArgument",
+                                "attributes": [],
+                                "name": "value",
+                                "type": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }],
+                            "functionKind": "Normal",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ReturnStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "value"
+                                        },
+                                        "op": "Add",
+                                        "second": {
+                                            "$ast": "IntegerExpression",
+                                            "value": "1"
+                                        }
+                                    }
+                                }]
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "functionValue",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "function"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "FunctionType",
+                                "arguments": [{
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }],
+                                "result": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "functionCopy",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "functionValue"
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "functionValues",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "functionValue"
+                            },
+                            "value": null
+                        }]
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "FunctionType",
+                                "arguments": [{
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }],
+                                "result": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        },
+                        "writability": "Writable"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "functionValues"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "functionValue"
+                            },
+                            "test": "In"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "functionValue"
+                            },
+                            "op": "EQ",
+                            "second": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "functionValues"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                }
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "functionValues"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "functionCopy"
+                            },
+                            "test": "NotIn"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "functionCopy"
+                            },
+                            "op": "NE",
+                            "second": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "functionValues"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                }
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "functionEnumerable",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "functionValues"
+                    },
+                    "type": {
+                        "$ast": "EnumerableType",
+                        "element": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "FunctionType",
+                                "arguments": [{
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }],
+                                "result": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "functionEnumerable"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "functionValue"
+                            },
+                            "test": "In"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "functionValue"
+                            },
+                            "op": "EQ",
+                            "second": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "functionValues"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                }
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "otherFunction",
+                    "expression": {
+                        "$ast": "FunctionExpression",
+                        "function": {
+                            "$ast": "FunctionDeclaration",
+                            "attributes": [],
+                            "name": "",
+                            "anonymity": "Anonymous",
+                            "arguments": [{
+                                "$ast": "FunctionArgument",
+                                "attributes": [],
+                                "name": "value",
+                                "type": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }],
+                            "functionKind": "Normal",
+                            "returnType": {
+                                "$ast": "PredefinedType",
+                                "name": "Int"
+                            },
+                            "statement": {
+                                "$ast": "BlockStatement",
+                                "endLabel": "",
+                                "statements": [{
+                                    "$ast": "ReturnStatement",
+                                    "expression": {
+                                        "$ast": "BinaryExpression",
+                                        "first": {
+                                            "$ast": "ReferenceExpression",
+                                            "name": "value"
+                                        },
+                                        "op": "Add",
+                                        "second": {
+                                            "$ast": "IntegerExpression",
+                                            "value": "1"
+                                        }
+                                    }
+                                }]
+                            }
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "otherFunctionValue",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "otherFunction"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "FunctionType",
+                                "arguments": [{
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }],
+                                "result": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "functionValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "otherFunctionValue"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nativeFunction",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [],
+                        "function": {
+                            "$ast": "ChildExpression",
+                            "name": "Function",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "VariantProvider"
+                            }
+                        },
+                        "typedResult": null
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nativeFunctionCopy",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "nativeFunction"
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nativeFunctionValues",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeFunction"
+                            },
+                            "value": null
+                        }]
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "FunctionType",
+                                "arguments": [{
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }],
+                                "result": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        },
+                        "writability": "Writable"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeFunctionValues"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeFunction"
+                            },
+                            "test": "In"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeFunction"
+                            },
+                            "op": "EQ",
+                            "second": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "nativeFunctionValues"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                }
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeFunctionValues"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeFunctionCopy"
+                            },
+                            "test": "NotIn"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeFunctionCopy"
+                            },
+                            "op": "NE",
+                            "second": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "nativeFunctionValues"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                }
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "otherNativeFunction",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [],
+                        "function": {
+                            "$ast": "ChildExpression",
+                            "name": "Function",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "VariantProvider"
+                            }
+                        },
+                        "typedResult": null
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nativeFunctionValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "otherNativeFunction"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "lazy",
+                    "expression": {
+                        "$ast": "RangeExpression",
+                        "begin": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        },
+                        "beginBoundary": "Inclusive",
+                        "end": {
+                            "$ast": "IntegerExpression",
+                            "value": "3"
+                        },
+                        "endBoundary": "Inclusive"
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "lazyValue",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "lazy"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "EnumerableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "lazyCopy",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "lazyValue"
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "lazyValues",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "lazyValue"
+                            },
+                            "value": null
+                        }]
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "EnumerableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        },
+                        "writability": "Writable"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "lazyValues"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "lazyValue"
+                            },
+                            "test": "In"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "lazyValue"
+                            },
+                            "op": "EQ",
+                            "second": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "lazyValues"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                }
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "lazyValues"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "lazyCopy"
+                            },
+                            "test": "NotIn"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "lazyCopy"
+                            },
+                            "op": "NE",
+                            "second": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "lazyValues"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                }
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "lazyEnumerable",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "lazyValues"
+                    },
+                    "type": {
+                        "$ast": "EnumerableType",
+                        "element": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "EnumerableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "lazyEnumerable"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "lazyValue"
+                            },
+                            "test": "In"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "lazyValue"
+                            },
+                            "op": "EQ",
+                            "second": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "lazyValues"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                }
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "otherLazy",
+                    "expression": {
+                        "$ast": "RangeExpression",
+                        "begin": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        },
+                        "beginBoundary": "Inclusive",
+                        "end": {
+                            "$ast": "IntegerExpression",
+                            "value": "3"
+                        },
+                        "endBoundary": "Inclusive"
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "otherLazyValue",
+                    "expression": {
+                        "$ast": "InferExpression",
+                        "expression": {
+                            "$ast": "ReferenceExpression",
+                            "name": "otherLazy"
+                        },
+                        "type": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "EnumerableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        }
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "lazyValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "otherLazyValue"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nativeLazy",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [],
+                        "function": {
+                            "$ast": "ChildExpression",
+                            "name": "Enumerable",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "VariantProvider"
+                            }
+                        },
+                        "typedResult": null
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nativeLazyCopy",
+                    "expression": {
+                        "$ast": "ReferenceExpression",
+                        "name": "nativeLazy"
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "nativeLazyValues",
+                    "expression": {
+                        "$ast": "ConstructorExpression",
+                        "arguments": [{
+                            "$ast": "ConstructorArgument",
+                            "key": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeLazy"
+                            },
+                            "value": null
+                        }]
+                    },
+                    "type": {
+                        "$ast": "MapType",
+                        "key": null,
+                        "value": {
+                            "$ast": "VariantType",
+                            "arguments": [{
+                                "$ast": "EnumerableType",
+                                "element": {
+                                    "$ast": "PredefinedType",
+                                    "name": "Int"
+                                }
+                            }, {
+                                "$ast": "PredefinedType",
+                                "name": "String"
+                            }]
+                        },
+                        "writability": "Writable"
+                    }
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeLazyValues"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeLazy"
+                            },
+                            "test": "In"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeLazy"
+                            },
+                            "op": "EQ",
+                            "second": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "nativeLazyValues"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                }
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeLazyValues"
+                            },
+                            "element": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeLazyCopy"
+                            },
+                            "test": "NotIn"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "BinaryExpression",
+                            "first": {
+                                "$ast": "ReferenceExpression",
+                                "name": "nativeLazyCopy"
+                            },
+                            "op": "NE",
+                            "second": {
+                                "$ast": "BinaryExpression",
+                                "first": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "nativeLazyValues"
+                                },
+                                "op": "Index",
+                                "second": {
+                                    "$ast": "IntegerExpression",
+                                    "value": "0"
+                                }
+                            }
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "VariableStatement",
+                "variable": {
+                    "$ast": "VariableDeclaration",
+                    "attributes": [],
+                    "name": "otherNativeLazy",
+                    "expression": {
+                        "$ast": "CallExpression",
+                        "arguments": [],
+                        "function": {
+                            "$ast": "ChildExpression",
+                            "name": "Enumerable",
+                            "parent": {
+                                "$ast": "ReferenceExpression",
+                                "name": "VariantProvider"
+                            }
+                        },
+                        "typedResult": null
+                    },
+                    "type": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "ReferenceExpression",
+                            "name": "nativeLazyValues"
+                        },
+                        "element": {
+                            "$ast": "ReferenceExpression",
+                            "name": "otherNativeLazy"
+                        },
+                        "test": "NotIn"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "SetTestingExpression",
+                        "collection": {
+                            "$ast": "CallExpression",
+                            "arguments": [],
+                            "function": {
+                                "$ast": "ReferenceExpression",
+                                "name": "NextCollection"
+                            },
+                            "typedResult": null
+                        },
+                        "element": {
+                            "$ast": "CallExpression",
+                            "arguments": [],
+                            "function": {
+                                "$ast": "ReferenceExpression",
+                                "name": "NextElement"
+                            },
+                            "typedResult": null
+                        },
+                        "test": "In"
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "elementEvaluations"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "collectionEvaluations"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "1"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "UnaryExpression",
+                        "op": "Not",
+                        "operand": {
+                            "$ast": "SetTestingExpression",
+                            "collection": {
+                                "$ast": "CallExpression",
+                                "arguments": [],
+                                "function": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "NextCollection"
+                                },
+                                "typedResult": null
+                            },
+                            "element": {
+                                "$ast": "CallExpression",
+                                "arguments": [],
+                                "function": {
+                                    "$ast": "ReferenceExpression",
+                                    "name": "NextElement"
+                                },
+                                "typedResult": null
+                            },
+                            "test": "NotIn"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "elementEvaluations"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "2"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ExpressionStatement",
+                "expression": {
+                    "$ast": "CallExpression",
+                    "arguments": [{
+                        "$ast": "BinaryExpression",
+                        "first": {
+                            "$ast": "ReferenceExpression",
+                            "name": "collectionEvaluations"
+                        },
+                        "op": "EQ",
+                        "second": {
+                            "$ast": "IntegerExpression",
+                            "value": "2"
+                        }
+                    }],
+                    "function": {
+                        "$ast": "ReferenceExpression",
+                        "name": "Check"
+                    },
+                    "typedResult": null
+                }
+            }, {
+                "$ast": "ReturnStatement",
+                "expression": {
+                    "$ast": "ReferenceExpression",
+                    "name": "checks"
+                }
+            }]
+        }
+    }],
+    "moduleType": "Module",
+    "name": "test",
+    "paths": [{
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "system"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }, {
+        "$ast": "ModuleUsingPath",
+        "items": [{
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingNameFragment",
+                "name": "test"
+            }]
+        }, {
+            "$ast": "ModuleUsingItem",
+            "fragments": [{
+                "$ast": "ModuleUsingWildCardFragment"
+            }]
+        }]
+    }]
+}

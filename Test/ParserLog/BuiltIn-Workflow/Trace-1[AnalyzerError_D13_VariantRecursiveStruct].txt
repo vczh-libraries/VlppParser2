@@ -1,0 +1,601 @@
+﻿================ EXECUTION STEPS ================
+[0]: 0@0 - 36@6
+
+==================== TRACES =====================
+
++-----------------------+
+| [0]: <Start>          |
+| [787][_Module] BEGIN  |
+| [AST-INSTRUCTIONS]:   |
+| [SUCCESORS 1-1]: [1]  |
++-----------------------+
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================++
+|| [1]: {KEYWORD_MODULE} module                                              ||
+|| [793][_Module]< "module" @ ( NAME ";" { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + StackBegin()                                                          ||
+||   + Token(0)                                                              ||
+|| [PREDECESSORS 0-0]: [0]                                                   ||
+|| [SUCCESORS 2-2]: [2]                                                      ||
+++===========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================++
+|| [2]: {NAME} test                                                          ||
+|| [792][_Module]< "module" ( NAME @ ";" { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + Token(1)                                                              ||
+|| [PREDECESSORS 1-1]: [1]                                                   ||
+|| [SUCCESORS 3-3]: [3]                                                      ||
+++===========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++===========================================================================++
+|| [3]: {SEMICOLON} ;                                                        ||
+|| [789][_Module]< "module" ( NAME ";" @ { _UsingPath } { _Declaration } ) > ||
+|| [AST-INSTRUCTIONS]:                                                       ||
+||   + Token(2)                                                              ||
+|| [PREDECESSORS 2-2]: [2]                                                   ||
+|| [SUCCESORS 5-5]: [5]                                                      ||
+++===========================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================++
+|| [5]: {KEYWORD_USING} using                                                                             ||
+|| [782][_UsingPath]< "using" @ _UsingItem { "::" _UsingItem } ";" >                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                    ||
+||   + StackBegin()                                                                                       ||
+||   + Token(0)                                                                                           ||
+|| [RETURN STACK]:                                                                                        ||
+||   [0][255][3]: _UsingPath -> [790][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+|| [PREDECESSORS 3-3]: [3]                                                                                ||
+|| [SUCCESORS 6-6]: [6]                                                                                   ||
+++========================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================++
+|| [6]: {NAME} system                                                                                     ||
+|| [775][_UsingFragment]< NAME @ >                                                                        ||
+|| [AST-INSTRUCTIONS]:                                                                                    ||
+||   + StackBegin()                                                                                       ||
+||   + Token(0)                                                                                           ||
+|| [RETURN STACK]:                                                                                        ||
+||   [2][249][5]: _UsingFragment -> [778][_UsingItem]< _UsingFragment @ { _UsingFragment } >              ||
+||   [1][252][5]: _UsingItem -> [783][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >         ||
+||   [0][255][3]: _UsingPath -> [790][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+|| [PREDECESSORS 5-5]: [5]                                                                                ||
+|| [SUCCESORS 7-7]: [7]                                                                                   ||
+++========================================================================================================++
+|
++
+|
++--------------------------------------------------------------------------------------------------------+
+| [7]: <Ending>                                                                                          |
+| [778][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                               |
+| [AST-INSTRUCTIONS]:                                                                                    |
+|   + CreateObject(ModuleUsingNameFragment)                                                              |
+|   + Field(ModuleUsingNameFragment::name, 0)                                                            |
+|   + StackEnd()                                                                                         |
+|   > StackBegin()                                                                                       |
+|   > StackSlot(0)                                                                                       |
+| [RETURN STACK]:                                                                                        |
+|   [1][252][5]: _UsingItem -> [783][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >         |
+|   [0][255][3]: _UsingPath -> [790][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+| [PREDECESSORS 6-6]: [6]                                                                                |
+| [SUCCESORS 8-8]: [8]                                                                                   |
++--------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------------------------+
+| [8]: <Ending>                                                                                          |
+| [783][_UsingPath]< "using" _UsingItem @ { "::" _UsingItem } ";" >                                      |
+| [AST-INSTRUCTIONS]:                                                                                    |
+|   + CreateObject(ModuleUsingItem)                                                                      |
+|   + Field(ModuleUsingItem::fragments, 0)                                                               |
+|   + Field(ModuleUsingItem::fragments, 1)                                                               |
+|   + StackEnd()                                                                                         |
+|   > StackSlot(1)                                                                                       |
+| [RETURN STACK]:                                                                                        |
+|   [0][255][3]: _UsingPath -> [790][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+| [PREDECESSORS 7-7]: [7]                                                                                |
+| [SUCCESORS 9-9]: [9]                                                                                   |
++--------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================++
+|| [9]: {SCOPE_DELIMITER} ::                                                                              ||
+|| [784][_UsingPath]< "using" _UsingItem { "::" @ _UsingItem } ";" >                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                    ||
+||   + Token(2)                                                                                           ||
+|| [RETURN STACK]:                                                                                        ||
+||   [0][255][3]: _UsingPath -> [790][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+|| [PREDECESSORS 8-8]: [8]                                                                                ||
+|| [SUCCESORS 10-10]: [10]                                                                                ||
+++========================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================++
+|| [10]: {MUL} *                                                                                          ||
+|| [774][_UsingFragment]< "*" @ >                                                                         ||
+|| [AST-INSTRUCTIONS]:                                                                                    ||
+||   + StackBegin()                                                                                       ||
+||   + Token(0)                                                                                           ||
+|| [RETURN STACK]:                                                                                        ||
+||   [4][249][9]: _UsingFragment -> [778][_UsingItem]< _UsingFragment @ { _UsingFragment } >              ||
+||   [3][253][9]: _UsingItem -> [785][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >         ||
+||   [0][255][3]: _UsingPath -> [790][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+|| [PREDECESSORS 9-9]: [9]                                                                                ||
+|| [SUCCESORS 11-11]: [11]                                                                                ||
+++========================================================================================================++
+|
++
+|
++--------------------------------------------------------------------------------------------------------+
+| [11]: <Ending>                                                                                         |
+| [778][_UsingItem]< _UsingFragment @ { _UsingFragment } >                                               |
+| [AST-INSTRUCTIONS]:                                                                                    |
+|   + CreateObject(ModuleUsingWildCardFragment)                                                          |
+|   + StackEnd()                                                                                         |
+|   > StackBegin()                                                                                       |
+|   > StackSlot(0)                                                                                       |
+| [RETURN STACK]:                                                                                        |
+|   [3][253][9]: _UsingItem -> [785][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >         |
+|   [0][255][3]: _UsingPath -> [790][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+| [PREDECESSORS 10-10]: [10]                                                                             |
+| [SUCCESORS 12-12]: [12]                                                                                |
++--------------------------------------------------------------------------------------------------------+
+|
++
+|
++--------------------------------------------------------------------------------------------------------+
+| [12]: <Ending>                                                                                         |
+| [785][_UsingPath]< "using" _UsingItem { "::" _UsingItem @ } ";" >                                      |
+| [AST-INSTRUCTIONS]:                                                                                    |
+|   + CreateObject(ModuleUsingItem)                                                                      |
+|   + Field(ModuleUsingItem::fragments, 0)                                                               |
+|   + Field(ModuleUsingItem::fragments, 1)                                                               |
+|   + StackEnd()                                                                                         |
+|   > StackSlot(3)                                                                                       |
+| [RETURN STACK]:                                                                                        |
+|   [0][255][3]: _UsingPath -> [790][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+| [PREDECESSORS 11-11]: [11]                                                                             |
+| [SUCCESORS 13-13]: [13]                                                                                |
++--------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++========================================================================================================++
+|| [13]: {SEMICOLON} ;                                                                                    ||
+|| [786][_UsingPath]< "using" _UsingItem { "::" _UsingItem } ";" @ >                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                    ||
+||   + Token(4)                                                                                           ||
+|| [RETURN STACK]:                                                                                        ||
+||   [0][255][3]: _UsingPath -> [790][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > ||
+|| [PREDECESSORS 12-12]: [12]                                                                             ||
+|| [SUCCESORS 14-14]: [14]                                                                                ||
+++========================================================================================================++
+|
++
+|
++---------------------------------------------------------------------------+
+| [14]: <Ending>                                                            |
+| [790][_Module]< "module" ( NAME ";" { _UsingPath @ } { _Declaration } ) > |
+| [AST-INSTRUCTIONS]:                                                       |
+|   + CreateObject(ModuleUsingPath)                                         |
+|   + Field(ModuleUsingPath::items, 1)                                      |
+|   + Field(ModuleUsingPath::items, 3)                                      |
+|   + StackEnd()                                                            |
+|   > StackSlot(3)                                                          |
+| [PREDECESSORS 13-13]: [13]                                                |
+| [SUCCESORS 16-16]: [16]                                                   |
++---------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [16]: {KEYWORD_STRUCT} struct                                                                              ||
+|| [711][_Struct]< "struct" @ NAME "{" { _StructMember } "}" >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + StackBegin()                                                                                           ||
+||   + Token(0)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 14-14]: [14]                                                                                 ||
+|| [SUCCESORS 17-17]: [17]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [17]: {NAME} Recursive                                                                                     ||
+|| [715][_Struct]< "struct" NAME @ "{" { _StructMember } "}" >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(1)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 16-16]: [16]                                                                                 ||
+|| [SUCCESORS 18-18]: [18]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [18]: {OPEN_BRACE} {                                                                                       ||
+|| [712][_Struct]< "struct" NAME "{" @ { _StructMember } "}" >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(2)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 17-17]: [17]                                                                                 ||
+|| [SUCCESORS 19-19]: [19]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [19]: {NAME} data                                                                                          ||
+|| [708][_StructMember]< { _Attribute } NAME @ ":" _Type ";" >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + StackBegin()                                                                                           ||
+||   + Token(1)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [8][241][18]: _StructMember -> [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 18-18]: [18]                                                                                 ||
+|| [SUCCESORS 20-20]: [20]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [20]: {COLON} :                                                                                            ||
+|| [705][_StructMember]< { _Attribute } NAME ":" @ _Type ";" >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(2)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [8][241][18]: _StructMember -> [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 19-19]: [19]                                                                                 ||
+|| [SUCCESORS 21-21]: [21]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [21]: {KEYWORD_VARIANT} variant                                                                            ||
+|| [33][_Type]< "variant" @ "<" { _Type ; "," } ">" >                                                         ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + StackBegin()                                                                                           ||
+||   + Token(0)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [9][240][20]: _Type -> [707][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                       ||
+||   [8][241][18]: _StructMember -> [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 20-20]: [20]                                                                                 ||
+|| [SUCCESORS 22-22]: [22]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [22]: {LT} <                                                                                               ||
+|| [29][_Type]< "variant" "<" @ { _Type ; "," } ">" >                                                         ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(1)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [9][240][20]: _Type -> [707][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                       ||
+||   [8][241][18]: _StructMember -> [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 21-21]: [21]                                                                                 ||
+|| [SUCCESORS 23-23]: [23]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [23]: {TYPE_INT} int                                                                                       ||
+|| [20][_Type]< "int" @ >                                                                                     ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + StackBegin()                                                                                           ||
+||   + Token(0)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [10][6][22]: _Type -> [32][_Type]< "variant" "<" { _Type @ ; "," } ">" >                                 ||
+||   [9][240][20]: _Type -> [707][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                       ||
+||   [8][241][18]: _StructMember -> [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 22-22]: [22]                                                                                 ||
+|| [SUCCESORS 24-24]: [24]                                                                                    ||
+++============================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------------------+
+| [24]: <Ending>                                                                                             |
+| [32][_Type]< "variant" "<" { _Type @ ; "," } ">" >                                                         |
+| [AST-INSTRUCTIONS]:                                                                                        |
+|   + EnumItem(3, 1)                                                                                         |
+|   + CreateObject(PredefinedType)                                                                           |
+|   + Field(PredefinedType::name, 1)                                                                         |
+|   + StackEnd()                                                                                             |
+|   > StackSlot(2)                                                                                           |
+| [RETURN STACK]:                                                                                            |
+|   [9][240][20]: _Type -> [707][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                       |
+|   [8][241][18]: _StructMember -> [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               |
+|   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    |
+|   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
+| [PREDECESSORS 23-23]: [23]                                                                                 |
+| [SUCCESORS 25-25]: [25]                                                                                    |
++------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [25]: {COMMA} ,                                                                                            ||
+|| [30][_Type]< "variant" "<" { _Type ; "," @ } ">" >                                                         ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(3)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [9][240][20]: _Type -> [707][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                       ||
+||   [8][241][18]: _StructMember -> [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 24-24]: [24]                                                                                 ||
+|| [SUCCESORS 26-26]: [26]                                                                                    ||
+++============================================================================================================++
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [26]: {NAME} Recursive                                                                                     ||
+|| [35][_Type]< NAME @ >                                                                                      ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + StackBegin()                                                                                           ||
+||   + Token(0)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [11][7][25]: _Type -> [32][_Type]< "variant" "<" { _Type @ ; "," } ">" >                                 ||
+||   [9][240][20]: _Type -> [707][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                       ||
+||   [8][241][18]: _StructMember -> [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 25-25]: [25]                                                                                 ||
+|| [SUCCESORS 27-27]: [27]                                                                                    ||
+++============================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------------------+
+| [27]: <Ending>                                                                                             |
+| [32][_Type]< "variant" "<" { _Type @ ; "," } ">" >                                                         |
+| [AST-INSTRUCTIONS]:                                                                                        |
+|   + CreateObject(ReferenceType)                                                                            |
+|   + Field(ReferenceType::name, 0)                                                                          |
+|   + StackEnd()                                                                                             |
+|   > StackSlot(2)                                                                                           |
+| [RETURN STACK]:                                                                                            |
+|   [9][240][20]: _Type -> [707][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                       |
+|   [8][241][18]: _StructMember -> [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               |
+|   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    |
+|   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
+| [PREDECESSORS 26-26]: [26]                                                                                 |
+| [SUCCESORS 28-28]: [28]                                                                                    |
++------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [28]: {GT} >                                                                                               ||
+|| [31][_Type]< "variant" "<" { _Type ; "," } ">" @ >                                                         ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(4)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [9][240][20]: _Type -> [707][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                       ||
+||   [8][241][18]: _StructMember -> [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 27-27]: [27]                                                                                 ||
+|| [SUCCESORS 29-29]: [29]                                                                                    ||
+++============================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------------------+
+| [29]: <Ending>                                                                                             |
+| [707][_StructMember]< { _Attribute } NAME ":" _Type @ ";" >                                                |
+| [AST-INSTRUCTIONS]:                                                                                        |
+|   + CreateObject(VariantType)                                                                              |
+|   + Field(VariantType::arguments, 2)                                                                       |
+|   + StackEnd()                                                                                             |
+|   > StackSlot(3)                                                                                           |
+| [RETURN STACK]:                                                                                            |
+|   [8][241][18]: _StructMember -> [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               |
+|   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    |
+|   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
+| [PREDECESSORS 28-28]: [28]                                                                                 |
+| [SUCCESORS 30-30]: [30]                                                                                    |
++------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [30]: {SEMICOLON} ;                                                                                        ||
+|| [706][_StructMember]< { _Attribute } NAME ":" _Type ";" @ >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(4)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [8][241][18]: _StructMember -> [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >               ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 29-29]: [29]                                                                                 ||
+|| [SUCCESORS 31-31]: [31]                                                                                    ||
+++============================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------------------+
+| [31]: <Ending>                                                                                             |
+| [713][_Struct]< "struct" NAME "{" { _StructMember @ } "}" >                                                |
+| [AST-INSTRUCTIONS]:                                                                                        |
+|   + CreateObject(StructMember)                                                                             |
+|   + Field(StructMember::attributes, 0)                                                                     |
+|   + Field(StructMember::name, 1)                                                                           |
+|   + Field(StructMember::type, 3)                                                                           |
+|   + StackEnd()                                                                                             |
+|   > StackSlot(3)                                                                                           |
+| [RETURN STACK]:                                                                                            |
+|   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    |
+|   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
+| [PREDECESSORS 30-30]: [30]                                                                                 |
+| [SUCCESORS 32-32]: [32]                                                                                    |
++------------------------------------------------------------------------------------------------------------+
+[0]
+ |
+ +
+ |
+[0]
+++============================================================================================================++
+|| [32]: {CLOSE_BRACE} }                                                                                      ||
+|| [714][_Struct]< "struct" NAME "{" { _StructMember } "}" @ >                                                ||
+|| [AST-INSTRUCTIONS]:                                                                                        ||
+||   + Token(4)                                                                                               ||
+|| [RETURN STACK]:                                                                                            ||
+||   [7][52][14]: _Struct -> [766][_DeclarationCandidates]<! !_Struct @ !>                                    ||
+||   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> ||
+||   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  ||
+|| [PREDECESSORS 31-31]: [31]                                                                                 ||
+|| [SUCCESORS 33-33]: [33]                                                                                    ||
+++============================================================================================================++
+|
++
+|
++------------------------------------------------------------------------------------------------------------+
+| [33]: <Ending>                                                                                             |
+| [766][_DeclarationCandidates]<! !_Struct @ !>                                                              |
+| [AST-INSTRUCTIONS]:                                                                                        |
+|   + CreateObject(StructDeclaration)                                                                        |
+|   + Field(Declaration::name, 1)                                                                            |
+|   + Field(StructDeclaration::members, 3)                                                                   |
+|   + StackEnd()                                                                                             |
+|   > StackBegin()                                                                                           |
+| [RETURN STACK]:                                                                                            |
+|   [6][45][14]: _DeclarationCandidates -> [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !> |
+|   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) >  |
+| [PREDECESSORS 32-32]: [32]                                                                                 |
+| [SUCCESORS 34-34]: [34]                                                                                    |
++------------------------------------------------------------------------------------------------------------+
+|
++
+|
++-----------------------------------------------------------------------------------------------------------+
+| [34]: <Ending>                                                                                            |
+| [771][_Declaration]<! { _Attribute } !_DeclarationCandidates @ !>                                         |
+| [AST-INSTRUCTIONS]:                                                                                       |
+|   + StackEnd()                                                                                            |
+|   > StackBegin()                                                                                          |
+| [RETURN STACK]:                                                                                           |
+|   [5][256][14]: _Declaration -> [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [PREDECESSORS 33-33]: [33]                                                                                |
+| [SUCCESORS 35-35]: [35]                                                                                   |
++-----------------------------------------------------------------------------------------------------------+
+|
++
+|
++---------------------------------------------------------------------------+
+| [35]: <Ending>                                                            |
+| [791][_Module]< "module" ( NAME ";" { _UsingPath } { _Declaration @ } ) > |
+| [AST-INSTRUCTIONS]:                                                       |
+|   + Field(Declaration::attributes, 0)                                     |
+|   + StackEnd()                                                            |
+|   > StackSlot(4)                                                          |
+| [PREDECESSORS 34-34]: [34]                                                |
+| [SUCCESORS 36-36]: [36]                                                   |
++---------------------------------------------------------------------------+
+|
++
+|
++------------------------------------+
+| [36]: <Ending>                     |
+| [788][_Module] END [ENDING]        |
+| [AST-INSTRUCTIONS]:                |
+|   + EnumItem(0, 5)                 |
+|   + CreateObject(Module)           |
+|   + Field(Module::name, 1)         |
+|   + Field(Module::paths, 3)        |
+|   + Field(Module::declarations, 4) |
+|   + Field(Module::moduleType, 5)   |
+|   + StackEnd()                     |
+| [PREDECESSORS 35-35]: [35]         |
++------------------------------------+
