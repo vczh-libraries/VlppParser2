@@ -27,9 +27,14 @@ always fix the root cause.
 - `REPO-ROOT/Source/ParserGen_Generated`
 - `REPO-ROOT/Source/Json/Generated`
 - `REPO-ROOT/Source/Xml/Generated`
+- `REPO-ROOT/Test/Source/<PARSER-NAME>/Generated`
 
 Files in `REPO-ROOT/Import` and `REPO-ROOT/Release` (recursively) are also not allowed to modify.
 These files are prepared for foreign dependencies.
+
+When files here are modified, they should be included in a dedicated commit, aka manually udpated files and generated files should be included in different commits:
+- The commit title for files in `REPO-ROOT/Source/ParserGen_Generated` or `REPO-ROOT/Source/PARSER-NAME/Generated` should be the original commit appending `[parser]`.
+- The commit title for files in `REPO-ROOT/Test/Source/<PARSER-NAME>/Generated` should be the original commit appending `[test-parser]`.
 
 ## Projects for Verification
 
